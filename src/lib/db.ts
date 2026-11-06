@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { Product, PurchasedItem, PayoutRecord } from '@/types';
+import { Product, PurchasedItem, PayoutRecord, StudentReview } from '@/types';
 import { INITIAL_PRODUCTS } from '@/data/mockProducts';
 
 const DB_FILE = path.join(process.cwd(), 'data', 'db.json');
@@ -9,7 +9,41 @@ interface DatabaseSchema {
   products: Product[];
   orders: PurchasedItem[];
   payouts: PayoutRecord[];
+  reviews: StudentReview[];
 }
+
+const INITIAL_REVIEWS: StudentReview[] = [
+  {
+    id: 'rev-init-1',
+    productId: 'prod-canvas-autopilot',
+    authorName: 'Alex Rivera',
+    authorUniversity: 'Stanford University',
+    rating: 5,
+    comment: 'Synced my CS 106B and Physics Canvas assignments directly into Notion and Google Calendar. Literally saved my GPA this quarter!',
+    date: 'Nov 4, 2026',
+    verifiedBuyer: true,
+  },
+  {
+    id: 'rev-init-2',
+    productId: 'prod-algo-visualizer',
+    authorName: 'Priya Patel',
+    authorUniversity: 'UC Berkeley',
+    rating: 5,
+    comment: 'The memory pointer stepper helped me finally pass my SWE internship technical interviews. Worth 10x the price.',
+    date: 'Nov 5, 2026',
+    verifiedBuyer: true,
+  },
+  {
+    id: 'rev-init-3',
+    productId: 'prod-academic-suite',
+    authorName: 'David Kim',
+    authorUniversity: 'MIT',
+    rating: 5,
+    comment: 'Turned my messy research notes into a formatted IEEE LaTeX draft with citations in under 3 minutes.',
+    date: 'Nov 6, 2026',
+    verifiedBuyer: true,
+  },
+];
 
 function ensureDbFile(): DatabaseSchema {
   const dir = path.dirname(DB_FILE);
@@ -46,6 +80,7 @@ function ensureDbFile(): DatabaseSchema {
           status: 'SUCCESS',
         }
       ],
+      reviews: INITIAL_REVIEWS,
     };
     fs.writeFileSync(DB_FILE, JSON.stringify(initialDb, null, 2), 'utf-8');
     return initialDb;
@@ -53,12 +88,18 @@ function ensureDbFile(): DatabaseSchema {
 
   try {
     const raw = fs.readFileSync(DB_FILE, 'utf-8');
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    if (!parsed.reviews || parsed.reviews.length === 0) {
+      parsed.reviews = INITIAL_REVIEWS;
+      fs.writeFileSync(DB_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+    }
+    return parsed;
   } catch (e) {
     return {
       products: INITIAL_PRODUCTS,
       orders: [],
       payouts: [],
+      reviews: INITIAL_REVIEWS,
     };
   }
 }
@@ -100,11 +141,75 @@ export function addOrders(orders: PurchasedItem[]): void {
 
 export function getAllPayouts(): PayoutRecord[] {
   const db = getDb();
-  return db.payouts;
+  return db.payouts || [];
 }
 
 export function addPayout(payout: PayoutRecord): void {
   const db = getDb();
+  if (!db.payouts) db.payouts = [];
   db.payouts.unshift(payout);
   saveDb(db);
 }
+
+export function getAllReviews(productId?: string): StudentReview[] {
+  const db = getDb();
+  const list = db.reviews || [];
+  if (!productId) return list;
+  return list.filter(r => r.productId === productId);
+}
+
+export function addReview(review: StudentReview): { review: StudentReview; updatedProduct?: Product } {
+  const db = getDb();
+  if (!db.reviews) db.reviews = [];
+  db.reviews.unshift(review);
+
+  // Recalculate product rating & reviewsCount
+  const productIdx = db.products.findIndex(p => p.id === review.productId);
+  let updatedProduct: Product | undefined;
+  if (productIdx !== -1) {
+    const prodReviews = db.reviews.filter(r => r.productId === review.productId);
+    const sumRatings = prodReviews.reduce((acc, r) => acc + r.rating, 0);
+    const newRating = Number((sumRatings / prodReviews.length).toFixed(1));
+    db.products[productIdx].rating = newRating;
+    db.products[productIdx].reviewsCount = (db.products[productIdx].reviewsCount || 0) + 1;
+    updatedProduct = db.products[productIdx];
+  }
+
+  saveDb(db);
+  return { review, updatedProduct };
+}
+
+export function getCreatorStats(creatorEmail: string) {
+  const db = getDb();
+  const normalizedEmail = creatorEmail.toLowerCase();
+  
+  // Find creator products
+  const creatorProducts = db.products.filter(p => 
+    p.creator?.payoutEmail?.toLowerCase() === normalizedEmail ||
+    p.creator?.handle?.toLowerCase() === normalizedEmail.split('@')[0]
+  );
+
+  // Find creator payouts
+  const creatorPayouts = (db.payouts || []).filter(p => 
+    p.creatorEmail?.toLowerCase() === normalizedEmail
+  );
+
+  // Calculate financials
+  const grossSales = creatorPayouts.reduce((acc, p) => acc + (p.amount || 0), 0);
+  const platformFees = creatorPayouts.reduce((acc, p) => acc + (p.platformFee || 0), 0);
+  const netEarnings = Number((grossSales - platformFees).toFixed(2));
+  
+  // Calculate total units sold
+  const totalUnitsSold = creatorProducts.reduce((acc, p) => acc + (p.salesCount || 0), 0);
+
+  return {
+    creatorEmail,
+    products: creatorProducts,
+    payouts: creatorPayouts,
+    grossSales: Number(grossSales.toFixed(2)),
+    platformFees: Number(platformFees.toFixed(2)),
+    netEarnings,
+    totalUnitsSold,
+  };
+}
+

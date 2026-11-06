@@ -94,3 +94,15 @@ export interface ChatMessage {
   suggestedProducts?: Product[];
   timestamp: string;
 }
+
+export interface StudentReview {
+  id: string;
+  productId: string;
+  authorName: string;
+  authorUniversity: string;
+  rating: number; // 1 to 5
+  comment: string;
+  date: string;
+  verifiedBuyer: boolean;
+}
+

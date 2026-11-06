@@ -16,8 +16,8 @@
         "verified": true,
         "payoutEmail": "sarah.lin@stanford.edu"
       },
-      "rating": 4.9,
-      "reviewsCount": 142,
+      "rating": 5,
+      "reviewsCount": 143,
       "salesCount": 890,
       "features": [
         "Automatic 2-way sync with Canvas LMS",
@@ -400,6 +400,48 @@
       "platformFee": 0.35,
       "timestamp": "2026-11-06T10:56:59.157Z",
       "status": "SUCCESS"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "rev-1793966438470-e452",
+      "productId": "prod-canvas-autopilot",
+      "authorName": "Jordan Lee",
+      "authorUniversity": "Stanford",
+      "rating": 5,
+      "comment": "Phenomenal extension, syncs every single course without a hitch!",
+      "date": "Nov 6, 2026",
+      "verifiedBuyer": true
+    },
+    {
+      "id": "rev-init-1",
+      "productId": "prod-canvas-autopilot",
+      "authorName": "Alex Rivera",
+      "authorUniversity": "Stanford University",
+      "rating": 5,
+      "comment": "Synced my CS 106B and Physics Canvas assignments directly into Notion and Google Calendar. Literally saved my GPA this quarter!",
+      "date": "Nov 4, 2026",
+      "verifiedBuyer": true
+    },
+    {
+      "id": "rev-init-2",
+      "productId": "prod-algo-visualizer",
+      "authorName": "Priya Patel",
+      "authorUniversity": "UC Berkeley",
+      "rating": 5,
+      "comment": "The memory pointer stepper helped me finally pass my SWE internship technical interviews. Worth 10x the price.",
+      "date": "Nov 5, 2026",
+      "verifiedBuyer": true
+    },
+    {
+      "id": "rev-init-3",
+      "productId": "prod-academic-suite",
+      "authorName": "David Kim",
+      "authorUniversity": "MIT",
+      "rating": 5,
+      "comment": "Turned my messy research notes into a formatted IEEE LaTeX draft with citations in under 3 minutes.",
+      "date": "Nov 6, 2026",
+      "verifiedBuyer": true
     }
   ]
 }

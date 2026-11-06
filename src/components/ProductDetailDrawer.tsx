@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import { Product } from '@/types';
+import React, { useState, useEffect } from 'react';
+import { Product, StudentReview } from '@/types';
 import { 
   X, 
   CheckCircle2, 
@@ -9,17 +9,17 @@ import {
   Download, 
   ShieldCheck, 
   ShoppingBag, 
-  ExternalLink,
-  Code2,
-  FileText,
-  Clock,
-  Play
+  Play,
+  MessageSquareQuote,
+  Sparkles
 } from 'lucide-react';
 
 interface ProductDetailDrawerProps {
   product: Product | null;
   onClose: () => void;
   onBuyNow: (product: Product) => void;
+  onAddToCart?: (product: Product) => void;
+  isInCart?: boolean;
   onLaunchDemo?: (product: Product) => void;
   isUnlocked?: boolean;
 }
@@ -28,9 +28,34 @@ export const ProductDetailDrawer: React.FC<ProductDetailDrawerProps> = ({
   product,
   onClose,
   onBuyNow,
+  onAddToCart,
+  isInCart = false,
   onLaunchDemo,
   isUnlocked = false,
 }) => {
+  const [reviews, setReviews] = useState<StudentReview[]>([]);
+  const [loadingReviews, setLoadingReviews] = useState(false);
+
+  useEffect(() => {
+    if (!product) return;
+    const productId = product.id;
+    async function fetchReviews() {
+      setLoadingReviews(true);
+      try {
+        const res = await fetch(`/api/reviews?productId=${productId}`);
+        if (res.ok) {
+          const data = await res.json();
+          setReviews(data.reviews || []);
+        }
+      } catch (err) {
+        console.warn('Failed to load reviews:', err);
+      } finally {
+        setLoadingReviews(false);
+      }
+    }
+    fetchReviews();
+  }, [product]);
+
   if (!product) return null;
 
   return (
@@ -151,6 +176,63 @@ export const ProductDetailDrawer: React.FC<ProductDetailDrawerProps> = ({
             </div>
           </div>
 
+          {/* Verified Student Reviews Section */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h4 className="text-xs uppercase font-semibold text-zinc-400 tracking-wider flex items-center gap-1.5">
+                <MessageSquareQuote className="w-3.5 h-3.5 text-zinc-400" />
+                <span>Verified Student Reviews ({reviews.length})</span>
+              </h4>
+              <span className="text-xs text-zinc-500 flex items-center gap-1">
+                <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                <span className="font-semibold text-zinc-300">{product.rating.toFixed(1)}</span> / 5.0
+              </span>
+            </div>
+
+            {reviews.length === 0 ? (
+              <div className="p-4 rounded-xl bg-[#111216] border border-[#1b1d24] text-center text-xs text-zinc-500">
+                No reviews yet. Be the first verified student buyer to leave a review!
+              </div>
+            ) : (
+              <div className="space-y-2.5">
+                {reviews.map((rev) => (
+                  <div 
+                    key={rev.id}
+                    className="p-3.5 rounded-xl bg-[#121318] border border-[#1c1e26] space-y-2"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold text-xs text-white">{rev.authorName}</span>
+                        <span className="text-[11px] text-zinc-500">• {rev.authorUniversity}</span>
+                        {rev.verifiedBuyer && (
+                          <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
+                            Verified Purchase
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`w-3 h-3 ${
+                              i < rev.rating ? 'fill-amber-400 text-amber-400' : 'text-zinc-600'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <p className="text-xs text-zinc-300 leading-relaxed">
+                      &quot;{rev.comment}&quot;
+                    </p>
+                    <div className="text-[10px] text-zinc-500">
+                      {rev.date}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Campus Verified Guarantee */}
           <div className="p-4 rounded-xl bg-[#121318] border border-[#1d1f27] space-y-2">
             <div className="flex items-center gap-2 text-xs font-semibold text-zinc-200">
@@ -189,13 +271,27 @@ export const ProductDetailDrawer: React.FC<ProductDetailDrawerProps> = ({
                 <span>Unlocked in Locker</span>
               </div>
             ) : (
-              <button
-                onClick={() => onBuyNow(product)}
-                className="px-6 py-2.5 rounded-lg bg-[#222530] hover:bg-[#2c303f] text-white font-semibold text-sm border border-[#34394b] flex items-center gap-2 transition"
-              >
-                <ShoppingBag className="w-4 h-4 text-zinc-300" />
-                <span>Buy with PayPal</span>
-              </button>
+              <div className="flex items-center gap-2">
+                {onAddToCart && (
+                  <button
+                    onClick={() => onAddToCart(product)}
+                    className={`px-3.5 py-2.5 rounded-lg font-medium text-xs border transition ${
+                      isInCart
+                        ? 'bg-blue-500/20 text-blue-400 border-blue-500/30'
+                        : 'bg-[#181a20] text-zinc-300 hover:text-white border-[#242632] hover:bg-[#20222a]'
+                    }`}
+                  >
+                    {isInCart ? 'In Cart' : '+ Add to Cart'}
+                  </button>
+                )}
+                <button
+                  onClick={() => onBuyNow(product)}
+                  className="px-5 py-2.5 rounded-lg bg-[#222530] hover:bg-[#2c303f] text-white font-semibold text-xs border border-[#34394b] flex items-center gap-2 transition"
+                >
+                  <ShoppingBag className="w-4 h-4 text-zinc-300" />
+                  <span>Buy with PayPal</span>
+                </button>
+              </div>
             )}
           </div>
         </div>

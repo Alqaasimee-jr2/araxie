@@ -32,12 +32,20 @@ Yet, student builders have no dedicated platform to distribute and monetize thei
 - **PayPal v1 Payouts API** (`/v1/payments/payouts`): Programmatically disburses a 95% net royalty to student creators in real-time when transactions settle.
 - **Built-in Sandbox Test Mode**: Pre-configured with zero friction for hackathon judges to test end-to-end purchasing flows instantly.
 
-### 3. 🎨 Whop-Grade UI / UX
-- Designed specifically for the student demographic with high-density, dark-mode elegance inspired by Whop and Raycast.
-- **Explore Feed**: Filter by *Chrome Extensions, AI Prompts, Study Packs, Code & Scripts, Micro-SaaS*.
-- **Student Locker (`@me`)**: Hub storing all purchased software, 1-click license key copy, and direct asset download links.
-- **Creator Studio**: Enables any student to list a digital product in 2 minutes, featuring an **AI Polish** button to generate marketing copy and tags.
-- **Order History & Receipts**: Complete audit trail showing transaction IDs, PayPal Capture IDs, and timestamped purchase receipts.
+### 3. 💼 Closed-Loop Creator Studio & PayPal Payouts
+- **Creator Earnings Hub**: Itemized financial breakdown tracking Lifetime Gross Sales, 5% campus network fee, and 95% net creator payouts.
+- **Instant PayPal Payouts Rails**: Student developers can disburse their earnings directly into their PayPal account with real-time PayPal Payout Batch IDs (`/v1/payments/payouts`).
+- **Creator Tool Publishing & AI Polish**: Publish tools to the campus marketplace in under 60 seconds with live **Google Gemini 2.5 Flash** copy optimization.
+
+### 4. ⭐ Verified Student Reviews & Ratings
+- **Closed-Loop Feedback**: Only students who have purchased and unlocked a tool in their Locker can submit verified ratings (1–5 stars) and peer reviews.
+- **Dynamic Storefront Recalculation**: Ratings and review counters automatically update in real-time across the marketplace feed and product details drawer.
+
+### 5. 🎨 Whop-Grade UI / UX & Mobile First
+- **Muted Matte Aesthetic**: Modeled on Whop's signature muted dark-slate design system (`#0b0c0e`, `#121317`, `#1e2027`) without distracting neon glows.
+- **Interactive In-Browser Tool Execution**: Working web apps (*CanvasAutoPilot*, *AlgoVisualizer Pro*, and *Academic Writing Engine*) run directly in-app.
+- **Multi-Item Cart Bundling**: Dynamic cart drawer automatically recalculates bundle discounts on the fly when 2+ items are added.
+- **Native Mobile Bottom Navigation Bar**: Fixed bottom bar (*Explore, Locker, AI Concierge, Cart, Creator, Profile*) on screens `< 640px`.
 
 ---
 

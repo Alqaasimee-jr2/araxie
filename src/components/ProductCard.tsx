@@ -23,6 +23,8 @@ interface ProductCardProps {
   product: Product;
   onSelect: (product: Product) => void;
   onQuickBuy: (product: Product) => void;
+  onAddToCart?: (product: Product) => void;
+  isInCart?: boolean;
   onLaunchDemo?: (product: Product) => void;
   isUnlocked?: boolean;
 }
@@ -42,6 +44,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   onSelect,
   onQuickBuy,
+  onAddToCart,
+  isInCart = false,
   onLaunchDemo,
   isUnlocked = false,
 }) => {
@@ -151,18 +155,36 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {isUnlocked ? (
               <button
                 onClick={() => onSelect(product)}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 transition"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 transition flex items-center gap-1"
               >
-                Owned
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                <span>Owned</span>
               </button>
             ) : (
-              <button
-                onClick={() => onQuickBuy(product)}
-                className="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-[#222530] hover:bg-[#2c303f] border border-[#34394b] transition flex items-center gap-1.5"
-              >
-                <ShoppingBag className="w-3.5 h-3.5 text-zinc-300" />
-                <span>Get Access</span>
-              </button>
+              <div className="flex items-center gap-1.5">
+                {onAddToCart && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onAddToCart(product);
+                    }}
+                    className={`p-1.5 rounded-lg text-xs font-medium border transition ${
+                      isInCart
+                        ? 'bg-blue-500/20 text-blue-400 border-blue-500/30'
+                        : 'bg-[#181a20] text-zinc-400 hover:text-white border-[#242630] hover:bg-[#20222a]'
+                    }`}
+                    title={isInCart ? 'In Cart' : 'Add to Cart for Bundle Discount'}
+                  >
+                    <ShoppingBag className="w-3.5 h-3.5" />
+                  </button>
+                )}
+                <button
+                  onClick={() => onQuickBuy(product)}
+                  className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-[#222530] hover:bg-[#2c303f] border border-[#34394b] transition flex items-center gap-1.5"
+                >
+                  <span>Buy</span>
+                </button>
+              </div>
             )}
           </div>
         </div>

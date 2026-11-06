@@ -26,7 +26,11 @@ import {
   CheckCircle2, 
   TrendingUp, 
   Play,
-  UserCheck
+  UserCheck,
+  ShoppingBag,
+  Package,
+  User,
+  Wallet
 } from 'lucide-react';
 
 export default function Home() {
@@ -95,6 +99,21 @@ export default function Home() {
     return purchasedItems.some(item => item.productId === productId);
   };
 
+  const handleToggleCart = (product: Product) => {
+    setCart(prev => {
+      const exists = prev.some(item => item.id === product.id);
+      if (exists) {
+        return prev.filter(item => item.id !== product.id);
+      } else {
+        return [...prev, product];
+      }
+    });
+  };
+
+  const handleReviewSubmitted = (updatedProduct: Product) => {
+    setProducts(prev => prev.map(p => p.id === updatedProduct.id ? updatedProduct : p));
+  };
+
   const handleQuickBuy = (product: Product) => {
     setCheckoutProducts([product]);
     setCheckoutBundle(null);
@@ -138,7 +157,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0b0c0e] text-zinc-100 flex flex-col selection:bg-zinc-800 selection:text-white">
+    <div className="min-h-screen bg-[#0b0c0e] text-zinc-100 flex flex-col selection:bg-zinc-800 selection:text-white pb-16 sm:pb-0">
       
       {/* Top Whop-Grade Navigation Bar */}
       <Navbar
@@ -279,6 +298,8 @@ export default function Home() {
                     product={product}
                     onSelect={(prod) => setSelectedProduct(prod)}
                     onQuickBuy={handleQuickBuy}
+                    onAddToCart={handleToggleCart}
+                    isInCart={cart.some(c => c.id === product.id)}
                     onLaunchDemo={(prod) => setActiveInteractiveTool(prod)}
                     isUnlocked={isProductUnlocked(product.id)}
                   />
@@ -296,6 +317,7 @@ export default function Home() {
             onBrowseCatalog={() => setCurrentTab('explore')}
             onViewReceipt={(item) => setIsOrdersModalOpen(true)}
             onLaunchTool={(prod) => setActiveInteractiveTool(prod)}
+            onReviewSubmitted={handleReviewSubmitted}
           />
         )}
 
@@ -332,6 +354,73 @@ export default function Home() {
         </div>
       </footer>
 
+      {/* Whop-Grade Sticky Mobile Bottom Navigation Bar */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0d0e12]/95 backdrop-blur-md border-t border-[#1c1d25] px-3 py-2 flex items-center justify-around">
+        <button
+          onClick={() => setCurrentTab('explore')}
+          className={`flex flex-col items-center gap-1 text-[10px] font-medium transition ${
+            currentTab === 'explore' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
+          }`}
+        >
+          <Layers className="w-5 h-5" />
+          <span>Explore</span>
+        </button>
+
+        <button
+          onClick={() => setCurrentTab('me')}
+          className={`relative flex flex-col items-center gap-1 text-[10px] font-medium transition ${
+            currentTab === 'me' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
+          }`}
+        >
+          <Package className="w-5 h-5" />
+          <span>Locker</span>
+          {purchasedItems.length > 0 && (
+            <span className="absolute -top-1 right-1 w-4 h-4 rounded-full bg-emerald-500 text-[9px] font-bold text-white flex items-center justify-center">
+              {purchasedItems.length}
+            </span>
+          )}
+        </button>
+
+        <button
+          onClick={() => setIsAIModalOpen(true)}
+          className="flex flex-col items-center gap-1 text-[10px] font-medium text-amber-400 hover:text-amber-300 transition"
+        >
+          <div className="w-7 h-7 rounded-full bg-amber-400/10 border border-amber-400/20 flex items-center justify-center">
+            <Sparkles className="w-4 h-4 text-amber-400" />
+          </div>
+          <span>AI Concierge</span>
+        </button>
+
+        <button
+          onClick={() => setIsCartDrawerOpen(true)}
+          className="relative flex flex-col items-center gap-1 text-[10px] font-medium text-zinc-500 hover:text-zinc-300 transition"
+        >
+          <ShoppingBag className="w-5 h-5" />
+          <span>Cart</span>
+          {cart.length > 0 && (
+            <span className="absolute -top-1 right-0 w-4 h-4 rounded-full bg-blue-500 text-[9px] font-bold text-white flex items-center justify-center">
+              {cart.length}
+            </span>
+          )}
+        </button>
+
+        <button
+          onClick={() => setIsCreatorModalOpen(true)}
+          className="flex flex-col items-center gap-1 text-[10px] font-medium text-zinc-500 hover:text-zinc-300 transition"
+        >
+          <Wallet className="w-5 h-5" />
+          <span>Creator</span>
+        </button>
+
+        <button
+          onClick={() => setIsAuthModalOpen(true)}
+          className="flex flex-col items-center gap-1 text-[10px] font-medium text-zinc-500 hover:text-zinc-300 transition"
+        >
+          <User className="w-5 h-5" />
+          <span>{currentUser ? 'Profile' : 'Sign In'}</span>
+        </button>
+      </div>
+
       {/* Modal: Interactive In-App Tool Execution Workspace */}
       <InteractiveToolModal
         isOpen={!!activeInteractiveTool}
@@ -355,6 +444,8 @@ export default function Home() {
           setSelectedProduct(null);
           handleQuickBuy(prod);
         }}
+        onAddToCart={handleToggleCart}
+        isInCart={selectedProduct ? cart.some(c => c.id === selectedProduct.id) : false}
         onLaunchDemo={(prod) => {
           setSelectedProduct(null);
           setActiveInteractiveTool(prod);
@@ -394,6 +485,8 @@ export default function Home() {
         isOpen={isCreatorModalOpen}
         onClose={() => setIsCreatorModalOpen(false)}
         onProductCreated={handleProductCreated}
+        currentUser={currentUser}
+        products={products}
       />
 
       {/* Modal: Order History & Receipts */}
