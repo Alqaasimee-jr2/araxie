@@ -87,22 +87,12 @@ araxie/
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/your-username/araxie.git
+git clone https://github.com/Alqaasimee-jr2/araxie.git
 cd araxie
 npm install
 ```
 
-### 2. Environment Configuration (Optional)
-The application includes a pre-configured, resilient **PayPal Sandbox Test Mode** that works out-of-the-box with zero configuration required.
-
-If you wish to test with your personal PayPal Developer sandbox credentials, create a `.env.local` file:
-```env
-NEXT_PUBLIC_PAYPAL_CLIENT_ID=your_sandbox_client_id
-PAYPAL_CLIENT_SECRET=your_sandbox_client_secret
-PAYPAL_API_BASE=https://api-m.sandbox.paypal.com
-```
-
-### 3. Run Development Server
+### 2. Run Development Server
 ```bash
 npm run dev
 ```
@@ -110,20 +100,34 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🧪 Testing the PayPal Sandbox Flow (For Judges)
+## 🔑 Pre-Configured Test Credentials (For Hackathon Judges)
 
-1. **Browse or Inquire**:
-   - Open the app and click **"Ask AI"** or select a sample prompt (e.g. *"Sophomore CS student, budget $20"*).
-   - Observe the AI evaluate the catalog, apply an asymptotic bundle discount, and generate an order.
-2. **Execute Checkout**:
+You can log in directly using the pre-configured evaluator accounts below, or click **[Auto-fill Judge Credentials]** inside the Sign In modal:
+
+| Persona | Email | Password | Pre-Seeded State |
+| :--- | :--- | :--- | :--- |
+| **Student Buyer (Alex Chen)** | `judge.sandbox@araxie.edu` | `PayPalHackathon2026!` | Stanford '26 verified profile, active student locker, past PayPal Sandbox receipts. |
+| **Student Creator (Marcus Chen)** | `creator.sandbox@araxie.edu` | `PayPalHackathon2026!` | MIT '25 verified developer, author of *AlgoVisualizer Pro*, live PayPal Payouts ledger. |
+
+---
+
+## 🧪 Testing the Live PayPal & AI Workflow
+
+1. **Sign In**:
+   - Click **"Sign In"** in the top navigation bar.
+   - Click **"Alex Chen (Buyer)"** to auto-fill the credentials and sign in.
+2. **Autonomous Agentic Commerce (AI Concierge)**:
+   - Click **"Ask AI"** or the hero query bar and pick a prompt (e.g. *"Sophomore CS student, budget $20"*).
+   - Observe the live **Google Gemini 2.5 Flash** agent analyze the catalog, compute the dynamic bundle discount ($\delta(k) = \min(0.25, 0.12 \cdot \ln(1+k))$), and construct a 1-click PayPal checkout order.
+3. **PayPal Sandbox Checkout & Instant Creator Payout**:
    - Click **"Pay with PayPal"**.
-   - Review the order breakdown and click the **"PayPal Sandbox"** button.
-3. **Inspect Real-Time Capture & Payout**:
-   - Watch the transaction complete with celebratory confetti.
-   - Note the generated PayPal Capture ID and cryptographic student license key (`ARX-XXXX-XXXX-2026`).
-   - Notice the status message confirming real-time payout dispatch to the student creator(s).
-4. **Access the Locker (`@me`)**:
-   - Switch to **@me Locker** to copy the license key, access tool downloads, and inspect past PayPal receipts in the **Orders** ledger.
+   - In the modal, click the **"PayPal Sandbox"** button to execute order creation and capture.
+   - Observe the cryptographic license key (`ARX-STUDENT-XXXX-XXXX-2026`) and instant 95% creator payout confirmation dispatched via the **PayPal Payouts API**.
+4. **Live In-Browser Tool Execution**:
+   - Navigate to **@me Locker** and click **"Launch Tool"** to run *CanvasAutoPilot*, *AlgoVisualizer*, or the *Academic Writing Studio* directly in your browser.
+5. **Creator Studio Publishing & AI Polish**:
+   - Switch to the Creator persona or open **Creator Studio**.
+   - Enter a tool title and click **"✨ Polish with Gemini"** to auto-generate product copy, feature tags, and pricing, then publish it directly to the live marketplace feed.
 
 ---
 
