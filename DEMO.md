@@ -54,11 +54,14 @@ Araxie supports real user sign-ups via email and Google OAuth (powered by Supaba
 ---
 
 ### Walkthrough 3: In-Browser Interactive Tool Execution
-1. Open the **"Locker"** tab in the navigation bar (or mobile bottom navigation).
-2. Locate any unlocked tool in your collection (such as *AlgoVisualizer Pro*, *CanvasAutoPilot*, or the *Academic Writing Studio*).
-3. Click **"Launch Tool"**:
-   - The tool runs in an interactive sandbox workspace directly within the browser.
-   - For example, the **Academic Writing Studio** allows you to input raw text, select citation styles (APA, MLA, IEEE, Chicago), and execute live AI academic transformations using Gemini 2.5 Flash.
+1. Open the **"Locker"** tab in the navigation bar (or click **"Try Demo"** directly on any tool card in the marketplace feed).
+2. Available in-browser interactive tools include:
+   - **Flow7 (Performance Awareness Layer)**: Live calm work session stopwatch, 4 cognitive focus domains (*Deep Work*, *Academic Research*, *Architecture*, *Problem Sets*), real-time 7-day cognitive load heatmap (39.2 hrs total matrix), objective session ledger, and 1-click Markdown timesheet exporter (`.md`).
+   - **CI-Guardian (Pre-Flight AST Gate)**: Interactive syntax AST security scanner detecting hardcoded secrets, `eval()` vulnerabilities, and un-throttled routes with SARIF 2.1.0 report generation and `npx ci-guardian` zero-config runner.
+   - **CanvasAutoPilot**: Live course assignment calendar with grade-weight prediction and 1-click `.ics` calendar sync.
+   - **AlgoVisualizer Pro**: Interactive step-by-step call stack, memory pointer, and complexity graph simulator.
+   - **Academic Writing Studio**: Real-time scholarly prompt transformer converting research notes into formal APA/IEEE citations using Gemini 2.5 Flash.
+3. Click **"Launch Tool"** or **"Try Demo"** to run any of these directly in your browser without local installation.
 
 ---
 
