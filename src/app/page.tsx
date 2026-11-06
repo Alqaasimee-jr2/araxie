@@ -373,6 +373,7 @@ export default function Home() {
       <footer className="mt-16 border-t border-[#17181f] bg-[#0c0d10] py-8 text-xs text-zinc-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
+            <img src="/logo.svg" alt="Araxie Logo" className="w-5 h-5 rounded" />
             <span className="font-bold text-zinc-200">Araxie</span>
             <span>&bull;</span>
             <span>The Peer-to-Peer Student Software &amp; Digital Tool Marketplace</span>

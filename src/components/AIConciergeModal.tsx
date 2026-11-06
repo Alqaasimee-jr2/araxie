@@ -110,8 +110,8 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
         {/* Header */}
         <div className="px-5 py-4 border-b border-[#1f2434] flex items-center justify-between bg-[#131622]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
-              <Sparkles className="w-4 h-4 text-cyan-200 animate-spin-slow" />
+            <div className="w-8 h-8 rounded-xl overflow-hidden ring-1 ring-white/10 shrink-0">
+              <img src="/logo.svg" alt="Araxie AI" className="w-full h-full object-cover" />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -142,8 +142,8 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
               className={`flex gap-3 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               {msg.sender === 'assistant' && (
-                <div className="w-7 h-7 rounded-lg bg-blue-600/20 border border-blue-500/30 flex items-center justify-center shrink-0 mt-0.5 text-blue-400">
-                  <Bot className="w-4 h-4" />
+                <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0 mt-0.5 ring-1 ring-blue-500/30">
+                  <img src="/logo.svg" alt="Araxie AI" className="w-full h-full object-cover" />
                 </div>
               )}
 

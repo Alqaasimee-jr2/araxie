@@ -112,8 +112,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         {/* Header */}
         <div className="px-5 py-4 border-b border-[#1a1c22] flex items-center justify-between bg-[#121317]">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-[#181a20] border border-[#23252f] flex items-center justify-center text-zinc-300">
-              <GraduationCap className="w-4 h-4" />
+            <div className="relative w-7 h-7 rounded-lg overflow-hidden flex items-center justify-center ring-1 ring-white/10">
+              <img src="/logo.svg" alt="Araxie Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <h3 className="font-semibold text-sm text-white">Campus Passport</h3>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none">
+  <defs>
+    <linearGradient id="arx-fav-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#161822"/>
+      <stop offset="100%" stop-color="#0a0b10"/>
+    </linearGradient>
+    <linearGradient id="arx-fav-l" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="arx-fav-r" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+    <linearGradient id="arx-fav-spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded App Icon Background -->
+  <rect width="32" height="32" rx="8" fill="url(#arx-fav-bg)" stroke="#272c3d" stroke-width="1.2"/>
+
+  <!-- Left Ascent Beam of A -->
+  <path d="M8 25 L16 7 L19.5 13 L12.5 25 Z" fill="url(#arx-fav-l)"/>
+
+  <!-- Right Ascent Beam of A -->
+  <path d="M24 25 L16 7 L18.5 7 L25.5 22 Z" fill="url(#arx-fav-r)"/>
+
+  <!-- Central Prismatic Spark -->
+  <polygon points="16,13 19.5,18 16,22 12.5,18" fill="url(#arx-fav-spark)"/>
+  <circle cx="16" cy="17.5" r="1.2" fill="#ffffff"/>
+</svg>

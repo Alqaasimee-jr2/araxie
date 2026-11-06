@@ -24,7 +24,8 @@ import {
   Copy, 
   Building2,
   Layers,
-  ShoppingBag
+  ShoppingBag,
+  X
 } from 'lucide-react';
 import { Product } from '@/types';
 
@@ -52,6 +53,7 @@ export const PublicSpaceView: React.FC<PublicSpaceViewProps> = ({
   searchQuery = '',
 }) => {
   const [selectedCampus, setSelectedCampus] = useState<string>('all');
+  const [localSearch, setLocalSearch] = useState<string>('');
   const [upvotes, setUpvotes] = useState<Record<string, number>>({
     'prod-flow7': 342,
     'prod-ci-guardian': 289,
@@ -94,7 +96,8 @@ export const PublicSpaceView: React.FC<PublicSpaceViewProps> = ({
     }
   };
 
-  // Filter products by university and search
+  // Filter products by university and active search
+  const activeSearch = (localSearch || searchQuery).trim().toLowerCase();
   const filteredProducts = products.filter(p => {
     const matchesCampus = 
       selectedCampus === 'all' ||
@@ -103,11 +106,11 @@ export const PublicSpaceView: React.FC<PublicSpaceViewProps> = ({
       (selectedCampus === 'mit' && p.creator.university.toLowerCase().includes('mit')) ||
       (selectedCampus === 'berkeley' && (p.creator.university.toLowerCase().includes('berkeley') || p.creator.university.toLowerCase().includes('uc')));
 
-    const matchesSearch = !searchQuery || 
-      p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.tagline.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.creator.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+    const matchesSearch = !activeSearch || 
+      p.title.toLowerCase().includes(activeSearch) ||
+      p.tagline.toLowerCase().includes(activeSearch) ||
+      p.creator.name.toLowerCase().includes(activeSearch) ||
+      p.tags.some(t => t.toLowerCase().includes(activeSearch));
 
     return matchesCampus && matchesSearch;
   });
@@ -195,6 +198,7 @@ export const PublicSpaceView: React.FC<PublicSpaceViewProps> = ({
 
         <div className="relative max-w-3xl space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1c202d] border border-[#2b3145] text-zinc-300 text-xs font-medium">
+            <img src="/logo.svg" alt="Araxie Logo" className="w-4 h-4 rounded" />
             <Globe className="w-3.5 h-3.5 text-cyan-400" />
             <span>Campus Commons &bull; Open Public Space</span>
             <span className="text-zinc-500">•</span>
@@ -372,7 +376,57 @@ export const PublicSpaceView: React.FC<PublicSpaceViewProps> = ({
           </div>
         </div>
 
+        {/* Board Search Bar & Result Counter */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#111319] p-3 rounded-xl border border-[#1e212c]">
+          <div className="relative flex-1 max-w-md group">
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-blue-400 transition pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Search public tools by name, tag, or collegiate creator..."
+              value={localSearch}
+              onChange={(e) => setLocalSearch(e.target.value)}
+              className="w-full bg-[#161821] text-xs text-zinc-200 placeholder-zinc-500 pl-9 pr-8 py-2 rounded-lg border border-[#232737] focus:outline-none focus:border-blue-500/70 focus:ring-1 focus:ring-blue-500/30 transition"
+            />
+            {localSearch && (
+              <button
+                onClick={() => setLocalSearch('')}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white"
+                title="Clear filter"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+          
+          <div className="text-xs text-zinc-400 flex items-center gap-2">
+            <span>Showing <strong className="text-white">{filteredProducts.length}</strong> of {products.length} campus tools</span>
+            {(localSearch || selectedCampus !== 'all') && (
+              <button
+                onClick={() => { setLocalSearch(''); setSelectedCampus('all'); }}
+                className="text-[11px] text-blue-400 hover:text-blue-300 underline underline-offset-2"
+              >
+                Reset filters
+              </button>
+            )}
+          </div>
+        </div>
+
         {/* Public Tool Grid with Upvote and Launch Preview Actions */}
+        {filteredProducts.length === 0 ? (
+          <div className="text-center py-12 rounded-2xl bg-[#111319] border border-[#1e212c] p-6 space-y-3">
+            <Search className="w-8 h-8 mx-auto text-zinc-600" />
+            <h3 className="text-sm font-semibold text-zinc-300">No public tools found</h3>
+            <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+              No campus software matched &quot;{activeSearch}&quot;. Try searching for &quot;Flow7&quot;, &quot;CI-Guardian&quot;, or reset your filters.
+            </p>
+            <button
+              onClick={() => { setLocalSearch(''); setSelectedCampus('all'); }}
+              className="px-3.5 py-1.5 rounded-lg bg-[#1a1d27] text-xs font-medium text-zinc-300 hover:text-white border border-[#272b3a]"
+            >
+              Reset Filters
+            </button>
+          </div>
+        ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredProducts.map(product => {
             const votes = upvotes[product.id] || 120;
@@ -475,6 +529,7 @@ export const PublicSpaceView: React.FC<PublicSpaceViewProps> = ({
             );
           })}
         </div>
+        )}
       </section>
 
       {/* 4. PUBLIC CRYPTOGRAPHIC LICENSE VERIFICATION WIDGET */}

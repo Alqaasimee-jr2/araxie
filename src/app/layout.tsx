@@ -16,6 +16,14 @@ export const metadata: Metadata = {
   title: "Araxie — Campus Public Space & Student Software Marketplace",
   description: "The open university square where campus builders showcase peer software, run interactive in-browser tools, and trade digital utilities with verified PayPal checkout.",
   keywords: ["campus tools", "public space", "software marketplace", "campus developers", "PayPal checkout", "study packs"],
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/logo.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
+  },
   openGraph: {
     title: "Araxie — Campus Public Space & Student Software Marketplace",
     description: "The open square where university builders trade software, run browser tools live, and verify cryptographic license keys.",
