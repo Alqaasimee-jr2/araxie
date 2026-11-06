@@ -1,12 +1,15 @@
 # Araxie — The Student Digital Economy Powered by Agentic Commerce
 
 [![PayPal AI Hackathon](https://img.shields.io/badge/PayPal_AI_Hackathon-Devpost_Submission-003087?style=for-the-badge&logo=paypal&logoColor=white)](https://paypalaihackathon.devpost.com/)
+[![Vercel Deployment](https://img.shields.io/badge/Vercel-Live_Production-black?style=for-the-badge&logo=vercel)](https://araxie.vercel.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16_App_Router-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
 
 > **"Whop for Students"** — An autonomous, AI-driven digital marketplace where student-built tools, Chrome extensions, Anki study packs, and micro-software meet intelligent multi-item bundling, instant **PayPal Sandbox checkout**, and automated peer-to-peer creator payouts.
+> 
+> 🌐 **Live Production Deployment**: [https://araxie.vercel.app](https://araxie.vercel.app)
 
 ---
 
