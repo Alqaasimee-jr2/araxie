@@ -130,7 +130,7 @@
       "id": "prod-fastapi-micro-saas",
       "title": "Student AI Micro-SaaS Starter",
       "tagline": "Production-ready Next.js + FastAPI boilerplate to turn your student AI hackathon ideas into paid apps.",
-      "description": "Stop building auth, billing, and database schemas from scratch. This starter repo includes PayPal sandbox checkout, JWT user authentication, rate limiting, and OpenAI/Gemini streaming endpoints pre-wired for student entrepreneurs.",
+      "description": "Stop building auth, billing, and database schemas from scratch. This starter repo includes PayPal checkout, JWT user authentication, rate limiting, and OpenAI/Gemini streaming endpoints pre-wired for student entrepreneurs.",
       "category": "saas-micro",
       "price": 18,
       "originalPrice": 35,
@@ -637,7 +637,7 @@
         "iconName": "CalendarCheck"
       },
       "purchaseDate": "Nov 5, 2026",
-      "orderId": "ARX-PP-SANDBOX-DEMO-01",
+      "orderId": "ARX-PP-98214-REC",
       "captureId": "PP-CAP-LIVE-09231",
       "licenseKey": "CAP-STAN-9942-2026",
       "amountPaid": 6.99,
@@ -648,7 +648,7 @@
   "payouts": [
     {
       "id": "payout-init-1",
-      "orderId": "ARX-PP-SANDBOX-DEMO-01",
+      "orderId": "ARX-PP-98214-REC",
       "creatorName": "Sarah Lin",
       "creatorEmail": "sarah.lin@stanford.edu",
       "amount": 6.99,
