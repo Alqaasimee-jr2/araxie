@@ -9,7 +9,6 @@ import {
   Receipt, 
   ShieldCheck, 
   Search,
-  SlidersHorizontal,
   GraduationCap
 } from 'lucide-react';
 
@@ -37,81 +36,75 @@ export const Navbar: React.FC<NavbarProps> = ({
   setSearchQuery,
 }) => {
   return (
-    <header className="sticky top-0 z-40 w-full glass-panel border-b border-[#1f2331] bg-[#090a0f]/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-[#1c1d24] bg-[#0c0d10]/95 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 gap-4">
+        <div className="flex items-center justify-between h-15 gap-4">
           
-          {/* Logo & Brand */}
+          {/* Logo & Brand (Clean, Muted) */}
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setCurrentTab('explore')}
-              className="flex items-center gap-2.5 text-left group transition"
+              className="flex items-center gap-2.5 text-left group"
             >
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-105 transition">
-                <GraduationCap className="w-5 h-5 text-white" />
+              <div className="w-8 h-8 rounded-lg bg-[#181a20] border border-[#262833] flex items-center justify-center text-zinc-200">
+                <GraduationCap className="w-4 h-4 text-zinc-300" />
               </div>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <span className="font-bold text-lg tracking-tight text-white group-hover:text-blue-400 transition">
-                    Araxie
-                  </span>
-                  <span className="text-[10px] uppercase font-semibold tracking-wider px-1.5 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                    Campus Whop
-                  </span>
-                </div>
-                <p className="text-[11px] text-zinc-400 font-medium hidden sm:block">
-                  Student Digital Marketplace
-                </p>
+              <div className="flex items-center gap-1.5">
+                <span className="font-bold text-base tracking-tight text-white">
+                  Araxie
+                </span>
+                <span className="text-[10px] font-medium px-1.5 py-0.2 rounded bg-[#171920] text-zinc-400 border border-[#22242e]">
+                  Campus
+                </span>
               </div>
             </button>
           </div>
 
-          {/* Search Bar with AI Quick Trigger */}
+          {/* Search Bar */}
           <div className="flex-1 max-w-md hidden md:block">
-            <div className="relative group">
-              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-blue-400 transition" />
+            <div className="relative">
+              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
               <input
                 type="text"
-                placeholder="Search student tools, extensions, study packs..."
+                placeholder="Search extensions, study packs, code templates..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-[#12141c] text-sm text-zinc-200 placeholder-zinc-500 pl-10 pr-24 py-2 rounded-xl border border-[#212534] focus:outline-none focus:border-blue-500/60 focus:ring-1 focus:ring-blue-500/40 transition"
+                className="w-full bg-[#121317] text-xs text-zinc-200 placeholder-zinc-500 pl-9 pr-20 py-2 rounded-lg border border-[#1e2027] focus:outline-none focus:border-zinc-500 transition"
               />
               <button
                 onClick={onOpenAI}
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1 text-[11px] font-medium bg-gradient-to-r from-blue-600/20 to-indigo-600/20 text-blue-400 hover:text-blue-300 border border-blue-500/30 px-2.5 py-1 rounded-lg transition"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1 text-[11px] font-medium text-zinc-300 hover:text-white bg-[#191b22] hover:bg-[#20222a] border border-[#272935] px-2 py-0.5 rounded transition"
               >
-                <Sparkles className="w-3 h-3 text-cyan-400" />
+                <Sparkles className="w-3 h-3 text-amber-400" />
                 <span>Ask AI</span>
               </button>
             </div>
           </div>
 
-          {/* Navigation Pills */}
-          <nav className="flex items-center gap-1 sm:gap-2">
+          {/* Navigation Items */}
+          <nav className="flex items-center gap-1 sm:gap-1.5">
             <button
               onClick={() => setCurrentTab('explore')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
                 currentTab === 'explore'
-                  ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/25'
-                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-[#161822]'
+                  ? 'bg-[#1e212b] text-white border border-[#292c3a]'
+                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-[#15161b]'
               }`}
             >
-              <Layers className="w-3.5 h-3.5" />
-              <span>Explore</span>
+              Explore
             </button>
 
             <button
               onClick={() => setCurrentTab('me')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition relative ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition relative ${
                 currentTab === 'me'
-                  ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/25'
-                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-[#161822]'
+                  ? 'bg-[#1e212b] text-white border border-[#292c3a]'
+                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-[#15161b]'
               }`}
             >
               <span>@me Locker</span>
               {unlockedCount > 0 && (
-                <span className="w-4 h-4 text-[10px] font-bold rounded-full bg-emerald-500 text-white flex items-center justify-center">
+                <span className="px-1.5 py-0.2 text-[10px] font-bold rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                   {unlockedCount}
                 </span>
               )}
@@ -119,39 +112,36 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => setCurrentTab('creator')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
                 currentTab === 'creator'
-                  ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/25'
-                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-[#161822]'
+                  ? 'bg-[#1e212b] text-white border border-[#292c3a]'
+                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-[#15161b]'
               }`}
             >
-              <PlusCircle className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Creator Studio</span>
-              <span className="sm:hidden">Sell</span>
+              Creator Studio
             </button>
 
             <button
               onClick={() => setCurrentTab('orders')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
                 currentTab === 'orders'
-                  ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/25'
-                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-[#161822]'
+                  ? 'bg-[#1e212b] text-white border border-[#292c3a]'
+                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-[#15161b]'
               }`}
             >
-              <Receipt className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">Orders</span>
+              Orders
             </button>
           </nav>
 
-          {/* Right Action Icons: AI Concierge, PayPal Sandbox, Cart */}
+          {/* Right Action Icons: AI, Sandbox Status, Cart */}
           <div className="flex items-center gap-2">
             
-            {/* AI Concierge Trigger Button */}
+            {/* AI Concierge Trigger */}
             <button
               onClick={onOpenAI}
-              className="flex items-center gap-1.5 text-xs font-medium bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-3 py-1.5 rounded-xl shadow-md shadow-blue-600/20 transition transform active:scale-95"
+              className="flex items-center gap-1.5 text-xs font-medium bg-[#1a1c24] hover:bg-[#222530] text-zinc-200 px-3 py-1.5 rounded-lg border border-[#272935] transition"
             >
-              <Sparkles className="w-3.5 h-3.5 text-cyan-200 animate-pulse" />
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
               <span className="hidden sm:inline">AI Concierge</span>
             </button>
 
@@ -159,22 +149,22 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               onClick={onOpenPayPalConfig}
               title="PayPal Sandbox Configuration"
-              className="flex items-center gap-1.5 text-[11px] bg-[#141722] hover:bg-[#1a1f2e] text-zinc-300 border border-[#23283a] px-2.5 py-1.5 rounded-xl transition"
+              className="flex items-center gap-1.5 text-[11px] bg-[#121418] hover:bg-[#1a1c22] text-zinc-300 border border-[#1e2027] px-2.5 py-1.5 rounded-lg transition"
             >
-              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span className="font-semibold text-emerald-400">PayPal</span>
-              <span className="text-zinc-400 text-[10px] hidden lg:inline">Sandbox</span>
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span className="font-semibold text-zinc-200">PayPal</span>
+              <span className="text-zinc-500 text-[10px] hidden lg:inline">Sandbox</span>
             </button>
 
             {/* Cart Trigger */}
             <button
               onClick={onOpenCart}
-              className="relative p-2 rounded-xl bg-[#12141c] hover:bg-[#1a1d29] text-zinc-300 border border-[#212534] transition"
+              className="relative p-2 rounded-lg bg-[#121317] hover:bg-[#1a1c22] text-zinc-300 border border-[#1e2027] transition"
               aria-label="View Cart"
             >
-              <ShoppingBag className="w-4 h-4" />
+              <ShoppingBag className="w-4 h-4 text-zinc-400" />
               {cartCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-blue-600 text-white text-[11px] font-bold flex items-center justify-center ring-2 ring-[#090a0f]">
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-zinc-200 text-black text-[10px] font-bold flex items-center justify-center">
                   {cartCount}
                 </span>
               )}

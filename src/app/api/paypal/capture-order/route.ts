@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { capturePayPalOrder, executeCreatorPayout } from '@/lib/paypal';
+import { addOrders, addPayout } from '@/lib/db';
+import { PurchasedItem, Product } from '@/types';
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,11 +12,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'orderId is required' }, { status: 400 });
     }
 
-    // 1. Capture the payment on PayPal
+    // 1. Capture payment on PayPal
     const captureResult = await capturePayPalOrder(orderId);
 
-    // 2. Generate license keys and unlock assets for each product
-    const unlockedItems = (products || []).map((prod: { id: string; title: string; downloadAsset?: { licenseKeyPrefix?: string; url?: string }; creator?: { name?: string; payoutEmail?: string }; price?: number }) => {
+    // 2. Generate license keys and unlock assets
+    const unlockedItems = (products || []).map((prod: Product) => {
       const prefix = prod.downloadAsset?.licenseKeyPrefix || 'ARX';
       const randomSeg1 = Math.random().toString(36).substring(2, 6).toUpperCase();
       const randomSeg2 = Math.random().toString(36).substring(2, 6).toUpperCase();
@@ -29,7 +31,30 @@ export async function POST(req: NextRequest) {
       };
     });
 
-    // 3. Trigger creator payouts for each product sold
+    // 3. Format purchased items for persistent DB storage
+    const dateFormatted = new Date().toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+
+    const newPurchasedItems: PurchasedItem[] = (products || []).map((prod: Product, idx: number) => ({
+      id: `order-item-${Date.now()}-${idx}`,
+      productId: prod.id,
+      product: prod,
+      purchaseDate: dateFormatted,
+      orderId,
+      captureId: captureResult.captureId,
+      licenseKey: unlockedItems[idx]?.licenseKey || `ARX-LIVE-2026`,
+      amountPaid: prod.price,
+      status: 'active',
+      downloadUrl: unlockedItems[idx]?.downloadUrl || prod.downloadAsset.url,
+    }));
+
+    // Save to persistent database
+    addOrders(newPurchasedItems);
+
+    // 4. Trigger creator payouts for each product
     const payoutReceipts = [];
     for (const prod of (products || [])) {
       if (prod.creator?.payoutEmail && prod.price) {
@@ -39,6 +64,19 @@ export async function POST(req: NextRequest) {
           creatorName: prod.creator.name || 'Student Creator',
           amount: prod.price,
         });
+
+        const payoutRecord = {
+          id: `payout-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+          orderId,
+          creatorName: prod.creator.name,
+          creatorEmail: prod.creator.payoutEmail,
+          amount: prod.price,
+          platformFee: payout.feeDeducted,
+          timestamp: new Date().toISOString(),
+          status: 'SUCCESS' as const,
+        };
+        addPayout(payoutRecord);
+
         payoutReceipts.push({
           creatorEmail: prod.creator.payoutEmail,
           creatorName: prod.creator.name,
@@ -55,8 +93,9 @@ export async function POST(req: NextRequest) {
       orderId,
       captureId: captureResult.captureId,
       status: captureResult.status,
-      payer: captureResult.payer || { emailAddress: buyerEmail || 'student@university.edu' },
+      payer: captureResult.payer || { emailAddress: buyerEmail || 'student.buyer.sandbox@araxie.edu' },
       unlockedItems,
+      purchasedItems: newPurchasedItems,
       payoutReceipts,
       timestamp: new Date().toISOString(),
     });

@@ -1,15 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #090a0f;
-  --foreground: #f3f4f6;
-  --surface: #12141c;
-  --surface-hover: #1a1e2a;
-  --border: #212534;
-  --border-light: #2d3347;
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
-  --accent: #6366f1;
+  --background: #0b0c0e;
+  --foreground: #ececed;
+  --surface: #121317;
+  --surface-muted: #16181d;
+  --surface-hover: #1c1e24;
+  --border: #1e2027;
+  --border-subtle: #272a33;
 }
 
 body {
@@ -20,38 +18,35 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Custom scrollbars for sleek desktop feel */
+/* Crisp, minimalist scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #090a0f;
+  background: #0b0c0e;
 }
 ::-webkit-scrollbar-thumb {
-  background: #262a3b;
-  border-radius: 9999px;
+  background: #23252d;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #373e57;
+  background: #2e313c;
 }
 
-/* Shimmer and subtle glow utilities */
-.glass-panel {
-  background: rgba(18, 20, 28, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border);
+/* Whop-style card surfaces */
+.whop-card {
+  background-color: #121317;
+  border: 1px solid #1e2027;
+  transition: border-color 0.15s ease, transform 0.15s ease;
 }
 
-.glass-card {
-  background: #11131b;
-  border: 1px solid #1f2331;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+.whop-card:hover {
+  border-color: #2e313c;
+  background-color: #15161b;
 }
 
-.glass-card:hover {
-  border-color: #384058;
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.6);
+.whop-panel {
+  background-color: #0e0f13;
+  border: 1px solid #1a1c22;
 }

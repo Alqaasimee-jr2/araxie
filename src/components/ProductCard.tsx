@@ -6,23 +6,24 @@ import {
   Star, 
   CheckCircle2, 
   ExternalLink, 
-  Download, 
-  ShoppingBag,
-  Sparkles,
-  Globe,
-  Code2,
-  GraduationCap,
-  FileText,
-  Atom,
-  ShieldCheck,
-  CalendarCheck,
-  Binary
+  ShoppingBag, 
+  Globe, 
+  Code2, 
+  GraduationCap, 
+  FileText, 
+  Atom, 
+  ShieldCheck, 
+  CalendarCheck, 
+  Binary,
+  Terminal,
+  Play
 } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
   onSelect: (product: Product) => void;
   onQuickBuy: (product: Product) => void;
+  onLaunchDemo?: (product: Product) => void;
   isUnlocked?: boolean;
 }
 
@@ -34,7 +35,6 @@ const ICON_MAP: Record<string, React.ElementType> = {
   FileText,
   Atom,
   ShieldCheck,
-  Sparkles,
   Globe,
 };
 
@@ -42,87 +42,64 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   onSelect,
   onQuickBuy,
+  onLaunchDemo,
   isUnlocked = false,
 }) => {
-  const IconComponent = ICON_MAP[product.iconName] || Sparkles;
+  const IconComponent = ICON_MAP[product.iconName] || Terminal;
 
   const categoryLabels: Record<string, string> = {
-    'chrome-extension': 'Chrome Ext',
+    'chrome-extension': 'Extension',
     'ai-prompt': 'AI Prompts',
     'study-pack': 'Study Pack',
     'code-template': 'Code Template',
-    'saas-micro': 'Micro SaaS',
+    'saas-micro': 'Micro-SaaS',
   };
 
   return (
-    <div className="group relative flex flex-col rounded-2xl bg-[#11131c] border border-[#1f2331] hover:border-[#333a4f] transition-all duration-200 overflow-hidden hover:-translate-y-1 hover:shadow-xl hover:shadow-black/50">
+    <div className="whop-card rounded-xl overflow-hidden flex flex-col justify-between transition-all duration-150">
       
-      {/* Top Banner & Category Pill */}
-      <div 
-        className="h-28 relative p-4 flex flex-col justify-between overflow-hidden"
-        style={{
-          background: `linear-gradient(135deg, ${product.accentColor}22 0%, #11131c 100%)`
-        }}
-      >
-        <div className="flex items-center justify-between z-10">
-          <span className="text-[10px] uppercase font-semibold tracking-wider px-2 py-0.5 rounded-full bg-white/10 text-white backdrop-blur-md border border-white/10">
-            {categoryLabels[product.category] || product.category}
-          </span>
-
-          {product.badge && (
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1">
-              <Sparkles className="w-2.5 h-2.5" />
-              {product.badge}
-            </span>
-          )}
-        </div>
-
-        {/* Center Floating Icon */}
-        <div className="flex items-center gap-2.5 z-10">
-          <div 
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg"
-            style={{ backgroundColor: product.accentColor }}
-          >
-            <IconComponent className="w-5 h-5" />
+      {/* Top Header / Icon Area (Muted, Matte) */}
+      <div className="p-4 pb-3 border-b border-[#1c1d24] flex items-start justify-between gap-3 bg-[#111216]">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-[#181a20] border border-[#23252f] flex items-center justify-center text-zinc-300">
+            <IconComponent className="w-5 h-5 text-zinc-300" />
           </div>
-          <div className="flex-1">
-            <h3 className="font-semibold text-base text-zinc-100 group-hover:text-blue-400 transition leading-snug line-clamp-1">
+          <div>
+            <h3 
+              onClick={() => onSelect(product)}
+              className="font-semibold text-sm text-zinc-100 hover:text-white cursor-pointer transition line-clamp-1"
+            >
               {product.title}
             </h3>
-            <div className="flex items-center gap-1 text-[11px] text-zinc-400">
-              <span className="text-amber-400 font-semibold flex items-center gap-0.5">
-                <Star className="w-3 h-3 fill-amber-400" />
-                {product.rating.toFixed(1)}
-              </span>
-              <span>•</span>
-              <span>{product.salesCount} students</span>
-            </div>
+            <span className="text-[11px] font-medium text-zinc-400">
+              {categoryLabels[product.category] || product.category}
+            </span>
           </div>
         </div>
 
-        {/* Subtle decorative background blur */}
-        <div 
-          className="absolute -right-6 -bottom-6 w-24 h-24 rounded-full blur-2xl opacity-20 pointer-events-none"
-          style={{ backgroundColor: product.accentColor }}
-        />
+        {product.badge && (
+          <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-[#1c1e26] text-zinc-300 border border-[#272935]">
+            {product.badge}
+          </span>
+        )}
       </div>
 
       {/* Body Content */}
       <div className="p-4 flex-1 flex flex-col justify-between gap-3">
         
         {/* Creator Info */}
-        <div className="flex items-center gap-2 pt-1 border-t border-[#1a1e2a]">
+        <div className="flex items-center gap-2">
           <img 
             src={product.creator.avatar} 
             alt={product.creator.name}
-            className="w-5 h-5 rounded-full object-cover ring-1 ring-zinc-700" 
+            className="w-4 h-4 rounded-full object-cover ring-1 ring-zinc-700" 
           />
-          <div className="flex items-center gap-1 text-xs text-zinc-400 truncate">
-            <span className="text-zinc-300 font-medium">{product.creator.name}</span>
+          <div className="flex items-center gap-1 text-[11px] text-zinc-400 truncate">
+            <span className="text-zinc-300 font-medium truncate">{product.creator.name}</span>
             {product.creator.verified && (
-              <CheckCircle2 className="w-3 h-3 text-blue-400 inline shrink-0" />
+              <CheckCircle2 className="w-3 h-3 text-zinc-400 inline shrink-0" />
             )}
-            <span className="text-zinc-500 text-[11px] truncate">({product.creator.university})</span>
+            <span className="text-zinc-500 truncate">• {product.creator.university}</span>
           </div>
         </div>
 
@@ -131,23 +108,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {product.tagline}
         </p>
 
-        {/* Feature Pills */}
-        <div className="flex flex-wrap gap-1">
-          {product.features.slice(0, 2).map((feat, idx) => (
-            <span 
-              key={idx}
-              className="text-[10px] bg-[#161a25] text-zinc-300 px-2 py-0.5 rounded-md border border-[#222738] truncate max-w-[200px]"
-            >
-              ✓ {feat}
-            </span>
-          ))}
+        {/* Rating and Sales Count */}
+        <div className="flex items-center gap-2 text-[11px] text-zinc-500">
+          <span className="text-zinc-300 font-semibold flex items-center gap-1">
+            <Star className="w-3 h-3 fill-zinc-300 text-zinc-300" />
+            {product.rating.toFixed(1)}
+          </span>
+          <span>•</span>
+          <span>{product.salesCount} students</span>
         </div>
 
         {/* Pricing & Actions */}
-        <div className="pt-3 border-t border-[#1a1e2a] flex items-center justify-between gap-2 mt-auto">
+        <div className="pt-3 border-t border-[#1a1c22] flex items-center justify-between gap-2 mt-auto">
           <div>
             <div className="flex items-baseline gap-1.5">
-              <span className="text-lg font-bold text-white tracking-tight">
+              <span className="text-base font-bold text-white tracking-tight">
                 ${product.price.toFixed(2)}
               </span>
               {product.originalPrice && product.originalPrice > product.price && (
@@ -156,32 +131,36 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 </span>
               )}
             </div>
-            <span className="text-[10px] text-zinc-400 font-medium block">
-              1-Time Access
+            <span className="text-[10px] text-zinc-500 font-medium block">
+              One-time
             </span>
           </div>
 
           <div className="flex items-center gap-1.5">
-            <button
-              onClick={() => onSelect(product)}
-              className="px-2.5 py-1.5 rounded-xl text-xs font-medium text-zinc-300 bg-[#171b26] hover:bg-[#202534] border border-[#252b3d] transition"
-            >
-              Details
-            </button>
+            {onLaunchDemo && (
+              <button
+                onClick={() => onLaunchDemo(product)}
+                className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-zinc-300 bg-[#16181f] hover:bg-[#20222b] border border-[#232530] transition flex items-center gap-1"
+                title="Test interactive tool demo"
+              >
+                <Play className="w-3 h-3 text-zinc-400" />
+                <span className="hidden sm:inline">Try Demo</span>
+              </button>
+            )}
 
             {isUnlocked ? (
               <button
                 onClick={() => onSelect(product)}
-                className="px-3 py-1.5 rounded-xl text-xs font-semibold text-emerald-300 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 transition flex items-center gap-1"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 transition"
               >
-                <span>Owned</span>
+                Owned
               </button>
             ) : (
               <button
                 onClick={() => onQuickBuy(product)}
-                className="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 shadow-md shadow-blue-600/20 transition flex items-center gap-1 transform active:scale-95"
+                className="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-[#222530] hover:bg-[#2c303f] border border-[#34394b] transition flex items-center gap-1.5"
               >
-                <ShoppingBag className="w-3.5 h-3.5" />
+                <ShoppingBag className="w-3.5 h-3.5 text-zinc-300" />
                 <span>Get Access</span>
               </button>
             )}
