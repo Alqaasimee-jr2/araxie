@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bg-alex" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="60%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <clipPath id="circleClip">
+      <circle cx="60" cy="60" r="60"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#circleClip)">
+    <rect width="120" height="120" fill="url(#bg-alex)"/>
+    <!-- Emerald Green CS Tee -->
+    <path d="M22 120 Q60 88 98 120" fill="#059669"/>
+    <path d="M48 120 Q60 106 72 120" fill="#047857"/>
+    <rect x="52" y="70" width="16" height="20" rx="3" fill="#fde68a"/>
+    <!-- Head Base -->
+    <ellipse cx="60" cy="58" rx="20" ry="24" fill="#fde68a"/>
+    <!-- Wavy Brown Hair -->
+    <path d="M37 50 Q38 28 60 26 Q82 28 83 50 Q76 38 60 38 Q44 38 37 50 Z" fill="#78350f"/>
+    <path d="M42 36 Q48 26 58 34" stroke="#92400e" stroke-width="3" fill="none"/>
+    <path d="M60 34 Q68 24 76 36" stroke="#92400e" stroke-width="3" fill="none"/>
+    <!-- Eyes -->
+    <circle cx="51" cy="57" r="2.2" fill="#0f172a"/>
+    <circle cx="69" cy="57" r="2.2" fill="#0f172a"/>
+    <!-- Smile -->
+    <path d="M53 69 Q60 74 67 69" stroke="#78350f" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

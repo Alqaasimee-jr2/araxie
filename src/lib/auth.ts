@@ -1,5 +1,6 @@
 import { UserProfile } from '@/types';
 import { supabase, supabaseAdmin } from './supabase';
+import { getFakeAvatar } from './avatars';
 
 export const SEEDED_JUDGE_BUYER: UserProfile = {
   id: 'usr-judge-buyer-stanford',
@@ -7,7 +8,7 @@ export const SEEDED_JUDGE_BUYER: UserProfile = {
   name: 'Alex Chen',
   university: 'Stanford University \'26',
   role: 'student_buyer',
-  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+  avatar: '/avatars/judge.svg',
   verified: true,
   walletBalance: 50.00,
 };
@@ -18,7 +19,7 @@ export const SEEDED_CREATOR_BUILDER: UserProfile = {
   name: 'Marcus Chen',
   university: 'MIT \'25',
   role: 'student_creator',
-  avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+  avatar: '/avatars/creator.svg',
   verified: true,
   walletBalance: 420.50,
 };
@@ -64,7 +65,7 @@ export async function authenticateStudent(email: string, password: string): Prom
         name: data.user.user_metadata?.name || cleanEmail.split('@')[0],
         university: data.user.user_metadata?.university || 'Verified University',
         role: data.user.user_metadata?.role || 'student_buyer',
-        avatar: data.user.user_metadata?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
+        avatar: data.user.user_metadata?.avatar || getFakeAvatar(data.user.user_metadata?.name || cleanEmail),
         verified: true,
       };
       return { success: true, user: profile };
@@ -110,7 +111,7 @@ export async function registerStudent(params: {
       name: params.name,
       university: params.university,
       role: params.role,
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
+      avatar: getFakeAvatar(params.name),
       verified: true,
     };
 

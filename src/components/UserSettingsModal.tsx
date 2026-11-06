@@ -130,7 +130,7 @@ export const UserSettingsModal: React.FC<UserSettingsModalProps> = ({
             <div className="space-y-4">
               <div className="flex items-center gap-4 p-3.5 rounded-xl bg-[#13151c] border border-[#1e212b]">
                 <img
-                  src={currentUser?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'}
+                  src={currentUser?.avatar || '/avatars/default.svg'}
                   alt="Avatar"
                   className="w-14 h-14 rounded-full object-cover ring-2 ring-zinc-700"
                 />

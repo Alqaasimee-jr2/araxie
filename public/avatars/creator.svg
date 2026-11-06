@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bg-creator" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="60%" stop-color="#047857"/>
+      <stop offset="100%" stop-color="#0e7490"/>
+    </linearGradient>
+    <clipPath id="circleClip">
+      <circle cx="60" cy="60" r="60"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#circleClip)">
+    <rect width="120" height="120" fill="url(#bg-creator)"/>
+    <!-- Developer Hoodie with Code Accent -->
+    <path d="M22 120 Q60 88 98 120" fill="#0f172a"/>
+    <path d="M44 120 Q60 98 76 120" fill="#10b981"/>
+    <rect x="52" y="70" width="16" height="20" rx="3" fill="#fed7aa"/>
+    <!-- Head Base -->
+    <ellipse cx="60" cy="58" rx="20" ry="24" fill="#fed7aa"/>
+    <!-- Modern Quiff Hair -->
+    <path d="M38 48 Q40 26 62 26 Q82 28 82 48 Q76 38 60 38 Q44 38 38 48 Z" fill="#18181b"/>
+    <path d="M48 26 Q58 18 70 26 Q60 22 48 26 Z" fill="#27272a"/>
+    <!-- Over-Ear Studio Headphones -->
+    <path d="M34 54 A27 27 0 0 1 86 54" stroke="#10b981" stroke-width="4" fill="none"/>
+    <rect x="31" y="50" width="7" height="15" rx="3.5" fill="#059669"/>
+    <rect x="82" y="50" width="7" height="15" rx="3.5" fill="#059669"/>
+    <!-- Eyes -->
+    <circle cx="51" cy="57" r="2.2" fill="#0f172a"/>
+    <circle cx="69" cy="57" r="2.2" fill="#0f172a"/>
+    <!-- Confident Builder Smile -->
+    <path d="M53 69 Q60 75 67 69" stroke="#9a3412" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Creator Studio Rocket Badge -->
+    <circle cx="96" cy="24" r="14" fill="#047857" stroke="#34d399" stroke-width="2"/>
+    <text x="96" y="28" font-size="11" font-family="sans-serif" font-weight="bold" fill="#ecfdf5" text-anchor="middle">🚀</text>
+  </g>
+</svg>

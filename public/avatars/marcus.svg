@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bg-marcus" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18181b"/>
+      <stop offset="60%" stop-color="#3f3f46"/>
+      <stop offset="100%" stop-color="#991b1b"/>
+    </linearGradient>
+    <clipPath id="circleClip">
+      <circle cx="60" cy="60" r="60"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#circleClip)">
+    <rect width="120" height="120" fill="url(#bg-marcus)"/>
+    <!-- Shoulders / MIT Crewneck -->
+    <path d="M22 120 Q60 88 98 120" fill="#27272a"/>
+    <path d="M42 120 L52 98 L68 98 L78 120" fill="#3f3f46"/>
+    <rect x="52" y="70" width="16" height="20" rx="3" fill="#fbcfe8"/>
+    <!-- Head Base -->
+    <ellipse cx="60" cy="58" rx="21" ry="24" fill="#fdf2f8"/>
+    <!-- Short Textured Hair -->
+    <path d="M38 48 Q40 28 60 26 Q80 28 82 48 Q76 38 60 38 Q44 38 38 48 Z" fill="#18181b"/>
+    <path d="M46 32 L48 24 L52 30 L56 22 L60 28 L64 22 L68 30 L72 24 L74 32" stroke="#18181b" stroke-width="3" fill="none" stroke-linejoin="round"/>
+    <!-- Minimalist Rectangular Glasses -->
+    <rect x="42" y="52" width="14" height="9" rx="2" fill="none" stroke="#71717a" stroke-width="2"/>
+    <rect x="64" y="52" width="14" height="9" rx="2" fill="none" stroke="#71717a" stroke-width="2"/>
+    <line x1="56" y1="56" x2="64" y2="56" stroke="#71717a" stroke-width="2"/>
+    <!-- Eyes -->
+    <circle cx="49" cy="56" r="2" fill="#09090b"/>
+    <circle cx="71" cy="56" r="2" fill="#09090b"/>
+    <!-- Calm Expression / Smile -->
+    <path d="M54 68 Q60 72 66 68" stroke="#71717a" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Mini MIT Science / Cube Badge -->
+    <circle cx="96" cy="24" r="14" fill="#7f1d1d" stroke="#fca5a5" stroke-width="2"/>
+    <text x="96" y="28" font-size="10" font-family="monospace" font-weight="bold" fill="#fee2e2" text-anchor="middle">MIT</text>
+  </g>
+</svg>

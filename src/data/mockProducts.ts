@@ -12,7 +12,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     creator: {
       name: 'Sarah Lin',
       handle: 'sarah_dev',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+      avatar: '/avatars/sarah.svg',
       university: 'Stanford University',
       verified: true,
       payoutEmail: 'sarah.lin@stanford.edu',
@@ -49,7 +49,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     creator: {
       name: 'Marcus Chen',
       handle: 'marcus_code',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+      avatar: '/avatars/marcus.svg',
       university: 'MIT',
       verified: true,
       payoutEmail: 'marcus@mit.edu',
@@ -86,7 +86,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     creator: {
       name: 'Priya Patel',
       handle: 'priya_mcat',
-      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+      avatar: '/avatars/priya.svg',
       university: 'Johns Hopkins',
       verified: true,
       payoutEmail: 'priya.patel@jhu.edu',
@@ -123,7 +123,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     creator: {
       name: 'David Kim',
       handle: 'dkim_labs',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+      avatar: '/avatars/david.svg',
       university: 'UC Berkeley',
       verified: true,
       payoutEmail: 'david.kim@berkeley.edu',
@@ -160,7 +160,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     creator: {
       name: 'Elena Rostova',
       handle: 'elena_research',
-      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+      avatar: '/avatars/elena.svg',
       university: 'Oxford University',
       verified: true,
       payoutEmail: 'elena.rostova@ox.ac.uk',
@@ -196,7 +196,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     creator: {
       name: 'Julian Vance',
       handle: 'julian_chem',
-      avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150&auto=format&fit=crop&q=80',
+      avatar: '/avatars/alex.svg',
       university: 'Harvard University',
       verified: true,
       payoutEmail: 'julian.vance@harvard.edu',
@@ -233,7 +233,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     creator: {
       name: 'Tyler Brooks',
       handle: 'tyler_tech',
-      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&auto=format&fit=crop&q=80',
+      avatar: '/avatars/creator.svg',
       university: 'Georgia Tech',
       verified: true,
       payoutEmail: 'tbrooks@gatech.edu',
@@ -269,7 +269,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     creator: {
       name: 'Amara Okafor',
       handle: 'amara_phd',
-      avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=150&auto=format&fit=crop&q=80',
+      avatar: '/avatars/amina.svg',
       university: 'University of Toronto',
       verified: true,
       payoutEmail: 'amara.okafor@utoronto.ca',
@@ -306,7 +306,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     creator: {
       name: 'Abdullah Qaasim-Falade',
       handle: 'alqaasimee_jr2',
-      avatar: 'https://avatars.githubusercontent.com/u/144673671?v=4',
+      avatar: '/avatars/abdullah.svg',
       university: 'Obafemi Awolowo University \'26',
       verified: true,
       payoutEmail: 'alqaasimee.falade@oauife.edu.ng',
@@ -343,7 +343,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     creator: {
       name: 'Abdullah Qaasim-Falade',
       handle: 'alqaasimee_jr2',
-      avatar: 'https://avatars.githubusercontent.com/u/144673671?v=4',
+      avatar: '/avatars/abdullah.svg',
       university: 'NIT7ER Studio',
       verified: true,
       payoutEmail: 'alqaasimee.falade@oauife.edu.ng',
@@ -380,7 +380,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     creator: {
       name: 'Abdullah Qaasim-Falade',
       handle: 'alqaasimee_jr2',
-      avatar: 'https://avatars.githubusercontent.com/u/144673671?v=4',
+      avatar: '/avatars/abdullah.svg',
       university: 'Obafemi Awolowo University \'26',
       verified: true,
       payoutEmail: 'alqaasimee.falade@oauife.edu.ng',
@@ -417,7 +417,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     creator: {
       name: 'Abdullah Qaasim-Falade',
       handle: 'alqaasimee_jr2',
-      avatar: 'https://avatars.githubusercontent.com/u/144673671?v=4',
+      avatar: '/avatars/abdullah.svg',
       university: 'NIT7ER Studio',
       verified: true,
       payoutEmail: 'alqaasimee.falade@oauife.edu.ng',
@@ -454,7 +454,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     creator: {
       name: 'Abdullah Qaasim-Falade',
       handle: 'alqaasimee_jr2',
-      avatar: 'https://avatars.githubusercontent.com/u/144673671?v=4',
+      avatar: '/avatars/abdullah.svg',
       university: 'NIT7ER Studio',
       verified: true,
       payoutEmail: 'alqaasimee.falade@oauife.edu.ng',
@@ -491,7 +491,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     creator: {
       name: 'Abdullah Qaasim-Falade',
       handle: 'alqaasimee_jr2',
-      avatar: 'https://avatars.githubusercontent.com/u/144673671?v=4',
+      avatar: '/avatars/abdullah.svg',
       university: 'NIT7ER Academy',
       verified: true,
       payoutEmail: 'alqaasimee.falade@oauife.edu.ng',

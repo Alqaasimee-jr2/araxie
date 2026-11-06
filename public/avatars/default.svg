@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bg-default" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#181a20"/>
+      <stop offset="50%" stop-color="#222530"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <clipPath id="circleClip">
+      <circle cx="60" cy="60" r="60"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#circleClip)">
+    <rect width="120" height="120" fill="url(#bg-default)"/>
+    <!-- Modern Minimalist Student Silhouette -->
+    <path d="M24 120 Q60 88 96 120" fill="#292e3d"/>
+    <path d="M46 120 Q60 102 74 120" fill="#3b82f6"/>
+    <rect x="52" y="70" width="16" height="20" rx="3" fill="#cbd5e1"/>
+    <!-- Head Base -->
+    <ellipse cx="60" cy="58" rx="20" ry="24" fill="#cbd5e1"/>
+    <!-- Modern Minimalist Cap / Hair -->
+    <path d="M38 48 Q40 28 60 26 Q80 28 82 48 Q76 38 60 38 Q44 38 38 48 Z" fill="#1e293b"/>
+    <!-- Friendly Eyes -->
+    <circle cx="51" cy="57" r="2.2" fill="#0f172a"/>
+    <circle cx="69" cy="57" r="2.2" fill="#0f172a"/>
+    <!-- Smile -->
+    <path d="M53 69 Q60 74 67 69" stroke="#475569" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Campus Cap Badge -->
+    <circle cx="96" cy="24" r="14" fill="#1e3a8a" stroke="#60a5fa" stroke-width="2"/>
+    <text x="96" y="28" font-size="11" font-family="sans-serif" font-weight="bold" fill="#eff6ff" text-anchor="middle">🎓</text>
+  </g>
+</svg>

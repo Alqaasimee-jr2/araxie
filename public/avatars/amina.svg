@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bg-amina" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="50%" stop-color="#db2777"/>
+      <stop offset="100%" stop-color="#4c1d95"/>
+    </linearGradient>
+    <clipPath id="circleClip">
+      <circle cx="60" cy="60" r="60"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#circleClip)">
+    <rect width="120" height="120" fill="url(#bg-amina)"/>
+    <!-- Yellow/Gold Patterned Top -->
+    <path d="M22 120 Q60 88 98 120" fill="#f59e0b"/>
+    <path d="M42 120 Q60 100 78 120" fill="#b45309"/>
+    <rect x="52" y="70" width="16" height="20" rx="3" fill="#78350f"/>
+    <!-- Headwrap / Gele Crown -->
+    <ellipse cx="60" cy="38" rx="26" ry="20" fill="#f59e0b"/>
+    <path d="M34 40 Q60 22 86 40 L80 48 Q60 36 40 48 Z" fill="#d97706"/>
+    <circle cx="60" cy="32" r="5" fill="#fef3c7"/>
+    <!-- Head Base -->
+    <ellipse cx="60" cy="60" rx="20" ry="23" fill="#78350f"/>
+    <!-- Gold Hoop Earrings -->
+    <circle cx="38" cy="64" r="6" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+    <circle cx="82" cy="64" r="6" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+    <!-- Bright Expressive Eyes -->
+    <circle cx="51" cy="58" r="2.3" fill="#18181b"/>
+    <circle cx="69" cy="58" r="2.3" fill="#18181b"/>
+    <ellipse cx="49" cy="63" rx="2.5" ry="1.5" fill="#ea580c" opacity="0.6"/>
+    <ellipse cx="71" cy="63" rx="2.5" ry="1.5" fill="#ea580c" opacity="0.6"/>
+    <!-- Radiant Smile -->
+    <path d="M53 70 Q60 77 67 70" stroke="#451a03" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

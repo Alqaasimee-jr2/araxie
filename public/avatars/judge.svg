@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bg-judge" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#181a20"/>
+      <stop offset="50%" stop-color="#27272a"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <clipPath id="circleClip">
+      <circle cx="60" cy="60" r="60"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#circleClip)">
+    <rect width="120" height="120" fill="url(#bg-judge)"/>
+    <!-- Suit / Blazer -->
+    <path d="M22 120 Q60 88 98 120" fill="#18181b"/>
+    <path d="M48 120 L60 96 L72 120" fill="#f59e0b"/>
+    <path d="M54 102 L60 114 L66 102" fill="#d97706"/>
+    <rect x="52" y="70" width="16" height="20" rx="3" fill="#fde68a"/>
+    <!-- Head Base -->
+    <ellipse cx="60" cy="58" rx="20" ry="23" fill="#fde68a"/>
+    <!-- Short Professional Hair -->
+    <path d="M38 48 Q40 28 60 26 Q80 28 82 48 Q74 38 60 38 Q46 38 38 48 Z" fill="#27272a"/>
+    <!-- Glasses -->
+    <rect x="44" y="52" width="13" height="9" rx="2" fill="none" stroke="#f59e0b" stroke-width="2"/>
+    <rect x="63" y="52" width="13" height="9" rx="2" fill="none" stroke="#f59e0b" stroke-width="2"/>
+    <line x1="57" y1="56" x2="63" y2="56" stroke="#f59e0b" stroke-width="2"/>
+    <!-- Eyes -->
+    <circle cx="50" cy="56" r="2" fill="#09090b"/>
+    <circle cx="70" cy="56" r="2" fill="#09090b"/>
+    <!-- Smile -->
+    <path d="M53 69 Q60 74 67 69" stroke="#78350f" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Evaluator / Judge Badge -->
+    <circle cx="96" cy="24" r="14" fill="#b45309" stroke="#fbbf24" stroke-width="2"/>
+    <text x="96" y="28" font-size="12" font-family="sans-serif" font-weight="bold" fill="#fef3c7" text-anchor="middle">⚖️</text>
+  </g>
+</svg>
