@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Sparkles, 
   ShoppingBag, 
@@ -9,8 +9,12 @@ import {
   Receipt, 
   ShieldCheck, 
   Search,
-  GraduationCap
+  GraduationCap,
+  User,
+  LogOut,
+  ChevronDown
 } from 'lucide-react';
+import { UserProfile } from '@/types';
 
 interface NavbarProps {
   currentTab: 'explore' | 'me' | 'creator' | 'orders';
@@ -22,6 +26,9 @@ interface NavbarProps {
   onOpenPayPalConfig: () => void;
   searchQuery: string;
   setSearchQuery: (q: string) => void;
+  currentUser: UserProfile | null;
+  onOpenAuth: () => void;
+  onLogout: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -34,13 +41,18 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenPayPalConfig,
   searchQuery,
   setSearchQuery,
+  currentUser,
+  onOpenAuth,
+  onLogout,
 }) => {
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+
   return (
     <header className="sticky top-0 z-40 w-full border-b border-[#1c1d24] bg-[#0c0d10]/95 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-15 gap-4">
+        <div className="flex items-center justify-between h-14 gap-3">
           
-          {/* Logo & Brand (Clean, Muted) */}
+          {/* Logo & Brand */}
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setCurrentTab('explore')}
@@ -133,7 +145,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </nav>
 
-          {/* Right Action Icons: AI, Sandbox Status, Cart */}
+          {/* Right Action Icons: AI, Sandbox, Cart, User Profile */}
           <div className="flex items-center gap-2">
             
             {/* AI Concierge Trigger */}
@@ -169,6 +181,83 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </span>
               )}
             </button>
+
+            {/* User Profile / Auth Button */}
+            {currentUser ? (
+              <div className="relative">
+                <button
+                  onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                  className="flex items-center gap-2 p-1 pl-2 rounded-lg bg-[#14151b] hover:bg-[#1b1c24] border border-[#22242e] text-xs text-zinc-200 transition"
+                >
+                  <img
+                    src={currentUser.avatar}
+                    alt={currentUser.name}
+                    className="w-5 h-5 rounded-full object-cover ring-1 ring-zinc-700"
+                  />
+                  <div className="text-left hidden sm:block">
+                    <span className="font-medium text-[11px] block text-white leading-tight">
+                      {currentUser.name.split(' ')[0]}
+                    </span>
+                    <span className="text-[9px] text-zinc-400 block leading-none">
+                      {currentUser.university.split(' ')[0]}
+                    </span>
+                  </div>
+                  <ChevronDown className="w-3 h-3 text-zinc-500" />
+                </button>
+
+                {/* Profile Dropdown Menu */}
+                {isProfileMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 rounded-xl bg-[#121318] border border-[#22242e] shadow-2xl py-1 text-xs z-50">
+                    <div className="px-3 py-2 border-b border-[#1c1d25]">
+                      <p className="font-semibold text-white">{currentUser.name}</p>
+                      <p className="text-[10px] text-zinc-400 truncate">{currentUser.email}</p>
+                      <span className="inline-block mt-1 text-[9px] font-semibold px-1.5 py-0.2 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                        {currentUser.role === 'student_creator' ? 'Student Creator' : 'Student Learner'}
+                      </span>
+                    </div>
+
+                    <button
+                      onClick={() => { setCurrentTab('me'); setIsProfileMenuOpen(false); }}
+                      className="w-full text-left px-3 py-1.5 text-zinc-300 hover:text-white hover:bg-[#181920] transition"
+                    >
+                      @me Locker
+                    </button>
+
+                    <button
+                      onClick={() => { setCurrentTab('creator'); setIsProfileMenuOpen(false); }}
+                      className="w-full text-left px-3 py-1.5 text-zinc-300 hover:text-white hover:bg-[#181920] transition"
+                    >
+                      Creator Studio
+                    </button>
+
+                    <button
+                      onClick={() => { setCurrentTab('orders'); setIsProfileMenuOpen(false); }}
+                      className="w-full text-left px-3 py-1.5 text-zinc-300 hover:text-white hover:bg-[#181920] transition"
+                    >
+                      Past Receipts
+                    </button>
+
+                    <div className="border-t border-[#1c1d25] my-1"></div>
+
+                    <button
+                      onClick={() => { onLogout(); setIsProfileMenuOpen(false); }}
+                      className="w-full text-left px-3 py-1.5 text-rose-400 hover:bg-[#181920] flex items-center gap-1.5 transition"
+                    >
+                      <LogOut className="w-3 h-3" />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                onClick={onOpenAuth}
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#20232d] hover:bg-[#2b2f3d] text-white border border-[#2c303f] flex items-center gap-1.5 transition"
+              >
+                <User className="w-3.5 h-3.5 text-zinc-400" />
+                <span>Sign In</span>
+              </button>
+            )}
 
           </div>
 

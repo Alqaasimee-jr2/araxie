@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { INITIAL_PRODUCTS } from '@/data/mockProducts';
-import { Product, ProductCategory, PurchasedItem, DynamicBundle } from '@/types';
+import { Product, ProductCategory, PurchasedItem, DynamicBundle, UserProfile } from '@/types';
+import { SEEDED_JUDGE_BUYER, SEEDED_CREATOR_BUILDER } from '@/lib/auth';
 import { Navbar } from '@/components/Navbar';
 import { ProductCard } from '@/components/ProductCard';
 import { ProductDetailDrawer } from '@/components/ProductDetailDrawer';
@@ -14,16 +15,18 @@ import { OrderHistoryModal } from '@/components/OrderHistoryModal';
 import { PayPalConfigModal } from '@/components/PayPalConfigModal';
 import { CartDrawer } from '@/components/CartDrawer';
 import { InteractiveToolModal } from '@/components/tools/InteractiveToolModal';
+import { AuthModal } from '@/components/AuthModal';
 import { 
   Sparkles, 
   Layers, 
   ArrowRight, 
   ShieldCheck, 
   GraduationCap, 
-  Search,
-  CheckCircle2,
-  TrendingUp,
-  Play
+  Search, 
+  CheckCircle2, 
+  TrendingUp, 
+  Play,
+  UserCheck
 } from 'lucide-react';
 
 export default function Home() {
@@ -33,6 +36,10 @@ export default function Home() {
   const [currentTab, setCurrentTab] = useState<'explore' | 'me' | 'creator' | 'orders'>('explore');
   const [selectedCategory, setSelectedCategory] = useState<'all' | ProductCategory>('all');
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Authentication State (Default seeded as Alex Chen for Hackathon Judges)
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(SEEDED_JUDGE_BUYER);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   // Modals & Interactive Tools state
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -152,6 +159,9 @@ export default function Home() {
         onOpenPayPalConfig={() => setIsPayPalConfigOpen(true)}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        currentUser={currentUser}
+        onOpenAuth={() => setIsAuthModalOpen(true)}
+        onLogout={() => setCurrentUser(null)}
       />
 
       {/* Main Container */}
@@ -161,7 +171,7 @@ export default function Home() {
         {currentTab === 'explore' && (
           <div className="space-y-7">
             
-            {/* Whop-Style Hero Spotlight Banner (Clean, Matte, Muted) */}
+            {/* Whop-Style Hero Spotlight Banner */}
             <div className="rounded-2xl p-6 sm:p-7 bg-[#121317] border border-[#1e2027]">
               
               <div className="max-w-2xl space-y-3.5">
@@ -169,6 +179,11 @@ export default function Home() {
                 <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#181a20] border border-[#252834] text-zinc-300 text-xs font-medium">
                   <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                   <span>Student Digital Commerce Platform</span>
+                  {currentUser && (
+                    <span className="text-zinc-400 border-l border-zinc-700 pl-2">
+                      Signed in as <strong className="text-white">{currentUser.name}</strong>
+                    </span>
+                  )}
                 </div>
 
                 <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-tight">
@@ -176,7 +191,7 @@ export default function Home() {
                 </h1>
 
                 <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                  Discover peer-built Chrome extensions, interactive algorithm visualizers, and curated study suites. Bundled autonomously by AI with instant <span className="text-zinc-200 font-semibold">PayPal Sandbox</span> settlement.
+                  Discover peer-built Chrome extensions, interactive algorithm visualizers, and curated study suites. Bundled autonomously by AI with instant <span className="text-zinc-200 font-semibold">PayPal Sandbox</span> checkout and 95% creator payouts.
                 </p>
 
                 {/* AI Concierge Trigger Input */}
@@ -210,7 +225,7 @@ export default function Home() {
                   </div>
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-zinc-400" />
-                    <span>95% Direct Creator Payouts</span>
+                    <span>Supabase Cloud PostgreSQL &amp; Auth</span>
                   </div>
                 </div>
 
@@ -298,7 +313,7 @@ export default function Home() {
           <div className="flex flex-wrap items-center gap-4 text-[11px]">
             <span className="text-zinc-500">PayPal v2 Orders</span>
             <span className="text-zinc-500">PayPal v1 Payouts</span>
-            <span className="text-zinc-500">Agentic Commerce</span>
+            <span className="text-zinc-500">Supabase Auth</span>
             <a 
               href="https://github.com/Alqaasimee-jr2/araxie" 
               target="_blank" 
@@ -323,6 +338,13 @@ export default function Home() {
         onClose={() => setActiveInteractiveTool(null)}
         toolId={activeInteractiveTool?.id}
         toolTitle={activeInteractiveTool?.title}
+      />
+
+      {/* Modal: Student Campus Pass / Supabase Authentication */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onLoginSuccess={(user) => setCurrentUser(user)}
       />
 
       {/* Modal: Product Detail Drawer */}

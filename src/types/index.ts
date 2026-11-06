@@ -14,6 +14,17 @@ export interface Creator {
   payoutEmail: string;
 }
 
+export interface UserProfile {
+  id: string;
+  email: string;
+  name: string;
+  university: string;
+  role: 'student_buyer' | 'student_creator';
+  avatar: string;
+  verified: boolean;
+  walletBalance?: number;
+}
+
 export interface Product {
   id: string;
   title: string;
