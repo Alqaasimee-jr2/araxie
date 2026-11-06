@@ -77,6 +77,7 @@ export default function PublicPageClient() {
           }}
           onOpenAuth={() => setIsAuthModalOpen(true)}
           isLoggedIn={!!currentUser}
+          searchQuery={searchQuery}
         />
       </main>
 

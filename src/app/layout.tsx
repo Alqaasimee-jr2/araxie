@@ -13,12 +13,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Araxie — Peer-to-Peer Student Software & Digital Tool Marketplace",
-  description: "Discover peer-built Chrome extensions, study packs, code templates, and micro-tools. Bundled autonomously by AI with instant PayPal checkout and 95% creator payouts.",
-  keywords: ["student tools", "software marketplace", "campus developers", "PayPal checkout", "study packs"],
+  title: "Araxie — Campus Public Space & Student Software Marketplace",
+  description: "The open university square where campus builders showcase peer software, run interactive in-browser tools, and trade digital utilities with verified PayPal checkout.",
+  keywords: ["campus tools", "public space", "software marketplace", "campus developers", "PayPal checkout", "study packs"],
   openGraph: {
-    title: "Araxie — Student Digital Economy & Software Marketplace",
-    description: "The peer-to-peer software marketplace where campus builders trade study suites, browser tools, and code.",
+    title: "Araxie — Campus Public Space & Student Software Marketplace",
+    description: "The open square where university builders trade software, run browser tools live, and verify cryptographic license keys.",
     siteName: "Araxie",
   },
 };

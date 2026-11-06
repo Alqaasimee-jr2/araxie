@@ -57,7 +57,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Logo & Brand */}
           <div className="flex items-center gap-3">
             <button 
-              onClick={() => setCurrentTab('explore')}
+              onClick={() => setCurrentTab('public')}
               className="flex items-center gap-2.5 text-left group"
             >
               <div className="w-8 h-8 rounded-lg bg-[#181a20] border border-[#262833] flex items-center justify-center text-zinc-200">
@@ -128,7 +128,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   : 'text-zinc-400 hover:text-zinc-200 hover:bg-[#15161b]'
               }`}
             >
-              <span>@me Locker</span>
+              <span>Student Dashboard</span>
               {unlockedCount > 0 && (
                 <span className="px-1.5 py-0.2 text-[10px] font-bold rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                   {unlockedCount}
@@ -224,14 +224,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                       className="w-full text-left px-3 py-1.5 text-zinc-300 hover:text-white hover:bg-[#181920] flex items-center gap-1.5 transition"
                     >
                       <Globe className="w-3 h-3 text-blue-400" />
-                      <span>Public Campus Space</span>
+                      <span>Public Space (Main)</span>
                     </button>
 
                     <button
                       onClick={() => { setCurrentTab('me'); setIsProfileMenuOpen(false); }}
                       className="w-full text-left px-3 py-1.5 text-zinc-300 hover:text-white hover:bg-[#181920] transition"
                     >
-                      @me Locker
+                      Student Dashboard (@me Locker)
                     </button>
 
                     <button

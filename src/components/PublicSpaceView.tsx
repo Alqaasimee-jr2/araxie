@@ -36,6 +36,8 @@ interface PublicSpaceViewProps {
   onOpenDashboard: () => void;
   onOpenAuth: () => void;
   isLoggedIn: boolean;
+  onQuickBuy?: (product: Product) => void;
+  searchQuery?: string;
 }
 
 export const PublicSpaceView: React.FC<PublicSpaceViewProps> = ({
@@ -46,6 +48,8 @@ export const PublicSpaceView: React.FC<PublicSpaceViewProps> = ({
   onOpenDashboard,
   onOpenAuth,
   isLoggedIn,
+  onQuickBuy,
+  searchQuery = '',
 }) => {
   const [selectedCampus, setSelectedCampus] = useState<string>('all');
   const [upvotes, setUpvotes] = useState<Record<string, number>>({
@@ -90,14 +94,22 @@ export const PublicSpaceView: React.FC<PublicSpaceViewProps> = ({
     }
   };
 
-  // Filter products by university
+  // Filter products by university and search
   const filteredProducts = products.filter(p => {
-    if (selectedCampus === 'all') return true;
-    if (selectedCampus === 'oau') return p.creator.university.toLowerCase().includes('obafemi') || p.creator.university.toLowerCase().includes('oau');
-    if (selectedCampus === 'stanford') return p.creator.university.toLowerCase().includes('stanford');
-    if (selectedCampus === 'mit') return p.creator.university.toLowerCase().includes('mit');
-    if (selectedCampus === 'berkeley') return p.creator.university.toLowerCase().includes('berkeley') || p.creator.university.toLowerCase().includes('uc');
-    return true;
+    const matchesCampus = 
+      selectedCampus === 'all' ||
+      (selectedCampus === 'oau' && (p.creator.university.toLowerCase().includes('obafemi') || p.creator.university.toLowerCase().includes('oau'))) ||
+      (selectedCampus === 'stanford' && p.creator.university.toLowerCase().includes('stanford')) ||
+      (selectedCampus === 'mit' && p.creator.university.toLowerCase().includes('mit')) ||
+      (selectedCampus === 'berkeley' && (p.creator.university.toLowerCase().includes('berkeley') || p.creator.university.toLowerCase().includes('uc')));
+
+    const matchesSearch = !searchQuery || 
+      p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.tagline.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.creator.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    return matchesCampus && matchesSearch;
   });
 
   const featuredCreators = [
@@ -447,6 +459,15 @@ export const PublicSpaceView: React.FC<PublicSpaceViewProps> = ({
                     >
                       Details
                     </button>
+
+                    {onQuickBuy && (
+                      <button
+                        onClick={() => onQuickBuy(product)}
+                        className="px-3 py-1.5 rounded-lg bg-white hover:bg-zinc-200 text-black text-xs font-bold transition shadow-sm"
+                      >
+                        Buy
+                      </button>
+                    )}
                   </div>
                 </div>
 
