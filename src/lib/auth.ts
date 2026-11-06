@@ -4,7 +4,7 @@ import { supabase, supabaseAdmin } from './supabase';
 export const SEEDED_JUDGE_BUYER: UserProfile = {
   id: 'usr-judge-buyer-stanford',
   email: 'judge.sandbox@araxie.edu',
-  name: 'Alex Chen (Judge)',
+  name: 'Alex Chen',
   university: 'Stanford University \'26',
   role: 'student_buyer',
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
@@ -15,7 +15,7 @@ export const SEEDED_JUDGE_BUYER: UserProfile = {
 export const SEEDED_CREATOR_BUILDER: UserProfile = {
   id: 'usr-creator-mit-builder',
   email: 'creator.sandbox@araxie.edu',
-  name: 'Marcus Chen (Creator)',
+  name: 'Marcus Chen',
   university: 'MIT \'25',
   role: 'student_creator',
   avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',

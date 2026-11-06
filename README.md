@@ -111,14 +111,9 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🔑 Pre-Configured Test Credentials (For Hackathon Judges)
+## 📖 Evaluation & Testing Guide
 
-You can log in directly using the pre-configured evaluator accounts below, or click **[Auto-fill Judge Credentials]** inside the Sign In modal:
-
-| Persona | Email | Password | Pre-Seeded State |
-| :--- | :--- | :--- | :--- |
-| **Student Buyer (Alex Chen)** | `judge.sandbox@araxie.edu` | `PayPalHackathon2026!` | Stanford '26 verified profile, active student locker, past PayPal Sandbox receipts. |
-| **Student Creator (Marcus Chen)** | `creator.sandbox@araxie.edu` | `PayPalHackathon2026!` | MIT '25 verified developer, author of *AlgoVisualizer Pro*, live PayPal Payouts ledger. |
+For hackathon evaluators, comprehensive testing procedures, pre-seeded sandbox accounts, and end-to-end walkthroughs are detailed in [**DEMO.md**](DEMO.md).
 
 ---
 
@@ -126,7 +121,7 @@ You can log in directly using the pre-configured evaluator accounts below, or cl
 
 1. **Sign In**:
    - Click **"Sign In"** in the top navigation bar.
-   - Click **"Alex Chen (Buyer)"** to auto-fill the credentials and sign in.
+   - Enter your credentials or sign in with any of the pre-seeded evaluator accounts detailed in [DEMO.md](DEMO.md).
 2. **Autonomous Agentic Commerce (AI Concierge)**:
    - Click **"Ask AI"** or the hero query bar and pick a prompt (e.g. *"Sophomore CS student, budget $20"*).
    - Observe the live **Google Gemini 2.5 Flash** agent analyze the catalog, compute the dynamic bundle discount ($\delta(k) = \min(0.25, 0.12 \cdot \ln(1+k))$), and construct a 1-click PayPal checkout order.
@@ -137,7 +132,7 @@ You can log in directly using the pre-configured evaluator accounts below, or cl
 4. **Live In-Browser Tool Execution**:
    - Navigate to **@me Locker** and click **"Launch Tool"** to run *CanvasAutoPilot*, *AlgoVisualizer*, or the *Academic Writing Studio* directly in your browser.
 5. **Creator Studio Publishing & AI Polish**:
-   - Switch to the Creator persona or open **Creator Studio**.
+   - Open **Creator Studio** from the navigation bar.
    - Enter a tool title and click **"✨ Polish with Gemini"** to auto-generate product copy, feature tags, and pricing, then publish it directly to the live marketplace feed.
 
 ---

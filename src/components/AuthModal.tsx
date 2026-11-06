@@ -14,7 +14,6 @@ import {
 } from 'lucide-react';
 import { UserProfile } from '@/types';
 import { supabase } from '@/lib/supabase';
-import { JUDGE_PASSWORD } from '@/lib/auth';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -82,18 +81,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Google OAuth error';
       setError(`${msg} (Ensure Google Provider is active in your Supabase dashboard).`);
-    }
-  };
-
-  const autoFillJudge = (type: 'buyer' | 'creator') => {
-    setMode('login');
-    setError(null);
-    if (type === 'buyer') {
-      setEmail('judge.sandbox@araxie.edu');
-      setPassword(JUDGE_PASSWORD);
-    } else {
-      setEmail('creator.sandbox@araxie.edu');
-      setPassword(JUDGE_PASSWORD);
     }
   };
 
@@ -255,32 +242,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </form>
-
-          {/* Hackathon Judge Pre-Made Account Auto-Fill Helper */}
-          <div className="p-3 rounded-lg bg-[#121319] border border-[#1f222c] space-y-2">
-            <div className="flex items-center gap-1.5 text-zinc-300 font-semibold text-[11px]">
-              <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
-              <span>For Hackathon Evaluators (Pre-Made Accounts):</span>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-1.5">
-              <button
-                type="button"
-                onClick={() => autoFillJudge('buyer')}
-                className="flex-1 py-1.5 px-2 rounded bg-[#171922] hover:bg-[#1f2230] text-zinc-300 text-[10px] font-medium border border-[#232736] transition text-left"
-              >
-                🎓 <strong className="text-white">Alex Chen (Buyer)</strong>
-                <span className="block text-zinc-500 font-mono">judge.sandbox@araxie.edu</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => autoFillJudge('creator')}
-                className="flex-1 py-1.5 px-2 rounded bg-[#171922] hover:bg-[#1f2230] text-zinc-300 text-[10px] font-medium border border-[#232736] transition text-left"
-              >
-                🛠️ <strong className="text-white">Marcus Chen (Creator)</strong>
-                <span className="block text-zinc-500 font-mono">creator.sandbox@araxie.edu</span>
-              </button>
-            </div>
-          </div>
 
         </div>
 

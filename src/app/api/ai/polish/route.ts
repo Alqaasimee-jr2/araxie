@@ -5,16 +5,21 @@ import {
   getCachedGeminiResponse, 
   setCachedGeminiResponse 
 } from '@/lib/geminiRateLimiter';
+import { sanitizeInput, inspectPromptSecurity } from '@/lib/security';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
 
 export async function POST(req: NextRequest) {
   try {
-    const { title, category } = await req.json();
+    const body = await req.json();
+    const title = sanitizeInput(body.title, 80);
+    const category = sanitizeInput(body.category || 'chrome-extension', 40);
 
     if (!title) {
       return NextResponse.json({ error: 'Title is required' }, { status: 400 });
     }
+
+    const titleSecurity = inspectPromptSecurity(title);
 
     // Deterministic fallback response definition
     const fallbackResponse = {
@@ -31,7 +36,7 @@ export async function POST(req: NextRequest) {
     };
 
     // Check cache first
-    const cacheKey = `polish:${category}:${title.trim().toLowerCase()}`;
+    const cacheKey = `polish:${category}:${title.toLowerCase()}`;
     const cachedData = getCachedGeminiResponse(cacheKey);
     if (cachedData) {
       try {
@@ -41,7 +46,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    if (GEMINI_API_KEY) {
+    if (GEMINI_API_KEY && titleSecurity.isSafe) {
       const clientIp = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anon';
       const budgetCheck = checkAndConsumeGeminiBudget(clientIp);
 
@@ -87,8 +92,6 @@ Respond ONLY with valid JSON. Do not include markdown codeblocks or explanation.
         } catch (e) {
           console.warn('Gemini polish error, falling back:', e);
         }
-      } else {
-        console.info(`[Gemini Free Tier Safeguard] Polish call blocked to protect credits: ${budgetCheck.reason}`);
       }
     }
 

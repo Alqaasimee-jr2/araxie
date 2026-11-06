@@ -41,8 +41,8 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<'all' | ProductCategory>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Authentication State (Default seeded as Alex Chen for Hackathon Judges)
-  const [currentUser, setCurrentUser] = useState<UserProfile | null>(SEEDED_JUDGE_BUYER);
+  // Authentication State (clean production state)
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   // Modals & Interactive Tools state

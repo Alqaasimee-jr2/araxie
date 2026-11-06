@@ -5,16 +5,25 @@ import {
   getCachedGeminiResponse, 
   setCachedGeminiResponse 
 } from '@/lib/geminiRateLimiter';
+import { sanitizeInput, inspectPromptSecurity } from '@/lib/security';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
 
 export async function POST(req: NextRequest) {
   try {
-    const { mode, text, subject } = await req.json();
+    const body = await req.json();
+    const rawMode = body.mode;
+    const rawText = body.text;
+    const rawSubject = body.subject;
 
-    if (!text) {
+    if (!rawText) {
       return NextResponse.json({ error: 'Input text is required' }, { status: 400 });
     }
+
+    const textSecurity = inspectPromptSecurity(rawText);
+    const text = textSecurity.sanitized;
+    const subject = sanitizeInput(rawSubject || 'General Academia', 60);
+    const mode = sanitizeInput(rawMode || 'general', 30);
 
     let systemInstruction = '';
     if (mode === 'literature-review') {
@@ -34,7 +43,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ result: cachedResult, fromCache: true });
     }
 
-    if (GEMINI_API_KEY) {
+    if (GEMINI_API_KEY && textSecurity.isSafe) {
       const clientIp = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anon';
       const budgetCheck = checkAndConsumeGeminiBudget(clientIp);
 
@@ -50,7 +59,7 @@ export async function POST(req: NextRequest) {
                   {
                     parts: [
                       {
-                        text: `${systemInstruction}\n\nSubject / Field: ${subject || 'General Academia'}\n\nInput Content:\n${text}`,
+                        text: `${systemInstruction}\n\nSubject / Field: ${subject}\n\nInput Content:\n${text}`,
                       },
                     ],
                   },
@@ -76,13 +85,11 @@ export async function POST(req: NextRequest) {
         } catch (e) {
           console.warn('Academic AI error, falling back:', e);
         }
-      } else {
-        console.info(`[Gemini Free Tier Safeguard] Academic call blocked to protect credits: ${budgetCheck.reason}`);
       }
     }
 
     return NextResponse.json({
-      result: `### Academic Analysis (${subject || 'General'})\n\n**Key Strengths:**\n- Coherent thesis formulation with clear scope.\n- Logical transitions between core assertions.\n\n**Areas for Refinement:**\n- Strengthen empirical citations to address counter-arguments.\n- Formalize terminology in accordance with contemporary literature.`,
+      result: `### Academic Analysis (${subject})\n\n**Key Strengths:**\n- Coherent thesis formulation with clear scope.\n- Logical transitions between core assertions.\n\n**Areas for Refinement:**\n- Strengthen empirical citations to address counter-arguments.\n- Formalize terminology in accordance with contemporary literature.`,
       creditProtected: true,
     });
   } catch (err: unknown) {

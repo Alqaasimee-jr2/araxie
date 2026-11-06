@@ -7,6 +7,7 @@ import {
   getCachedGeminiResponse, 
   setCachedGeminiResponse 
 } from '@/lib/geminiRateLimiter';
+import { inspectPromptSecurity } from '@/lib/security';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
 
@@ -37,9 +38,13 @@ function calculateBundleDiscount(items: Product[]): { discountPercentage: number
 
 export async function POST(req: NextRequest) {
   try {
-    const { prompt, customCatalog } = await req.json();
+    const { prompt: rawPrompt, customCatalog } = await req.json();
     const catalog: Product[] = customCatalog && customCatalog.length > 0 ? customCatalog : getAllProducts();
-    const lowerPrompt = (prompt || '').toLowerCase();
+
+    // 1. Prompt Injection & Anti-Abuse Inspection
+    const promptSecurity = inspectPromptSecurity(rawPrompt || '');
+    const prompt = promptSecurity.sanitized;
+    const lowerPrompt = prompt.toLowerCase();
 
     let matchedItems: Product[] = [];
     let defaultReasoning = '';
@@ -79,7 +84,7 @@ export async function POST(req: NextRequest) {
 
     if (cachedText) {
       aiReasoning = cachedText;
-    } else if (GEMINI_API_KEY) {
+    } else if (GEMINI_API_KEY && promptSecurity.isSafe) {
       // Check Free Tier Rate Limit and daily budget protector
       const clientIp = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anon';
       const budgetCheck = checkAndConsumeGeminiBudget(clientIp);
