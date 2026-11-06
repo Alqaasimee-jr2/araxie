@@ -93,8 +93,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Navigation Items */}
-          <nav className="flex items-center gap-1 sm:gap-1.5">
+          {/* Navigation Items (Desktop & Tablet) */}
+          <nav className="hidden sm:flex items-center gap-1 sm:gap-1.5">
             <button
               onClick={() => setCurrentTab('explore')}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
