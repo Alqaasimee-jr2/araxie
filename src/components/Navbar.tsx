@@ -24,7 +24,6 @@ interface NavbarProps {
   cartCount: number;
   onOpenCart: () => void;
   onOpenAI: () => void;
-  onOpenPayPalConfig?: () => void;
   onOpenSettings?: () => void;
   searchQuery: string;
   setSearchQuery: (q: string) => void;
@@ -40,7 +39,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   cartCount,
   onOpenCart,
   onOpenAI,
-  onOpenPayPalConfig,
   onOpenSettings,
   searchQuery,
   setSearchQuery,

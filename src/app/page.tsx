@@ -213,6 +213,29 @@ export default function Home() {
                   Discover peer-built Chrome extensions, interactive algorithm visualizers, and curated study suites. Bundled autonomously by AI with instant <span className="text-zinc-200 font-semibold">PayPal</span> checkout and 95% creator payouts.
                 </p>
 
+                {/* First-time User Action Banner */}
+                {!currentUser && (
+                  <div className="pt-1 flex flex-wrap items-center gap-2.5">
+                    <button
+                      onClick={() => setIsAuthModalOpen(true)}
+                      className="px-4 py-2 rounded-xl bg-white hover:bg-zinc-200 text-black font-semibold text-xs transition flex items-center gap-1.5 shadow-md shadow-white/5"
+                    >
+                      <GraduationCap className="w-3.5 h-3.5 text-zinc-900" />
+                      <span>Sign In with University ID</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-zinc-700" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        const el = document.getElementById('catalog-grid');
+                        el?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                      className="px-3.5 py-2 rounded-xl bg-[#181a20] hover:bg-[#20222a] text-zinc-300 hover:text-white font-medium text-xs border border-[#262833] transition"
+                    >
+                      Browse 14 Campus Tools
+                    </button>
+                  </div>
+                )}
+
                 {/* AI Concierge Trigger Input */}
                 <div className="pt-1.5">
                   <div 
@@ -253,7 +276,7 @@ export default function Home() {
             </div>
 
             {/* Category Filter Pills Bar */}
-            <div className="flex items-center justify-between gap-4 overflow-x-auto pb-1 no-scrollbar">
+            <div id="catalog-grid" className="flex items-center justify-between gap-4 overflow-x-auto pb-1 no-scrollbar">
               <div className="flex items-center gap-1.5">
                 {categories.map((cat) => (
                   <button

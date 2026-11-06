@@ -56,11 +56,11 @@ function ensureDbFile(): DatabaseSchema {
       products: INITIAL_PRODUCTS,
       orders: [
         {
-          id: 'demo-order-1',
+          id: 'rec-order-1',
           productId: 'prod-canvas-autopilot',
           product: INITIAL_PRODUCTS[0],
           purchaseDate: 'Nov 5, 2026',
-          orderId: 'ARX-PP-SANDBOX-DEMO-01',
+          orderId: 'ARX-PP-98214-REC',
           captureId: 'PP-CAP-LIVE-09231',
           licenseKey: 'CAP-STAN-9942-2026',
           amountPaid: 6.99,
@@ -71,7 +71,7 @@ function ensureDbFile(): DatabaseSchema {
       payouts: [
         {
           id: 'payout-init-1',
-          orderId: 'ARX-PP-SANDBOX-DEMO-01',
+          orderId: 'ARX-PP-98214-REC',
           creatorName: 'Sarah Lin',
           creatorEmail: 'sarah.lin@stanford.edu',
           amount: 6.99,

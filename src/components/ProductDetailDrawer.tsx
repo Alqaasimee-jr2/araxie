@@ -129,13 +129,13 @@ export const ProductDetailDrawer: React.FC<ProductDetailDrawerProps> = ({
             </div>
           </div>
 
-          {/* Interactive Demo Callout Banner */}
+          {/* Interactive Tool Preview Callout Banner */}
           {onLaunchDemo && (
             <div className="p-4 rounded-xl bg-[#14151b] border border-[#21232d] flex items-center justify-between gap-3">
               <div>
-                <h4 className="font-semibold text-xs text-white">Live In-Browser Tool Demo Available</h4>
+                <h4 className="font-semibold text-xs text-white">Live In-Browser Tool Preview Available</h4>
                 <p className="text-xs text-zinc-400 mt-0.5">
-                  Test drive this tool directly in your browser before completing checkout.
+                  Launch and preview this tool directly in your browser before completing checkout.
                 </p>
               </div>
               <button
@@ -143,7 +143,7 @@ export const ProductDetailDrawer: React.FC<ProductDetailDrawerProps> = ({
                 className="px-3.5 py-1.5 rounded-lg bg-[#1f222b] hover:bg-[#282c38] text-white font-medium text-xs border border-[#2c303e] transition flex items-center gap-1.5 shrink-0"
               >
                 <Play className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Try Demo</span>
+                <span>Launch Preview</span>
               </button>
             </div>
           )}

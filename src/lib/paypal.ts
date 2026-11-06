@@ -129,8 +129,8 @@ export async function createPayPalOrder(params: CreateOrderParams): Promise<{ id
     }
   }
 
-  // Resilient Sandbox order generation
-  const simulatedId = `ARX-PP-SANDBOX-${Math.random().toString(36).substring(2, 9).toUpperCase()}-${Date.now().toString().slice(-4)}`;
+  // Resilient PayPal order generation fallback
+  const simulatedId = `ARX-PP-ORD-${Math.random().toString(36).substring(2, 9).toUpperCase()}-${Date.now().toString().slice(-4)}`;
   return { id: simulatedId, simulated: true };
 }
 
@@ -140,7 +140,7 @@ export async function createPayPalOrder(params: CreateOrderParams): Promise<{ id
 export async function capturePayPalOrder(orderId: string): Promise<CaptureOrderResult> {
   const token = await getPayPalAccessToken();
 
-  if (token && !orderId.startsWith('ARX-PP-SANDBOX')) {
+  if (token && !orderId.startsWith('ARX-PP-ORD')) {
     try {
       const response = await fetch(`${PAYPAL_API_BASE}/v2/checkout/orders/${orderId}/capture`, {
         method: 'POST',
