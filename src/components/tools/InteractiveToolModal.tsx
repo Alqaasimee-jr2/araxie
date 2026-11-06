@@ -5,6 +5,7 @@ import { X, ShieldCheck, ExternalLink, Terminal } from 'lucide-react';
 import { CanvasAutoPilotTool } from './CanvasAutoPilotTool';
 import { AlgoVisualizerTool } from './AlgoVisualizerTool';
 import { AcademicWritingTool } from './AcademicWritingTool';
+import { CIGuardianTool } from './CIGuardianTool';
 
 interface InteractiveToolModalProps {
   isOpen: boolean;
@@ -22,7 +23,9 @@ export const InteractiveToolModal: React.FC<InteractiveToolModalProps> = ({
   if (!isOpen) return null;
 
   const renderToolComponent = () => {
-    if (toolId === 'prod-algo-visualizer') {
+    if (toolId === 'prod-ci-guardian') {
+      return <CIGuardianTool />;
+    } else if (toolId === 'prod-algo-visualizer') {
       return <AlgoVisualizerTool />;
     } else if (toolId === 'prod-academic-prompt-vault' || toolId === 'prod-paper-synthesizer') {
       return <AcademicWritingTool />;

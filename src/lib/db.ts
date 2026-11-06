@@ -89,6 +89,24 @@ function ensureDbFile(): DatabaseSchema {
   try {
     const raw = fs.readFileSync(DB_FILE, 'utf-8');
     const parsed = JSON.parse(raw);
+    
+    // Auto-sync missing initial products from catalog
+    if (!parsed.products || !Array.isArray(parsed.products)) {
+      parsed.products = INITIAL_PRODUCTS;
+    } else {
+      const existingProductIds = new Set(parsed.products.map((p: Product) => p.id));
+      let addedNew = false;
+      for (const prod of INITIAL_PRODUCTS) {
+        if (!existingProductIds.has(prod.id)) {
+          parsed.products.push(prod);
+          addedNew = true;
+        }
+      }
+      if (addedNew) {
+        fs.writeFileSync(DB_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+      }
+    }
+
     if (!parsed.reviews || parsed.reviews.length === 0) {
       parsed.reviews = INITIAL_REVIEWS;
       fs.writeFileSync(DB_FILE, JSON.stringify(parsed, null, 2), 'utf-8');

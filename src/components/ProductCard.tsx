@@ -16,7 +16,12 @@ import {
   CalendarCheck, 
   Binary,
   Terminal,
-  Play
+  Play,
+  Clock,
+  Compass,
+  Mic,
+  Layers,
+  Sparkles
 } from 'lucide-react';
 
 interface ProductCardProps {
@@ -38,6 +43,11 @@ const ICON_MAP: Record<string, React.ElementType> = {
   Atom,
   ShieldCheck,
   Globe,
+  Clock,
+  Compass,
+  Mic,
+  Layers,
+  Sparkles,
 };
 
 export const ProductCard: React.FC<ProductCardProps> = ({

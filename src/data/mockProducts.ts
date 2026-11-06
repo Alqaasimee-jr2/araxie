@@ -294,5 +294,227 @@ export const INITIAL_PRODUCTS: Product[] = [
     badge: 'Staff Pick',
     accentColor: '#f97316',
     iconName: 'Sparkles'
+  },
+  {
+    id: 'prod-ci-guardian',
+    title: 'CI-Guardian 🛡️',
+    tagline: 'Autonomous pre-flight quality gate chaining syntax-aware AST security scanning & test orchestration.',
+    description: 'Stop pushing security flaws and broken tests to GitHub. CI-Guardian runs in under 10 seconds locally or in CI, scanning AST syntax trees for exposed keys and vulnerabilities while auto-generating SARIF 2.1.0 security compliance reports.',
+    category: 'code-template',
+    price: 14.99,
+    originalPrice: 25.00,
+    creator: {
+      name: 'Abdullah Qaasim-Falade',
+      handle: 'alqaasimee_jr2',
+      avatar: 'https://avatars.githubusercontent.com/u/144673671?v=4',
+      university: 'Obafemi Awolowo University \'26',
+      verified: true,
+      payoutEmail: 'alqaasimee.falade@oauife.edu.ng',
+    },
+    rating: 5.0,
+    reviewsCount: 198,
+    salesCount: 1120,
+    features: [
+      'Sub-10s syntax-aware AST security scanning gate',
+      'Automated test runner discovery with zero configuration',
+      'SARIF 2.1.0 security compliance report export',
+      'Automated PR documentation and change-impact analyzer',
+      'Zero external dependencies runner via npx ci-guardian'
+    ],
+    downloadAsset: {
+      type: 'github',
+      url: 'https://github.com/Alqaasimee-jr2/CI-Guardian',
+      fileName: 'ci-guardian-v1.4.zip',
+      licenseKeyPrefix: 'CIG'
+    },
+    tags: ['DevOps', 'AST Security', 'CLI', 'GitHub Actions', 'Testing'],
+    badge: 'Bestseller',
+    accentColor: '#10b981',
+    iconName: 'ShieldCheck'
+  },
+  {
+    id: 'prod-flow7',
+    title: 'Flow7 — Performance Awareness Layer',
+    tagline: 'Mobile-first performance awareness app turning your work sessions into neutral, visual cognitive insights.',
+    description: 'Evidence over intention. Flow7 replaces guessing where your study and coding hours went with objective visual insights. Minimalist, friction-free session tracking engineered for independent student builders and creators.',
+    category: 'saas-micro',
+    price: 9.99,
+    originalPrice: 18.00,
+    creator: {
+      name: 'Abdullah Qaasim-Falade',
+      handle: 'alqaasimee_jr2',
+      avatar: 'https://avatars.githubusercontent.com/u/144673671?v=4',
+      university: 'NIT7ER Studio',
+      verified: true,
+      payoutEmail: 'alqaasimee.falade@oauife.edu.ng',
+    },
+    rating: 4.9,
+    reviewsCount: 144,
+    salesCount: 810,
+    features: [
+      'Objective work session logging with zero setup',
+      'Visual cognitive performance heatmaps and focus curves',
+      'Automated weekly study & work debrief summaries',
+      'Exportable project timesheets and accountability reports',
+      'Minimalist battery-efficient dark mode interface'
+    ],
+    downloadAsset: {
+      type: 'github',
+      url: 'https://github.com/Alqaasimee-jr2/Flow7-Landing-Page',
+      fileName: 'flow7-performance-suite.zip',
+      licenseKeyPrefix: 'FLW7'
+    },
+    tags: ['Productivity', 'Focus', 'Time Tracking', 'Next.js'],
+    badge: 'Trending',
+    accentColor: '#6366f1',
+    iconName: 'Clock'
+  },
+  {
+    id: 'prod-oaumods',
+    title: 'OAUMods — Great Ife Freshman Companion',
+    tagline: 'The open-source, mobile-first campus navigation, hostel clearance, and survival guide for university students.',
+    description: 'The essential pocket mentor for university campus life. Interactive campus landmark atlas, step-by-step portal clearance paper chase tracker, verified shuttle/keke transit fares, hostel balloting guide, and departmental survival notes.',
+    category: 'study-pack',
+    price: 4.99,
+    originalPrice: 9.99,
+    creator: {
+      name: 'Abdullah Qaasim-Falade',
+      handle: 'alqaasimee_jr2',
+      avatar: 'https://avatars.githubusercontent.com/u/144673671?v=4',
+      university: 'Obafemi Awolowo University \'26',
+      verified: true,
+      payoutEmail: 'alqaasimee.falade@oauife.edu.ng',
+    },
+    rating: 5.0,
+    reviewsCount: 342,
+    salesCount: 2150,
+    features: [
+      'Interactive campus landmarks & lecture theatre atlas (BOOC, ODLT, Spider)',
+      'Step-by-step clearance paper chase guide with document checklists',
+      'Verified campus shuttle and tricycle transit pricing tables',
+      'Hostel balloting tips & anti-scam advisories for freshmen',
+      'Offline-ready PWA with local SQLite persistence'
+    ],
+    downloadAsset: {
+      type: 'download',
+      url: 'https://github.com/Alqaasimee-jr2/OAUMods',
+      fileName: 'oaumods-campus-guide-v2.0.pwa',
+      licenseKeyPrefix: 'OAU'
+    },
+    tags: ['Campus Life', 'Freshman Guide', 'OAU', 'PWA', 'Navigation'],
+    badge: 'Staff Pick',
+    accentColor: '#eab308',
+    iconName: 'Compass'
+  },
+  {
+    id: 'prod-schora-ai',
+    title: 'Schora AI School Operations & Feedback Platform',
+    tagline: 'AI-powered school operations platform delivering automated student feedback and weekly learning briefings.',
+    description: 'Automated assignment grading, student diagnostic feedback generation, and weekly learning progress briefings powered by IBM watsonx and Gemini. Includes multi-role portals for educators, school administrators, and students.',
+    category: 'saas-micro',
+    price: 16.50,
+    originalPrice: 32.00,
+    creator: {
+      name: 'Abdullah Qaasim-Falade',
+      handle: 'alqaasimee_jr2',
+      avatar: 'https://avatars.githubusercontent.com/u/144673671?v=4',
+      university: 'NIT7ER Studio',
+      verified: true,
+      payoutEmail: 'alqaasimee.falade@oauife.edu.ng',
+    },
+    rating: 4.8,
+    reviewsCount: 112,
+    salesCount: 560,
+    features: [
+      'Automated assignment grading & personalized diagnostic student feedback',
+      'Weekly student growth briefing synthesizer powered by watsonx/LLMs',
+      'Teacher syllabus coverage analytics and real-time gap analysis',
+      'Multi-role access portal (Admin, Teacher, Student, Parent)',
+      'Full TypeScript + Next.js + Tailwind CSS architecture'
+    ],
+    downloadAsset: {
+      type: 'github',
+      url: 'https://github.com/Alqaasimee-jr2/schora-ai-assistant',
+      fileName: 'schora-ai-ops-starter.zip',
+      licenseKeyPrefix: 'SCH'
+    },
+    tags: ['EdTech', 'AI Assistant', 'IBM watsonx', 'TypeScript'],
+    badge: 'Staff Pick',
+    accentColor: '#0ea5e9',
+    iconName: 'GraduationCap'
+  },
+  {
+    id: 'prod-clasquera',
+    title: 'Clasquera — Lesson Accountability & Audio Analysis',
+    tagline: 'Classroom lecture audio recorder & automated AI lesson-plan coverage scorer for school administrators.',
+    description: 'Record classroom lessons, automatically transcribe speech, and score how closely teaching adheres to the syllabus. Built with Next.js 16, Flutter audio capture client, and Gemini Pro audio analysis.',
+    category: 'code-template',
+    price: 18.00,
+    originalPrice: 35.00,
+    creator: {
+      name: 'Abdullah Qaasim-Falade',
+      handle: 'alqaasimee_jr2',
+      avatar: 'https://avatars.githubusercontent.com/u/144673671?v=4',
+      university: 'NIT7ER Studio',
+      verified: true,
+      payoutEmail: 'alqaasimee.falade@oauife.edu.ng',
+    },
+    rating: 4.9,
+    reviewsCount: 86,
+    salesCount: 390,
+    features: [
+      'Mobile lesson audio recording client integration',
+      'Speech-to-text automated transcription pipeline',
+      'LLM syllabus coverage scoring engine (On Plan / Partial / Off Plan)',
+      'Real-time curriculum deviation diagnostics for school principals',
+      'Executive dashboard with school-wide performance charts'
+    ],
+    downloadAsset: {
+      type: 'github',
+      url: 'https://github.com/Alqaasimee-jr2/Clasquera-Landing-page',
+      fileName: 'clasquera-audio-eval-v1.zip',
+      licenseKeyPrefix: 'CLAS'
+    },
+    tags: ['Education', 'Audio AI', 'Next.js 16', 'Tailwind v4'],
+    badge: 'New',
+    accentColor: '#8b5cf6',
+    iconName: 'Mic'
+  },
+  {
+    id: 'prod-nit7er-boilerplate',
+    title: 'NIT7ER High-Performance Studio Boilerplate',
+    tagline: 'Next.js 16 + React 19 + Tailwind v4 commercial studio foundation for high-performance web apps.',
+    description: 'Production-tested creative technology foundation developed at NIT7ER Studio. Fluid micro-interactions, responsive dark typography, zero runtime CSS overhead, and battle-tested TypeScript architectures.',
+    category: 'code-template',
+    price: 11.99,
+    originalPrice: 24.00,
+    creator: {
+      name: 'Abdullah Qaasim-Falade',
+      handle: 'alqaasimee_jr2',
+      avatar: 'https://avatars.githubusercontent.com/u/144673671?v=4',
+      university: 'NIT7ER Academy',
+      verified: true,
+      payoutEmail: 'alqaasimee.falade@oauife.edu.ng',
+    },
+    rating: 5.0,
+    reviewsCount: 175,
+    salesCount: 920,
+    features: [
+      'Next.js 16 App Router with Turbopack & React 19',
+      'Tailwind CSS v4 zero runtime stylesheet overhead',
+      'Studio-grade dark typography and fluid micro-interactions',
+      'Accessible keyboard-navigable UI components',
+      'Pre-configured Vercel production deploy recipes'
+    ],
+    downloadAsset: {
+      type: 'github',
+      url: 'https://github.com/Alqaasimee-jr2/NIT7ER-ACADEMY',
+      fileName: 'nit7er-studio-boilerplate.zip',
+      licenseKeyPrefix: 'NIT7'
+    },
+    tags: ['Boilerplate', 'Next.js 16', 'React 19', 'Tailwind v4', 'Design'],
+    badge: 'Staff Pick',
+    accentColor: '#06b6d4',
+    iconName: 'Layers'
   }
 ];
