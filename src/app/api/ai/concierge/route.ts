@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllProducts } from '@/lib/db';
 import { DynamicBundle, Product } from '@/types';
+import { 
+  checkAndConsumeGeminiBudget, 
+  recordGeminiQuotaExceeded, 
+  getCachedGeminiResponse, 
+  setCachedGeminiResponse 
+} from '@/lib/geminiRateLimiter';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
 
@@ -67,37 +73,53 @@ export async function POST(req: NextRequest) {
 
     let aiReasoning = defaultReasoning;
 
-    // Call live Google Gemini 2.5 Flash if API key is present
-    if (GEMINI_API_KEY) {
-      try {
-        const geminiPrompt = `You are the AI Concierge for Araxie, a peer-to-peer student digital tools marketplace (like Whop for students).
+    // Check cache first to avoid duplicate API calls
+    const cacheKey = `concierge:${prompt.trim().toLowerCase()}`;
+    const cachedText = getCachedGeminiResponse(cacheKey);
+
+    if (cachedText) {
+      aiReasoning = cachedText;
+    } else if (GEMINI_API_KEY) {
+      // Check Free Tier Rate Limit and daily budget protector
+      const clientIp = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anon';
+      const budgetCheck = checkAndConsumeGeminiBudget(clientIp);
+
+      if (budgetCheck.allowed) {
+        try {
+          const geminiPrompt = `You are the AI Concierge for Araxie, a peer-to-peer student digital tools marketplace (like Whop for students).
 A student said: "${prompt}".
 We selected these tools for them: ${bundleItems.map(b => `${b.title} ($${b.price})`).join(', ')}.
 Total original price: $${pricing.originalTotal}, but with our autonomous bundle discount (${pricing.discountPercentage}%), the price is now $${pricing.bundleTotal} (saving $${pricing.savings}).
 
 Write a concise, friendly, collegiate 2-sentence response explaining why these specific student-built tools solve their exact problem and why this bundle discount is worth grabbing right now. Keep it punchy and student-to-student.`;
 
-        const geminiRes = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: geminiPrompt }] }],
-              generationConfig: { temperature: 0.7, maxOutputTokens: 250 },
-            }),
-          }
-        );
+          const geminiRes = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [{ parts: [{ text: geminiPrompt }] }],
+                generationConfig: { temperature: 0.7, maxOutputTokens: 250 },
+              }),
+            }
+          );
 
-        if (geminiRes.ok) {
-          const geminiData = await geminiRes.json();
-          const generatedText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (generatedText && generatedText.trim().length > 0) {
-            aiReasoning = generatedText.trim();
+          if (geminiRes.status === 429) {
+            recordGeminiQuotaExceeded();
+          } else if (geminiRes.ok) {
+            const geminiData = await geminiRes.json();
+            const generatedText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (generatedText && generatedText.trim().length > 0) {
+              aiReasoning = generatedText.trim();
+              setCachedGeminiResponse(cacheKey, aiReasoning);
+            }
           }
+        } catch (err) {
+          console.warn('Gemini live call fallback to deterministic reasoning:', err);
         }
-      } catch (err) {
-        console.warn('Gemini live call fallback to deterministic reasoning:', err);
+      } else {
+        console.info(`[Gemini Free Tier Safeguard] Call blocked to prevent billing: ${budgetCheck.reason}`);
       }
     }
 
