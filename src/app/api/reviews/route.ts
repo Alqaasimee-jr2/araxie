@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAllReviews, addReview } from '@/lib/db';
+import { getAllReviews, addReview, getAllOrders } from '@/lib/db';
 import { StudentReview } from '@/types';
 import { sanitizeInput, checkRateLimit } from '@/lib/security';
 
@@ -56,6 +56,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Verify buyer status against actual order ledger
+    const orders = getAllOrders();
+    const isVerifiedPurchase = orders.some(o => o.productId === productId);
+
     const review: StudentReview = {
       id: `rev-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
       productId,
@@ -68,7 +72,7 @@ export async function POST(req: NextRequest) {
         day: 'numeric',
         year: 'numeric',
       }),
-      verifiedBuyer: true,
+      verifiedBuyer: isVerifiedPurchase,
     };
 
     const { updatedProduct } = addReview(review);

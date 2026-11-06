@@ -203,50 +203,54 @@ export async function executeCreatorPayout(params: {
 
   if (token) {
     try {
-      const response = await fetch(`${PAYPAL_API_BASE}/v1/payments/payouts`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          sender_batch_header: {
-            sender_batch_id: `payout_batch_${params.orderId}_${Date.now()}`,
-            email_subject: 'You received a creator royalty from Araxie!',
-            email_message: `Congratulations ${params.creatorName}! A student just purchased your tool on Araxie. Net royalty: $${netPayout.toFixed(2)}.`,
+      const emailHash = Buffer.from(params.creatorEmail).toString('base64url').slice(0, 10);
+      const deterministicBatchId = `arx_batch_${params.orderId}_${emailHash}`;
+
+        const response = await fetch(`${PAYPAL_API_BASE}/v1/payments/payouts`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
           },
-          items: [
-            {
-              recipient_type: 'EMAIL',
-              amount: {
-                value: netPayout.toFixed(2),
-                currency: 'USD',
-              },
-              note: `Araxie student creator payout for order ${params.orderId}`,
-              receiver: params.creatorEmail,
-              sender_item_id: `item_${params.orderId}`,
+          body: JSON.stringify({
+            sender_batch_header: {
+              sender_batch_id: deterministicBatchId,
+              email_subject: 'You received a creator royalty from Araxie!',
+              email_message: `Congratulations ${params.creatorName}! A student just purchased your tool on Araxie. Net royalty: $${netPayout.toFixed(2)}.`,
             },
-          ],
-        }),
-      });
+            items: [
+              {
+                recipient_type: 'EMAIL',
+                amount: {
+                  value: netPayout.toFixed(2),
+                  currency: 'USD',
+                },
+                note: `Araxie student creator payout for order ${params.orderId}`,
+                receiver: params.creatorEmail,
+                sender_item_id: `item_${params.orderId}_${emailHash}`,
+              },
+            ],
+          }),
+        });
 
-      if (response.ok) {
-        const data = await response.json();
-        return {
-          success: true,
-          batchId: data.batch_header?.payout_batch_id || `BATCH-${Date.now()}`,
-          feeDeducted: platformFee,
-        };
+        if (response.ok) {
+          const data = await response.json();
+          return {
+            success: true,
+            batchId: data.batch_header?.payout_batch_id || deterministicBatchId,
+            feeDeducted: platformFee,
+          };
+        }
+      } catch (err) {
+        console.error('Error executing PayPal Payout:', err);
       }
-    } catch (err) {
-      console.error('Error executing PayPal Payout:', err);
     }
-  }
 
-  // Sandbox payout simulation
-  return {
-    success: true,
-    batchId: `PP-PAYOUT-BATCH-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
-    feeDeducted: platformFee,
-  };
-}
+    // Deterministic payout simulation fallback
+    const emailHash = Buffer.from(params.creatorEmail).toString('base64url').slice(0, 8).toUpperCase();
+    return {
+      success: true,
+      batchId: `PP-PO-${params.orderId.replace(/[^A-Za-z0-9]/g, '').slice(-8)}-${emailHash}`,
+      feeDeducted: platformFee,
+    };
+  }

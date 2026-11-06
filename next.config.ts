@@ -1,6 +1,24 @@
 import type { NextConfig } from "next";
 
+const cspHeader = `
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://api-m.sandbox.paypal.com https://www.paypal.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  img-src 'self' blob: data: https://images.unsplash.com https://avatars.githubusercontent.com;
+  font-src 'self' https://fonts.gstatic.com;
+  connect-src 'self' https://generativelanguage.googleapis.com https://api-m.sandbox.paypal.com https://*.supabase.co https://api.github.com;
+  frame-src 'self' https://www.sandbox.paypal.com https://www.paypal.com;
+  object-src 'none';
+  base-uri 'self';
+  form-action 'self';
+  frame-ancestors 'self';
+`.replace(/\s{2,}/g, ' ').trim();
+
 const securityHeaders = [
+  {
+    key: "Content-Security-Policy",
+    value: cspHeader,
+  },
   {
     key: "X-DNS-Prefetch-Control",
     value: "on",

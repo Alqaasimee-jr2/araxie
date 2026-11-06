@@ -371,9 +371,9 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     id: 'prod-oaumods',
-    title: 'OAUMods — Great Ife Freshman Companion',
-    tagline: 'The open-source, mobile-first campus navigation, hostel clearance, and survival guide for university students.',
-    description: 'The essential pocket mentor for university campus life. Interactive campus landmark atlas, step-by-step portal clearance paper chase tracker, verified shuttle/keke transit fares, hostel balloting guide, and departmental survival notes.',
+    title: 'OAUMods Pro — Campus Navigation & Survival Suite',
+    tagline: 'The offline PWA campus navigation, clearance paper-chase tracker, and survival guide for university students.',
+    description: 'The definitive offline-first digital companion for Great Ife campus life. Features the complete campus lecture hall atlas (ODLT, BOOC, Spider), clearance document checklist, real-time keke/shuttle fare tables, verified hostel balloting strategies, and departmental past question packages.',
     category: 'study-pack',
     price: 4.99,
     originalPrice: 9.99,

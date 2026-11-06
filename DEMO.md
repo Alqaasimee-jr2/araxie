@@ -1,6 +1,6 @@
 # Araxie — Evaluation & Demonstration Guide
 
-This guide provides hackathon evaluators with instructions for verifying **Araxie** across all key technical dimensions: **PayPal Developer Platform integration**, **Agentic Commerce (Google Gemini 2.5 Flash)**, **Creator Studio & Payout Rails**, and **Production Security & Abuse Defenses**.
+This guide provides hackathon evaluators with instructions for verifying **Araxie** across all key technical dimensions: **PayPal Developer Platform integration**, **Server-Side Price Integrity**, **Agentic Commerce (Google Gemini 2.5 Flash)**, **Creator Studio & Payout Rails**, and **Production Security & Abuse Defenses**.
 
 ---
 
@@ -8,112 +8,128 @@ This guide provides hackathon evaluators with instructions for verifying **Araxi
 
 - **Production URL**: [https://araxie.vercel.app](https://araxie.vercel.app)
 - **GitHub Repository**: [https://github.com/Alqaasimee-jr2/araxie](https://github.com/Alqaasimee-jr2/araxie)
+- **License Verification API**: `GET https://araxie.vercel.app/api/licenses/verify?key={licenseKey}`
+- **PayPal Webhook Listener**: `POST https://araxie.vercel.app/api/paypal/webhook`
 - **AI Health & Rate Limit Telemetry**: `GET https://araxie.vercel.app/api/ai/status`
 
 ---
 
-## 👥 Evaluator Test Personas
+## ⚡ 1-Click Evaluator Access & Personas
 
-Araxie supports real user sign-ups via email and Google OAuth (powered by Supabase Auth). For testing without needing to create new accounts from scratch, the following sandbox personas are pre-seeded in the database:
+Judges do not need to copy and paste passwords:
+
+1. Click **"Sign In"** in the navigation bar (or **"Join with Campus ID"** on the hero banner).
+2. Click **"⚡ One-Click Hackathon Evaluator Sign-In"** in the modal.
+3. You are instantly authenticated as the pre-seeded student evaluator!
+
+### Pre-Seeded Evaluation Accounts:
 
 | Persona | Email | Password | Role & Pre-Seeded State |
 | :--- | :--- | :--- | :--- |
-| **Student Evaluator (Buyer)** | `judge.sandbox@araxie.edu` | `PayPalHackathon2026!` | Stanford '26 verified student profile. Pre-configured with active student locker items, past PayPal order receipts, and verified purchase status to test review submissions. |
-| **Student Developer (Creator)** | `creator.sandbox@araxie.edu` | `PayPalHackathon2026!` | MIT '25 verified creator profile. Author of *AlgoVisualizer Pro*. Pre-seeded with live sales balance, 95% creator payout ledger, and creator publishing capabilities. |
-
-> **Self-Service Accounts**: You can also register any new student account using the **Sign Up** tab in the authentication modal (e.g., `evaluator@university.edu`).
+| **Student Evaluator (Buyer)** | `judge.sandbox@araxie.edu` | `PayPalHackathon2026!` | Stanford '26 verified student profile. Pre-configured with active locker items, verified PayPal transaction receipts, and purchase history. |
+| **Student Developer (Creator)** | `creator.sandbox@araxie.edu` | `PayPalHackathon2026!` | MIT '25 verified creator profile. Author of *AlgoVisualizer Pro*. Pre-seeded with sales balance, 95% creator payout ledger, and publishing tools. |
 
 ---
 
 ## 🧪 Comprehensive Evaluation Walkthrough
 
 ### Walkthrough 1: Autonomous Agentic Commerce (AI Concierge)
-1. Navigate to the marketplace home page at [https://araxie.vercel.app](https://araxie.vercel.app).
-2. Click **"Ask AI"** in the navigation bar or use the search prompt bar on the hero banner.
+1. Navigate to the marketplace storefront at [https://araxie.vercel.app](https://araxie.vercel.app).
+2. Click **"AI Concierge"** in the navigation bar or click the prompt bar in the hero banner.
 3. Submit an academic goal or scenario, such as:
-   - *"Sophomore computer science student taking data structures and algorithms with a $20 budget."*
-   - *"Pre-med student studying for MCAT and biochemistry."*
-   - Or click any of the suggested student persona pills.
+   - *"Sophomore CS student taking algorithms and web dev with a $20 budget."*
+   - *"Pre-med student studying for MCAT and organic chemistry."*
+   - Or click any of the quick prompt suggestion pills.
 4. **Observe the Agentic Workflow**:
-   - The AI Concierge parses the requirements, retrieves matching student-built tools from the catalog, and applies Araxie's **asymptotic bundle discount formula**:
+   - The AI Concierge parses requirements, retrieves matching student-built tools, and applies Araxie's **capped logarithmic bundle discount model**:
      $$\delta(k) = \min\left(0.25, \; 0.12 \cdot \ln(1 + k)\right)$$
-   - The agent outputs an itemized proposal with total savings and creates a 1-click PayPal checkout order ready for immediate settlement.
+   - Yields ~13% discount at $k=2$, ~17% at $k=3$, reaching the 25% cap at $k=8$.
+   - **Deterministic Fallback**: If Gemini encounters an upstream quota blip (HTTP 429), the concierge automatically falls back to deterministic semantic scoring so the checkout proposal never dead-ends.
 
 ---
 
-### Walkthrough 2: PayPal Developer Platform Checkout (Orders v2 API)
-1. Select any tool from the Explore feed (e.g., *CanvasAutoPilot Chrome Extension* or an Anki study pack) or use the bundle from the AI Concierge.
-2. Click **"Pay with PayPal"** (or add items to the cart and proceed to checkout).
-3. The native PayPal Checkout Modal displays an itemized receipt with the campus license, subtotal, bundle discounts, and total.
-4. Click the **"PayPal Sandbox"** button to execute the transaction:
-   - **Order Creation**: The backend calls PayPal REST API v2 (`POST /v2/checkout/orders`) with payment intent `CAPTURE`.
-   - **Payment Capture**: On confirmation, the backend invokes `POST /v2/checkout/orders/{id}/capture`.
-   - **License Key Issuance**: Upon successful capture, Araxie generates an immutable, cryptographically verifiable student license key (`ARX-STUDENT-XXXX-XXXX-2026`).
-   - **Instant Provisioning**: The purchased tool is immediately unlocked and provisioned into the user's **Student Locker**.
+### Walkthrough 2: Server-Side Price Integrity & PayPal Orders v2 Checkout
+1. Select any tool from the Explore catalog or accept a curated bundle from the AI Concierge.
+2. Click **"Proceed to PayPal Checkout"** or **"Buy with PayPal"**.
+3. **Server-Side Price Integrity**:
+   - The client never dictates the transaction total. When creating the order (`POST /api/paypal/create-order`), the server validates product IDs against the official database and recomputes the exact cart total and discount percentage.
+4. Click **"PayPal"** to execute the checkout:
+   - **Order Creation**: Invokes PayPal REST Orders v2 API (`POST /v2/checkout/orders`) with payment intent `CAPTURE`.
+   - **Order Capture & Idempotency**: Invokes `POST /v2/checkout/orders/{id}/capture`. Replaying the same order ID returns the existing settled transaction without charging or paying creators twice.
+   - **Amount Integrity Verification**: Compares the settled PayPal amount with the server-expected total to prevent client-side price tampering.
+   - **HMAC Cryptographic License Generation**: Generates a verifiable license key (`ARX-{PROD}-{TIMESTAMP}-{HMAC}`) signed with HMAC-SHA256.
+   - **Instant Provisioning**: The purchased tool is immediately unlocked in the user's **Student Locker (`@me`)**.
 
 ---
 
-### Walkthrough 3: In-Browser Interactive Tool Execution
-1. Open the **"Locker"** tab in the navigation bar (or click **"Try Demo"** directly on any tool card in the marketplace feed).
-2. Available in-browser interactive tools include:
+### Walkthrough 3: Cryptographic License Verification API
+To verify the authenticity of any issued license key:
+1. Open the receipt in **Orders** or copy any license key from your **Locker**.
+2. Query the verification endpoint:
+   ```bash
+   curl "https://araxie.vercel.app/api/licenses/verify?key=ARX-FLOW-XXXX-XXXX"
+   ```
+3. The server validates the cryptographic HMAC signature and returns the associated order status, product name, and issuance timestamp.
+
+---
+
+### Walkthrough 4: In-Browser Interactive Tool Execution
+Araxie provides full in-browser tool previews for verified campus software without requiring local installation:
+1. Click **"Preview"** on any eligible card in the catalog, or open an unlocked tool from your **Locker**.
+2. Available interactive environments:
    - **Flow7 (Performance Awareness Layer)**: Live calm work session stopwatch, 4 cognitive focus domains (*Deep Work*, *Academic Research*, *Architecture*, *Problem Sets*), real-time 7-day cognitive load heatmap (39.2 hrs total matrix), objective session ledger, and 1-click Markdown timesheet exporter (`.md`).
-   - **CI-Guardian (Pre-Flight AST Gate)**: Interactive syntax AST security scanner detecting hardcoded secrets, `eval()` vulnerabilities, and un-throttled routes with SARIF 2.1.0 report generation and `npx ci-guardian` zero-config runner.
-   - **CanvasAutoPilot**: Live course assignment calendar with grade-weight prediction and 1-click `.ics` calendar sync.
-   - **AlgoVisualizer Pro**: Interactive step-by-step call stack, memory pointer, and complexity graph simulator.
-   - **Academic Writing Studio**: Real-time scholarly prompt transformer converting research notes into formal APA/IEEE citations using Gemini 2.5 Flash.
-3. Click **"Launch Tool"** or **"Try Demo"** to run any of these directly in your browser without local installation.
+   - **CI-Guardian (Pre-Flight AST Gate)**: Interactive syntax AST security scanner detecting hardcoded secrets, `eval()` vulnerabilities, and unthrottled routes with SARIF 2.1.0 report generation and `npx ci-guardian` zero-config runner.
+   - **CanvasAutoPilot**: Chrome extension simulator tracking Canvas LMS deadlines, GPA forecast curves, and 1-click `.ics` calendar sync.
+   - **AlgoVisualizer Pro**: Interactive step-by-step pathfinding visualizer (Dijkstra and A* algorithm matrix).
+   - **Academic Writing Studio**: Scholarly prompt transformer converting research notes into formal APA/IEEE citations using Gemini 2.5 Flash.
+
+*(Note: Cards without a working browser runner cleanly hide the preview button to prevent misleading or broken interfaces.)*
 
 ---
 
-### Walkthrough 4: Verified Student Ratings & Closed-Loop Reviews
-1. Open any tool detail drawer from the marketplace feed or locker.
-2. Scroll to the **"Verified Student Reviews"** section.
-3. If logged into a student account that owns the tool, the submission form unlocks:
-   - Select a star rating (1–5 stars).
-   - Enter a course tag (e.g. `CS 161`, `BIO 101`) and a peer review.
-   - Click **"Submit Verified Review"**.
-4. The review is instantly sanitized, validated against malicious payloads, and saved to the database. The product's overall rating and review count recalculate in real time.
-
----
-
-### Walkthrough 5: Creator Studio & Automated PayPal Payouts (Payouts v1 API)
-1. Sign in as `creator.sandbox@araxie.edu` (or click **"Creator"** in the navigation).
-2. **Creator Financial Hub**:
-   - Inspect the real-time financial ledger: Gross Revenue, 5% Araxie Platform Fee, and **95% Net Creator Earnings**.
-3. **Instant PayPal Creator Payouts**:
+### Walkthrough 5: Creator Studio & PayPal Payouts v1 API
+1. Sign in as `creator.sandbox@araxie.edu` and open **Creator Studio**.
+2. **Transparent Financial Model**:
+   - Araxie creators receive **95% of the net captured amount** per product (pro-rated if sold within a multi-tool bundle), with Araxie retaining a 5% platform fee.
+3. **Idempotent PayPal Creator Payouts**:
    - Click **"Disburse Payout to PayPal"**.
-   - The platform calls the **PayPal Payouts REST API v1** (`POST /v1/payments/payouts`) with an idempotent sender batch ID.
-   - The payout executes on PayPal sandbox rails, returning a live PayPal Batch Status (`SUCCESS` / `PENDING`) and updating the creator's payout history.
+   - Invokes PayPal Payouts REST API v1 (`POST /v1/payments/payouts`) with a deterministic `sender_batch_id` (`arx_batch_{orderId}_{creatorEmailHash}`).
+   - PayPal's payout engine enforces idempotency so retries cannot duplicate disbursements.
 4. **Publishing a New Tool with AI Polish**:
    - In Creator Studio, navigate to **"Publish New Student Tool"**.
-   - Enter a title and category (e.g. *"Notion Syllabus Importer"*, *"Chrome Extensions"*).
-   - Click **"✨ Polish with Gemini"**.
-   - Gemini 2.5 Flash generates an optimized academic tool description, feature tags, and recommended student pricing.
-   - Click **"Publish to Marketplace"** to publish the tool to the live feed.
+   - Enter a title and category (e.g., *"Notion Syllabus Importer"*, *"Chrome Extensions"*).
+   - Click **"✨ Polish with Gemini"** to generate collegiate descriptions, feature lists, and recommended student pricing.
 
 ---
 
 ## 🛡️ Security, Rate Limiting & Anti-Abuse Defenses
 
-Araxie includes defense-in-depth measures against malicious inputs, automated abuse, and quota exhaustion:
+1. **Server-Side Price Integrity (`src/lib/pricing.ts`)**:
+   - Model outputs and client payloads are never trusted with pricing. All cart calculations and pro-rated creator payouts are computed strictly on the backend.
+2. **Deterministic Payout Batching (`src/lib/paypal.ts`)**:
+   - Uses deterministic `sender_batch_id` and unique order tracking in the database to prevent duplicate payouts or wash trading.
+3. **Gemini Free-Tier Budget Protection (`src/lib/geminiRateLimiter.ts`)**:
+   - Enforces 8 RPM, 200 requests/day, and per-IP throttling with an LRU cache (1-hour TTL) to eliminate redundant API consumption and protect against quota overages.
+4. **Content-Security-Policy & Security Headers (`next.config.ts`)**:
+   - Full `Content-Security-Policy` header restricting script, style, frame, and connect sources to trusted endpoints (PayPal, Supabase, Google AI, GitHub).
+   - `X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff`, and `Strict-Transport-Security`.
+5. **Verified Buyer Review Guard (`src/app/api/reviews/route.ts`)**:
+   - Cross-checks student review submissions against the actual captured order ledger before awarding "Verified Buyer" standing.
 
-1. **AI Prompt Injection & Jailbreak Defense (`src/lib/security.ts`)**:
-   - All inbound queries to the AI Concierge, Academic Engine, and Creator Studio are inspected for prompt injection attempts, system prompt exfiltration directives, and delimiter manipulation (e.g. `ignore previous instructions`, `DAN mode`, `reveal secret keys`).
-   - Flagged queries are safely deflected into helpful academic guidance without failing or exposing internal instructions.
-2. **Gemini Free-Tier Credit Protection (`src/lib/geminiRateLimiter.ts`)**:
-   - Strictly enforces limits well below Google AI's free-tier threshold:
-     - Global rate limit: **8 RPM** (Free tier allows 15 RPM).
-     - Daily hard budget cap: **200 requests/day** (Free tier allows 1,500 RPD).
-     - Per-IP rate limit: **4 requests/min**.
-   - Implements an LRU memoization cache (1-hour TTL) for common academic queries to eliminate redundant API consumption.
-   - Automatic circuit breaker trips if an upstream HTTP 429 is encountered, preserving API quota.
-   - Live health status can be queried at `/api/ai/status`.
-3. **XSS & Input Sanitization**:
-   - User reviews, course codes, and product submissions undergo strict sanitization stripping HTML tags, JavaScript event handlers (`onerror=`, `<script>`), and null-byte injection.
-   - Review comments are length-bounded (max 400 characters) and rate-limited (max 4 reviews/min per client IP).
-4. **HTTP Security Headers (`next.config.ts`)**:
-   - `X-Frame-Options: SAMEORIGIN` (prevents clickjacking).
-   - `X-Content-Type-Options: nosniff` (prevents MIME sniffing).
-   - `Referrer-Policy: strict-origin-when-cross-origin`.
-   - `Strict-Transport-Security: max-age=63072000; includeSubDomains; preload`.
-   - `Permissions-Policy: camera=(), microphone=(), geolocation=()`.
+---
+
+## 🧪 Automated Unit Testing & CI Gate
+
+Araxie includes an automated test suite verifying pricing calculations, discount math, and cryptographic license signatures.
+
+Run tests locally:
+```bash
+npm test
+```
+
+Expected output:
+```
+✔ Server-Side Price Integrity & Capped Logarithmic Discount Model (8 tests passing)
+✔ Cryptographic HMAC License Key Generation & Verification
+```
+A GitHub Actions CI workflow (`.github/workflows/ci.yml`) runs on every commit, executing unit tests, CI-Guardian AST security checks, and Next.js production builds.

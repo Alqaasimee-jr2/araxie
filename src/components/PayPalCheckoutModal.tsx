@@ -55,13 +55,14 @@ export const PayPalCheckoutModal: React.FC<PayPalCheckoutModalProps> = ({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          productIds: products.map(p => p.id),
           items: products.map(p => ({
+            id: p.id,
             name: p.title,
             price: p.price,
             quantity: 1,
             description: p.tagline,
           })),
-          totalAmount,
           customId: bundle ? bundle.id : `single-${products[0]?.id}`,
         }),
       });
@@ -76,6 +77,7 @@ export const PayPalCheckoutModal: React.FC<PayPalCheckoutModalProps> = ({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           orderId,
+          productIds: products.map(p => p.id),
           products,
           buyerEmail: currentUser?.email || 'student@university.edu',
         }),
@@ -308,9 +310,14 @@ export const PayPalCheckoutModal: React.FC<PayPalCheckoutModalProps> = ({
                   <span>Debit or Credit Card (Powered by PayPal)</span>
                 </button>
 
-                <div className="flex items-center justify-center gap-1.5 text-[10px] text-zinc-500 pt-1">
-                  <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                  <span>Secured by PayPal Purchase Protection & End-to-End Encryption</span>
+                <div className="flex flex-col items-center justify-center gap-1 text-[10px] text-zinc-500 pt-1 text-center">
+                  <div className="flex items-center gap-1.5">
+                    <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                    <span>Secured by PayPal Purchase Protection & End-to-End Encryption</span>
+                  </div>
+                  <span className="text-[9px] text-zinc-600">
+                    PayPal AI Hackathon Showcase &bull; Evaluator Sandbox Environment (Simulated / Test Funds)
+                  </span>
                 </div>
 
               </div>

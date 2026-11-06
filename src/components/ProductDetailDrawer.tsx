@@ -130,7 +130,7 @@ export const ProductDetailDrawer: React.FC<ProductDetailDrawerProps> = ({
           </div>
 
           {/* Interactive Tool Preview Callout Banner */}
-          {onLaunchDemo && (
+          {onLaunchDemo && ['prod-flow7', 'prod-ci-guardian', 'prod-canvas-autopilot', 'prod-algo-visualizer', 'prod-academic-prompt-vault', 'prod-paper-synthesizer'].includes(product.id) && (
             <div className="p-4 rounded-xl bg-[#14151b] border border-[#21232d] flex items-center justify-between gap-3">
               <div>
                 <h4 className="font-semibold text-xs text-white">Live In-Browser Tool Preview Available</h4>

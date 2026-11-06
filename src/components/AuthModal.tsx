@@ -84,6 +84,27 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     }
   };
 
+  const handleEvaluatorSignIn = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: 'judge.sandbox@araxie.edu', password: 'PayPalHackathon2026!' }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Evaluator login failed');
+      onLoginSuccess(data.user);
+      onClose();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Login failed';
+      setError(msg);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm">
       <div className="w-full max-w-md rounded-xl bg-[#0e0f13] border border-[#1e2027] shadow-2xl overflow-hidden flex flex-col">
@@ -134,6 +155,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               Create Account
             </button>
           </div>
+
+          {/* 1-Click Judge / Evaluator Demo Pass */}
+          <button
+            onClick={handleEvaluatorSignIn}
+            disabled={isLoading}
+            type="button"
+            className="w-full py-2.5 rounded-lg bg-emerald-950/30 hover:bg-emerald-900/40 text-emerald-300 font-semibold text-xs border border-emerald-500/30 flex items-center justify-center gap-2 transition shadow-sm cursor-pointer"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+            <span>⚡ One-Click Hackathon Evaluator Sign-In</span>
+          </button>
 
           {/* Continue with Google (Supabase OAuth) */}
           <button

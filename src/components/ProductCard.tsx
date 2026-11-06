@@ -151,7 +151,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
 
           <div className="flex items-center gap-1.5">
-            {onLaunchDemo && (
+            {onLaunchDemo && ['prod-flow7', 'prod-ci-guardian', 'prod-canvas-autopilot', 'prod-algo-visualizer', 'prod-academic-prompt-vault', 'prod-paper-synthesizer'].includes(product.id) && (
               <button
                 onClick={() => onLaunchDemo(product)}
                 className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-zinc-300 bg-[#16181f] hover:bg-[#20222b] border border-[#232530] transition flex items-center gap-1"
