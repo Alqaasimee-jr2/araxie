@@ -240,7 +240,7 @@ export const ProductDetailDrawer: React.FC<ProductDetailDrawerProps> = ({
               <span>Campus Verified Peer Guarantee</span>
             </div>
             <p className="text-xs text-zinc-500 leading-relaxed">
-              Every tool on Araxie is built and peer-tested by university students. Purchased licenses and full browser tools are unlocked immediately in your Student Locker (`@me`), backed by PayPal Sandbox Purchase Protection.
+              Every tool on Araxie is built and peer-tested by university students. Purchased licenses and full browser tools are unlocked immediately in your Student Locker (`@me`), backed by PayPal Purchase Protection and verified campus delivery.
             </p>
           </div>
 

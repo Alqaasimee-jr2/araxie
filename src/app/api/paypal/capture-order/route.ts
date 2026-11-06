@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
       orderId,
       captureId: captureResult.captureId,
       status: captureResult.status,
-      payer: captureResult.payer || { emailAddress: buyerEmail || 'student.buyer.sandbox@araxie.edu' },
+      payer: captureResult.payer || { emailAddress: buyerEmail || 'student@university.edu' },
       unlockedItems,
       purchasedItems: newPurchasedItems,
       payoutReceipts,

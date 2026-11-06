@@ -12,7 +12,8 @@ import {
   GraduationCap,
   User,
   LogOut,
-  ChevronDown
+  ChevronDown,
+  Settings
 } from 'lucide-react';
 import { UserProfile } from '@/types';
 
@@ -23,7 +24,8 @@ interface NavbarProps {
   cartCount: number;
   onOpenCart: () => void;
   onOpenAI: () => void;
-  onOpenPayPalConfig: () => void;
+  onOpenPayPalConfig?: () => void;
+  onOpenSettings?: () => void;
   searchQuery: string;
   setSearchQuery: (q: string) => void;
   currentUser: UserProfile | null;
@@ -39,6 +41,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenCart,
   onOpenAI,
   onOpenPayPalConfig,
+  onOpenSettings,
   searchQuery,
   setSearchQuery,
   currentUser,
@@ -145,7 +148,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </nav>
 
-          {/* Right Action Icons: AI, Sandbox, Cart, User Profile */}
+          {/* Right Action Icons: AI, Cart, User Profile */}
           <div className="flex items-center gap-2">
             
             {/* AI Concierge Trigger */}
@@ -155,17 +158,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
               <span className="hidden sm:inline">AI Concierge</span>
-            </button>
-
-            {/* PayPal Sandbox Status Badge */}
-            <button
-              onClick={onOpenPayPalConfig}
-              title="PayPal Sandbox Configuration"
-              className="flex items-center gap-1.5 text-[11px] bg-[#121418] hover:bg-[#1a1c22] text-zinc-300 border border-[#1e2027] px-2.5 py-1.5 rounded-lg transition"
-            >
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              <span className="font-semibold text-zinc-200">PayPal</span>
-              <span className="text-zinc-500 text-[10px] hidden lg:inline">Sandbox</span>
             </button>
 
             {/* Cart Trigger */}
@@ -235,6 +227,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                       className="w-full text-left px-3 py-1.5 text-zinc-300 hover:text-white hover:bg-[#181920] transition"
                     >
                       Past Receipts
+                    </button>
+
+                    <button
+                      onClick={() => { onOpenSettings?.(); setIsProfileMenuOpen(false); }}
+                      className="w-full text-left px-3 py-1.5 text-zinc-300 hover:text-white hover:bg-[#181920] flex items-center gap-1.5 transition"
+                    >
+                      <Settings className="w-3 h-3 text-zinc-400" />
+                      <span>Account Settings</span>
                     </button>
 
                     <div className="border-t border-[#1c1d25] my-1"></div>

@@ -4,7 +4,7 @@ import { getCreatorStats } from '@/lib/db';
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const email = searchParams.get('email') || 'creator.sandbox@araxie.edu';
+    const email = searchParams.get('email') || 'marcus@mit.edu';
     const stats = getCreatorStats(email);
     return NextResponse.json({ success: true, stats });
   } catch (err: unknown) {

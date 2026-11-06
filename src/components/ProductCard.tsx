@@ -155,10 +155,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               <button
                 onClick={() => onLaunchDemo(product)}
                 className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-zinc-300 bg-[#16181f] hover:bg-[#20222b] border border-[#232530] transition flex items-center gap-1"
-                title="Test interactive tool demo"
+                title="Preview interactive tool"
               >
                 <Play className="w-3 h-3 text-zinc-400" />
-                <span className="hidden sm:inline">Try Demo</span>
+                <span className="hidden sm:inline">Preview</span>
               </button>
             )}
 

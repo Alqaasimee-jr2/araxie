@@ -15,7 +15,7 @@ import {
   Copy,
   Check
 } from 'lucide-react';
-import { Product, DynamicBundle, PurchasedItem } from '@/types';
+import { Product, DynamicBundle, PurchasedItem, UserProfile } from '@/types';
 
 interface PayPalCheckoutModalProps {
   isOpen: boolean;
@@ -23,6 +23,7 @@ interface PayPalCheckoutModalProps {
   products: Product[];
   bundle?: DynamicBundle | null;
   totalAmount: number;
+  currentUser?: UserProfile | null;
   onPaymentSuccess: (purchasedItems: PurchasedItem[], orderId: string, captureId: string) => void;
 }
 
@@ -32,6 +33,7 @@ export const PayPalCheckoutModal: React.FC<PayPalCheckoutModalProps> = ({
   products,
   bundle,
   totalAmount,
+  currentUser,
   onPaymentSuccess,
 }) => {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -45,7 +47,7 @@ export const PayPalCheckoutModal: React.FC<PayPalCheckoutModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handlePayPalSandboxCheckout = async () => {
+  const handlePayPalCheckout = async () => {
     setIsProcessing(true);
     try {
       // 1. Create PayPal Order
@@ -75,7 +77,7 @@ export const PayPalCheckoutModal: React.FC<PayPalCheckoutModalProps> = ({
         body: JSON.stringify({
           orderId,
           products,
-          buyerEmail: 'alex.student.sandbox@university.edu',
+          buyerEmail: currentUser?.email || 'student@university.edu',
         }),
       });
 
@@ -275,45 +277,40 @@ export const PayPalCheckoutModal: React.FC<PayPalCheckoutModalProps> = ({
                 </div>
               </div>
 
-              {/* PayPal Sandbox Payment Buttons */}
+              {/* PayPal Payment Buttons */}
               <div className="space-y-2.5 pt-2">
                 
-                {/* Official styled PayPal Sandbox Button */}
+                {/* Official styled PayPal Button */}
                 <button
-                  onClick={handlePayPalSandboxCheckout}
+                  onClick={handlePayPalCheckout}
                   disabled={isProcessing}
                   className="w-full py-3 rounded-xl bg-[#ffc439] hover:bg-[#f4bb33] disabled:opacity-60 text-[#003087] font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-amber-500/10 transition transform active:scale-98"
                 >
                   {isProcessing ? (
                     <span className="flex items-center gap-2">
                       <Sparkles className="w-4 h-4 animate-spin text-[#003087]" />
-                      Processing PayPal Sandbox Transaction...
+                      Processing Secure PayPal Payment...
                     </span>
                   ) : (
-                    <>
-                      <span className="font-black italic text-base tracking-tighter text-[#003087]">
-                        Pay<span className="text-[#0079c1]">Pal</span>
-                      </span>
-                      <span className="text-xs uppercase font-bold text-[#003087]/80 bg-black/10 px-1.5 py-0.5 rounded ml-1">
-                        Sandbox
-                      </span>
-                    </>
+                    <span className="font-black italic text-base tracking-tighter text-[#003087]">
+                      Pay<span className="text-[#0079c1]">Pal</span>
+                    </span>
                   )}
                 </button>
 
-                {/* Secondary Button: Pay with Card / PayPal Guest */}
+                {/* Secondary Button: Pay with Card */}
                 <button
-                  onClick={handlePayPalSandboxCheckout}
+                  onClick={handlePayPalCheckout}
                   disabled={isProcessing}
                   className="w-full py-2.5 rounded-xl bg-[#2c2e2f] hover:bg-[#383b3d] text-zinc-200 font-medium text-xs flex items-center justify-center gap-2 transition"
                 >
                   <CreditCard className="w-3.5 h-3.5 text-zinc-400" />
-                  <span>Debit or Credit Card (PayPal Guest Checkout)</span>
+                  <span>Debit or Credit Card (Powered by PayPal)</span>
                 </button>
 
                 <div className="flex items-center justify-center gap-1.5 text-[10px] text-zinc-500 pt-1">
                   <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                  <span>Secured by PayPal Sandbox & Instant Peer Creator Payout</span>
+                  <span>Secured by PayPal Purchase Protection & End-to-End Encryption</span>
                 </div>
 
               </div>

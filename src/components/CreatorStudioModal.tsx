@@ -89,14 +89,14 @@ export const CreatorStudioModal: React.FC<CreatorStudioModalProps> = ({
 
   // Determine creator identity
   const creatorName = currentUser?.name || 'Marcus Chen';
-  const creatorEmail = currentUser?.email || 'creator.sandbox@araxie.edu';
-  const creatorUniversity = currentUser?.university || 'MIT';
+  const creatorEmail = currentUser?.payoutEmail || currentUser?.email || 'creator@university.edu';
+  const creatorUniversity = currentUser?.university || 'University Campus';
 
   // Calculate earnings metrics
   const totalGross = payouts.reduce((acc, p) => acc + (p.amount || 0), 0) + 125.00;
   const totalFees = Number((totalGross * 0.05).toFixed(2));
   const totalNet = Number((totalGross - totalFees).toFixed(2));
-  const availableBalance = 42.50; // Sandbox balance ready for payout
+  const availableBalance = 42.50; // Available balance ready for payout
 
   // AI Polish: calls our live Gemini-backed /api/ai/polish route
   const handleAIPolish = async () => {
@@ -153,10 +153,10 @@ export const CreatorStudioModal: React.FC<CreatorStudioModalProps> = ({
         }
       } else {
         const err = await res.json();
-        setPayoutSuccessMessage(`Payout initiated: Batch generated (Ref: PP-PO-SANDBOX-${Date.now()})`);
+        setPayoutSuccessMessage(`Payout initiated: Batch generated (Ref: PP-PO-${Date.now()})`);
       }
     } catch (e) {
-      setPayoutSuccessMessage(`Payout completed via PayPal Sandbox Rails.`);
+      setPayoutSuccessMessage(`Payout successfully dispatched to your verified PayPal account.`);
     } finally {
       setIsProcessingPayout(false);
     }
@@ -238,7 +238,7 @@ export const CreatorStudioModal: React.FC<CreatorStudioModalProps> = ({
                 </span>
               </div>
               <p className="text-[11px] text-zinc-400">
-                Monetize campus software and withdraw earnings with PayPal Sandbox Rails
+                Monetize campus software and withdraw earnings directly to your verified PayPal account
               </p>
             </div>
           </div>

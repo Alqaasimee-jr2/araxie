@@ -150,9 +150,9 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                 onCheckout(cartItems, bundleObj, finalTotal);
                 onClose();
               }}
-              className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 transition"
+              className="w-full py-2.5 rounded-xl bg-[#222530] hover:bg-[#2c303f] text-white border border-[#34394b] font-semibold text-xs shadow-lg flex items-center justify-center gap-2 transition"
             >
-              <span>Checkout with PayPal Sandbox</span>
+              <span>Proceed to PayPal Checkout</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>

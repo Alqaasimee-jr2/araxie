@@ -12,7 +12,7 @@ import { PayPalCheckoutModal } from '@/components/PayPalCheckoutModal';
 import { StudentLocker } from '@/components/StudentLocker';
 import { CreatorStudioModal } from '@/components/CreatorStudioModal';
 import { OrderHistoryModal } from '@/components/OrderHistoryModal';
-import { PayPalConfigModal } from '@/components/PayPalConfigModal';
+import { UserSettingsModal } from '@/components/UserSettingsModal';
 import { CartDrawer } from '@/components/CartDrawer';
 import { InteractiveToolModal } from '@/components/tools/InteractiveToolModal';
 import { AuthModal } from '@/components/AuthModal';
@@ -54,7 +54,7 @@ export default function Home() {
   const [checkoutBundle, setCheckoutBundle] = useState<DynamicBundle | null>(null);
   const [checkoutTotal, setCheckoutTotal] = useState<number>(0);
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
-  const [isPayPalConfigOpen, setIsPayPalConfigOpen] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [isCreatorModalOpen, setIsCreatorModalOpen] = useState(false);
   const [isOrdersModalOpen, setIsOrdersModalOpen] = useState(false);
 
@@ -175,7 +175,7 @@ export default function Home() {
         cartCount={cart.length}
         onOpenCart={() => setIsCartDrawerOpen(true)}
         onOpenAI={() => setIsAIModalOpen(true)}
-        onOpenPayPalConfig={() => setIsPayPalConfigOpen(true)}
+        onOpenSettings={() => setIsSettingsModalOpen(true)}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         currentUser={currentUser}
@@ -210,7 +210,7 @@ export default function Home() {
                 </h1>
 
                 <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                  Discover peer-built Chrome extensions, interactive algorithm visualizers, and curated study suites. Bundled autonomously by AI with instant <span className="text-zinc-200 font-semibold">PayPal Sandbox</span> checkout and 95% creator payouts.
+                  Discover peer-built Chrome extensions, interactive algorithm visualizers, and curated study suites. Bundled autonomously by AI with instant <span className="text-zinc-200 font-semibold">PayPal</span> checkout and 95% creator payouts.
                 </p>
 
                 {/* AI Concierge Trigger Input */}
@@ -236,15 +236,15 @@ export default function Home() {
                 <div className="pt-2 flex flex-wrap items-center gap-4 text-xs text-zinc-500">
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-zinc-400" />
-                    <span>PayPal Sandbox Payments</span>
+                    <span>Verified PayPal Checkout</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-zinc-400" />
-                    <span>Live In-Browser Tool Execution</span>
+                    <span>In-Browser Interactive Previews</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-zinc-400" />
-                    <span>Supabase Cloud PostgreSQL &amp; Auth</span>
+                    <span>100% Student Verified &bull; 95% Creator Payouts</span>
                   </div>
                 </div>
 
@@ -327,29 +327,39 @@ export default function Home() {
       <footer className="mt-16 border-t border-[#17181f] bg-[#0c0d10] py-8 text-xs text-zinc-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-zinc-300">Araxie</span>
-            <span>•</span>
-            <span>Built for the PayPal AI Hackathon on Devpost</span>
+            <span className="font-bold text-zinc-200">Araxie</span>
+            <span>&bull;</span>
+            <span>The Peer-to-Peer Student Software &amp; Digital Tool Marketplace</span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 text-[11px]">
-            <span className="text-zinc-500">PayPal v2 Orders</span>
-            <span className="text-zinc-500">PayPal v1 Payouts</span>
-            <span className="text-zinc-500">Supabase Auth</span>
+          <div className="flex flex-wrap items-center gap-5 text-[11px]">
+            <button 
+              onClick={() => setCurrentTab('explore')}
+              className="text-zinc-400 hover:text-white transition"
+            >
+              Browse Catalog
+            </button>
+            <button 
+              onClick={() => setCurrentTab('creator')}
+              className="text-zinc-400 hover:text-white transition"
+            >
+              Sell Campus Tools
+            </button>
+            <button 
+              onClick={() => setIsAIModalOpen(true)}
+              className="text-zinc-400 hover:text-white transition"
+            >
+              AI Advisor
+            </button>
             <a 
               href="https://github.com/Alqaasimee-jr2/araxie" 
               target="_blank" 
               rel="noreferrer"
               className="text-zinc-400 hover:text-white transition"
             >
-              GitHub Repository
+              GitHub
             </a>
-            <button
-              onClick={() => setIsPayPalConfigOpen(true)}
-              className="text-zinc-400 hover:text-white transition"
-            >
-              Sandbox Status
-            </button>
+            <span className="text-zinc-600">&copy; 2026 Araxie Inc.</span>
           </div>
         </div>
       </footer>
@@ -413,11 +423,17 @@ export default function Home() {
         </button>
 
         <button
-          onClick={() => setIsAuthModalOpen(true)}
+          onClick={() => {
+            if (currentUser) {
+              setIsSettingsModalOpen(true);
+            } else {
+              setIsAuthModalOpen(true);
+            }
+          }}
           className="flex flex-col items-center gap-1 text-[10px] font-medium text-zinc-500 hover:text-zinc-300 transition"
         >
           <User className="w-5 h-5" />
-          <span>{currentUser ? 'Profile' : 'Sign In'}</span>
+          <span>{currentUser ? 'Settings' : 'Sign In'}</span>
         </button>
       </div>
 
@@ -461,13 +477,14 @@ export default function Home() {
         catalog={products}
       />
 
-      {/* Modal: PayPal Sandbox Checkout */}
+      {/* Modal: PayPal Checkout */}
       <PayPalCheckoutModal
         isOpen={isCheckoutModalOpen}
         onClose={() => setIsCheckoutModalOpen(false)}
         products={checkoutProducts}
         bundle={checkoutBundle}
         totalAmount={checkoutTotal}
+        currentUser={currentUser}
         onPaymentSuccess={handlePaymentSuccess}
       />
 
@@ -496,10 +513,12 @@ export default function Home() {
         purchasedItems={purchasedItems}
       />
 
-      {/* Modal: PayPal Sandbox Configuration */}
-      <PayPalConfigModal
-        isOpen={isPayPalConfigOpen}
-        onClose={() => setIsPayPalConfigOpen(false)}
+      {/* Modal: Student Account & Payout Settings */}
+      <UserSettingsModal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+        currentUser={currentUser}
+        onUpdateUser={(updated) => setCurrentUser(updated)}
       />
 
     </div>

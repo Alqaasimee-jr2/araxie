@@ -38,7 +38,7 @@ export const OrderHistoryModal: React.FC<OrderHistoryModalProps> = ({
             <div>
               <h3 className="font-semibold text-sm text-white">Order History & Receipts</h3>
               <p className="text-[11px] text-zinc-400">
-                Verified PayPal Sandbox transaction logs and asset licenses
+                Verified PayPal transaction receipts, student licenses, and download access
               </p>
             </div>
           </div>

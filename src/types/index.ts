@@ -23,6 +23,10 @@ export interface UserProfile {
   avatar: string;
   verified: boolean;
   walletBalance?: number;
+  payoutEmail?: string;
+  major?: string;
+  gradYear?: string;
+  bio?: string;
 }
 
 export interface Product {

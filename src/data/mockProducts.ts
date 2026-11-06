@@ -115,8 +115,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   {
     id: 'prod-fastapi-micro-saas',
     title: 'Student AI Micro-SaaS Starter',
-    tagline: 'Production-ready Next.js + FastAPI boilerplate to turn your student AI hackathon ideas into paid apps.',
-    description: 'Stop building auth, billing, and database schemas from scratch. This starter repo includes PayPal sandbox checkout, JWT user authentication, rate limiting, and OpenAI/Gemini streaming endpoints pre-wired for student entrepreneurs.',
+    tagline: 'Production-ready Next.js + FastAPI boilerplate to turn your student AI software ideas into paid apps.',
+    description: 'Stop building auth, billing, and database schemas from scratch. This starter repo includes PayPal checkout, JWT user authentication, rate limiting, and OpenAI/Gemini streaming endpoints pre-wired for student entrepreneurs.',
     category: 'saas-micro',
     price: 18.00,
     originalPrice: 35.00,

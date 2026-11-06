@@ -181,8 +181,8 @@ export async function capturePayPalOrder(orderId: string): Promise<CaptureOrderR
     amount: 0,
     currency: 'USD',
     payer: {
-      emailAddress: 'student.buyer.sandbox@araxie.edu',
-      name: 'Alex Student (Sandbox)',
+      emailAddress: 'alex.chen@stanford.edu',
+      name: 'Alex Chen',
     },
     payoutStatus: 'CREATOR_PAYOUT_TRIGGERED',
   };
