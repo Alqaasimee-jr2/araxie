@@ -6,6 +6,7 @@ import { CanvasAutoPilotTool } from './CanvasAutoPilotTool';
 import { AlgoVisualizerTool } from './AlgoVisualizerTool';
 import { AcademicWritingTool } from './AcademicWritingTool';
 import { CIGuardianTool } from './CIGuardianTool';
+import { Flow7Tool } from './Flow7Tool';
 
 interface InteractiveToolModalProps {
   isOpen: boolean;
@@ -23,7 +24,9 @@ export const InteractiveToolModal: React.FC<InteractiveToolModalProps> = ({
   if (!isOpen) return null;
 
   const renderToolComponent = () => {
-    if (toolId === 'prod-ci-guardian') {
+    if (toolId === 'prod-flow7') {
+      return <Flow7Tool />;
+    } else if (toolId === 'prod-ci-guardian') {
       return <CIGuardianTool />;
     } else if (toolId === 'prod-algo-visualizer') {
       return <AlgoVisualizerTool />;
