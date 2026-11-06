@@ -13,13 +13,14 @@ import {
   User,
   LogOut,
   ChevronDown,
-  Settings
+  Settings,
+  Globe
 } from 'lucide-react';
 import { UserProfile } from '@/types';
 
 interface NavbarProps {
-  currentTab: 'explore' | 'me' | 'creator' | 'orders';
-  setCurrentTab: (tab: 'explore' | 'me' | 'creator' | 'orders') => void;
+  currentTab: 'public' | 'explore' | 'me' | 'creator' | 'orders';
+  setCurrentTab: (tab: 'public' | 'explore' | 'me' | 'creator' | 'orders') => void;
   unlockedCount: number;
   cartCount: number;
   onOpenCart: () => void;
@@ -97,6 +98,18 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Navigation Items (Desktop & Tablet) */}
           <nav className="hidden sm:flex items-center gap-1 sm:gap-1.5">
             <button
+              onClick={() => setCurrentTab('public')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
+                currentTab === 'public'
+                  ? 'bg-[#1e212b] text-white border border-[#292c3a]'
+                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-[#15161b]'
+              }`}
+            >
+              <Globe className="w-3.5 h-3.5 text-blue-400" />
+              <span>Public Space</span>
+            </button>
+
+            <button
               onClick={() => setCurrentTab('explore')}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
                 currentTab === 'explore'
@@ -104,7 +117,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   : 'text-zinc-400 hover:text-zinc-200 hover:bg-[#15161b]'
               }`}
             >
-              Explore
+              Marketplace
             </button>
 
             <button
@@ -205,6 +218,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                         {currentUser.role === 'student_creator' ? 'Student Creator' : 'Student Learner'}
                       </span>
                     </div>
+
+                    <button
+                      onClick={() => { setCurrentTab('public'); setIsProfileMenuOpen(false); }}
+                      className="w-full text-left px-3 py-1.5 text-zinc-300 hover:text-white hover:bg-[#181920] flex items-center gap-1.5 transition"
+                    >
+                      <Globe className="w-3 h-3 text-blue-400" />
+                      <span>Public Campus Space</span>
+                    </button>
 
                     <button
                       onClick={() => { setCurrentTab('me'); setIsProfileMenuOpen(false); }}

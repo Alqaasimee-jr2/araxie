@@ -16,6 +16,7 @@ import { UserSettingsModal } from '@/components/UserSettingsModal';
 import { CartDrawer } from '@/components/CartDrawer';
 import { InteractiveToolModal } from '@/components/tools/InteractiveToolModal';
 import { AuthModal } from '@/components/AuthModal';
+import { PublicSpaceView } from '@/components/PublicSpaceView';
 import { 
   Sparkles, 
   Layers, 
@@ -30,14 +31,15 @@ import {
   ShoppingBag,
   Package,
   User,
-  Wallet
+  Wallet,
+  Globe
 } from 'lucide-react';
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
   const [purchasedItems, setPurchasedItems] = useState<PurchasedItem[]>([]);
   const [cart, setCart] = useState<Product[]>([]);
-  const [currentTab, setCurrentTab] = useState<'explore' | 'me' | 'creator' | 'orders'>('explore');
+  const [currentTab, setCurrentTab] = useState<'public' | 'explore' | 'me' | 'creator' | 'orders'>('public');
   const [selectedCategory, setSelectedCategory] = useState<'all' | ProductCategory>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -186,6 +188,25 @@ export default function Home() {
       {/* Main Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
         
+        {/* Render Tab: Public Space (Campus Commons) */}
+        {currentTab === 'public' && (
+          <PublicSpaceView
+            products={products}
+            onSelectProduct={(prod) => setSelectedProduct(prod)}
+            onLaunchTool={(prod) => setActiveInteractiveTool(prod)}
+            onEnterMarketplace={() => setCurrentTab('explore')}
+            onOpenDashboard={() => {
+              if (currentUser) {
+                setCurrentTab('me');
+              } else {
+                setIsAuthModalOpen(true);
+              }
+            }}
+            onOpenAuth={() => setIsAuthModalOpen(true)}
+            isLoggedIn={!!currentUser}
+          />
+        )}
+
         {/* Render Tab: Explore (Storefront) */}
         {currentTab === 'explore' && (
           <div className="space-y-7">
@@ -357,6 +378,12 @@ export default function Home() {
 
           <div className="flex flex-wrap items-center gap-5 text-[11px]">
             <button 
+              onClick={() => setCurrentTab('public')}
+              className="text-zinc-400 hover:text-white transition"
+            >
+              Public Space
+            </button>
+            <button 
               onClick={() => setCurrentTab('explore')}
               className="text-zinc-400 hover:text-white transition"
             >
@@ -390,13 +417,23 @@ export default function Home() {
       {/* Whop-Grade Sticky Mobile Bottom Navigation Bar */}
       <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0d0e12]/95 backdrop-blur-md border-t border-[#1c1d25] px-3 py-2 flex items-center justify-around">
         <button
+          onClick={() => setCurrentTab('public')}
+          className={`flex flex-col items-center gap-1 text-[10px] font-medium transition ${
+            currentTab === 'public' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
+          }`}
+        >
+          <Globe className="w-5 h-5" />
+          <span>Public</span>
+        </button>
+
+        <button
           onClick={() => setCurrentTab('explore')}
           className={`flex flex-col items-center gap-1 text-[10px] font-medium transition ${
             currentTab === 'explore' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
           }`}
         >
           <Layers className="w-5 h-5" />
-          <span>Explore</span>
+          <span>Market</span>
         </button>
 
         <button
