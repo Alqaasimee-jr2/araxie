@@ -88,7 +88,7 @@ export const CreatorStudioModal: React.FC<CreatorStudioModalProps> = ({
   const netEarnings = Number((numPrice - platformFee).toFixed(2));
 
   // Determine creator identity
-  const creatorName = currentUser?.name || 'Marcus Chen';
+  const creatorName = currentUser?.name || 'Abdullah Qaasim-Falade';
   const creatorEmail = currentUser?.payoutEmail || currentUser?.email || 'creator@university.edu';
   const creatorUniversity = currentUser?.university || 'University Campus';
 

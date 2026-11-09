@@ -101,10 +101,11 @@ export const PublicSpaceView: React.FC<PublicSpaceViewProps> = ({
   const filteredProducts = products.filter(p => {
     const matchesCampus = 
       selectedCampus === 'all' ||
-      (selectedCampus === 'oau' && (p.creator.university.toLowerCase().includes('obafemi') || p.creator.university.toLowerCase().includes('oau'))) ||
-      (selectedCampus === 'stanford' && p.creator.university.toLowerCase().includes('stanford')) ||
-      (selectedCampus === 'mit' && p.creator.university.toLowerCase().includes('mit')) ||
-      (selectedCampus === 'berkeley' && (p.creator.university.toLowerCase().includes('berkeley') || p.creator.university.toLowerCase().includes('uc')));
+      (selectedCampus === 'oau' && (p.creator.university.toLowerCase().includes('obafemi') || p.creator.university.toLowerCase().includes('oau') || p.creator.university.toLowerCase().includes('ife'))) ||
+      (selectedCampus === 'unilag' && (p.creator.university.toLowerCase().includes('lagos') || p.creator.university.toLowerCase().includes('unilag'))) ||
+      (selectedCampus === 'ui' && (p.creator.university.toLowerCase().includes('ibadan') || p.creator.university.toLowerCase().includes('ui'))) ||
+      (selectedCampus === 'covenant' && (p.creator.university.toLowerCase().includes('covenant') || p.creator.university.toLowerCase().includes('cu'))) ||
+      (selectedCampus === 'futa' && (p.creator.university.toLowerCase().includes('akure') || p.creator.university.toLowerCase().includes('futa')));
 
     const matchesSearch = !activeSearch || 
       p.title.toLowerCase().includes(activeSearch) ||
@@ -123,67 +124,67 @@ export const PublicSpaceView: React.FC<PublicSpaceViewProps> = ({
       avatar: '/avatars/abdullah.svg',
       badge: 'Campus Pioneer',
       tools: ['CI-Guardian', 'Flow7', 'OAUMods Pro', 'Schora AI'],
-      bio: 'Building calm productivity layers and pre-flight developer security tools for student engineers.',
+      bio: 'Building calm productivity layers, campus guides, and pre-flight AST security tools for student engineers.',
       githubUrl: 'https://github.com/Alqaasimee-jr2',
     },
     {
-      name: 'Sarah Lin',
-      handle: '@sarah_dev',
-      university: 'Stanford University \'26',
+      name: 'Folashade Adeyemi',
+      handle: '@folashade_dev',
+      university: 'University of Lagos (UNILAG) \'26',
       avatar: '/avatars/sarah.svg',
       badge: 'Extension Specialist',
-      tools: ['CanvasAutoPilot', 'GPA Forecast Curve'],
-      bio: 'Automating Canvas LMS assignment calendars and exam reminders for 1,400+ campus peers.',
+      tools: ['CanvasAutoPilot', 'Academic Planner Pro'],
+      bio: 'Automating LMS assignment schedules, lecture timetables, and exam reminders for campus peers.',
       githubUrl: 'https://github.com/Alqaasimee-jr2/araxie',
     },
     {
-      name: 'Priya Patel',
-      handle: '@priyapatel_cs',
-      university: 'UC Berkeley \'26',
-      avatar: '/avatars/priya.svg',
+      name: 'Chinedu Okonkwo',
+      handle: '@chinedu_cs',
+      university: 'Federal University of Technology, Akure (FUTA) \'26',
+      avatar: '/avatars/marcus.svg',
       badge: 'Algorithms Fellow',
       tools: ['AlgoVisualizer Pro', 'Data Structures Atlas'],
-      bio: 'Visualizing Dijkstra, A*, and dynamic programming matrices for undergraduate computer science.',
+      bio: 'Visualizing Dijkstra, BFS, and dynamic programming matrices for undergraduate computer science.',
       githubUrl: 'https://github.com/Alqaasimee-jr2/araxie',
     },
     {
-      name: 'Marcus Chen',
-      handle: '@mchen_mit',
-      university: 'MIT \'25',
-      avatar: '/avatars/marcus.svg',
-      badge: 'Research Builder',
-      tools: ['Academic Prompt Vault', 'Paper Synthesizer CLI'],
-      bio: 'Curating open scholarly prompts and arXiv CLI synthesizers for university thesis research.',
+      name: 'Amina Bello',
+      handle: '@amina_ui',
+      university: 'University of Ibadan (UI) \'25',
+      avatar: '/avatars/amina.svg',
+      badge: 'Clinical Researcher',
+      tools: ['MedStudy CramOS', 'Clinical Prompt Vault'],
+      bio: 'Curating open medical flashcard decks and clinical synthesis workflows for undergraduate medicine.',
       githubUrl: 'https://github.com/Alqaasimee-jr2/araxie',
     },
   ];
 
   const communityDiscussions = [
     {
-      author: 'David K. (UC Berkeley \'25)',
-      role: 'Student Buyer',
+      author: 'Babatunde A. (University of Lagos \'25)',
+      role: 'Student Builder',
       avatar: '/avatars/david.svg',
       tool: 'Flow7 Focus Layer',
       rating: 5,
-      comment: 'Used Flow7 during my 24-hour hackathon sprint. The cognitive domain tracking and calm stopwatch kept our team in deep work without burning out.',
+      comment: 'Used Flow7 during our 24-hour student hackathon sprint. The cognitive domain tracking and calm stopwatch kept our team in deep flow without burnout.',
       timestamp: '2 hours ago',
     },
     {
-      author: 'Amina B. (Obafemi Awolowo Univ \'27)',
+      author: 'Amina B. (Obafemi Awolowo University \'27)',
       role: 'Freshman Learner',
       avatar: '/avatars/amina.svg',
       tool: 'OAUMods Pro',
       rating: 5,
-      comment: 'The lecture hall atlas saved me from getting lost between BOOC and Spider during matriculation week. Essential guide for Great Ife students!',
+      comment: 'The lecture hall atlas saved me from getting lost between BOOC and Spider during matriculation week. Essential survival companion for Great Ife students!',
       timestamp: '5 hours ago',
     },
     {
-      author: 'Alex C. (Stanford \'26)',
+      author: 'Chinedu O. (FUTA \'26)',
       role: 'Junior CS Major',
       avatar: '/avatars/alex.svg',
       tool: 'CI-Guardian',
       rating: 5,
-      comment: 'CI-Guardian caught an unthrottled API endpoint and an eval() call right in our AST pre-flight test. This is what student developer tools should look like.',
+      comment: 'CI-Guardian caught an unthrottled API endpoint and an eval() call right in our AST pre-flight check. This is what student developer tools should look like.',
       timestamp: 'Yesterday',
     },
   ];
@@ -210,7 +211,7 @@ export const PublicSpaceView: React.FC<PublicSpaceViewProps> = ({
           </h1>
 
           <p className="text-sm sm:text-base text-zinc-400 leading-relaxed max-w-2xl">
-            Explore verified tools built by students across <span className="text-white font-medium">Stanford, Great Ife (OAU), MIT, and UC Berkeley</span>. Upvote campus projects, launch in-browser runners, and inspect creator verified code.
+            Explore verified tools built by students across <span className="text-white font-medium">Great Ife (OAU), UNILAG, University of Ibadan (UI), Covenant, and FUTA</span>. Upvote campus projects, launch in-browser runners, and inspect creator verified code.
           </p>
 
           {/* Quick Action Navigation Buttons */}
@@ -357,9 +358,10 @@ export const PublicSpaceView: React.FC<PublicSpaceViewProps> = ({
             {[
               { id: 'all', label: 'All Campuses' },
               { id: 'oau', label: 'Great Ife (OAU)' },
-              { id: 'stanford', label: 'Stanford' },
-              { id: 'berkeley', label: 'UC Berkeley' },
-              { id: 'mit', label: 'MIT' },
+              { id: 'unilag', label: 'UNILAG (Akoka)' },
+              { id: 'ui', label: 'UI (Ibadan)' },
+              { id: 'covenant', label: 'Covenant (Hebron)' },
+              { id: 'futa', label: 'FUTA (Akure)' },
             ].map(tab => (
               <button
                 key={tab.id}

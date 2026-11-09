@@ -55,8 +55,8 @@ export const StudentLocker: React.FC<StudentLockerProps> = ({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           productId: item.productId,
-          authorName: 'Alex Chen',
-          authorUniversity: 'Stanford University',
+          authorName: 'Babatunde Adeleke',
+          authorUniversity: 'Obafemi Awolowo University (OAU)',
           rating: reviewRating,
           comment: reviewComment,
         }),

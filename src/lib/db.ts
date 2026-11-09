@@ -16,8 +16,8 @@ const INITIAL_REVIEWS: StudentReview[] = [
   {
     id: 'rev-init-1',
     productId: 'prod-canvas-autopilot',
-    authorName: 'Alex Rivera',
-    authorUniversity: 'Stanford University',
+    authorName: 'Damilola Alabi',
+    authorUniversity: 'Obafemi Awolowo University (OAU)',
     rating: 5,
     comment: 'Synced my CS 106B and Physics Canvas assignments directly into Notion and Google Calendar. Literally saved my GPA this quarter!',
     date: 'Nov 4, 2026',
@@ -26,8 +26,8 @@ const INITIAL_REVIEWS: StudentReview[] = [
   {
     id: 'rev-init-2',
     productId: 'prod-algo-visualizer',
-    authorName: 'Priya Patel',
-    authorUniversity: 'UC Berkeley',
+    authorName: 'Chinedu Okonkwo',
+    authorUniversity: 'Federal University of Technology, Akure (FUTA)',
     rating: 5,
     comment: 'The memory pointer stepper helped me finally pass my SWE internship technical interviews. Worth 10x the price.',
     date: 'Nov 5, 2026',
@@ -36,8 +36,8 @@ const INITIAL_REVIEWS: StudentReview[] = [
   {
     id: 'rev-init-3',
     productId: 'prod-academic-suite',
-    authorName: 'David Kim',
-    authorUniversity: 'MIT',
+    authorName: 'Emeka Nwosu',
+    authorUniversity: 'University of Lagos (UNILAG)',
     rating: 5,
     comment: 'Turned my messy research notes into a formatted IEEE LaTeX draft with citations in under 3 minutes.',
     date: 'Nov 6, 2026',
@@ -72,8 +72,8 @@ function ensureDbFile(): DatabaseSchema {
         {
           id: 'payout-init-1',
           orderId: 'ARX-PP-98214-REC',
-          creatorName: 'Sarah Lin',
-          creatorEmail: 'sarah.lin@stanford.edu',
+          creatorName: 'Folashade Adeyemi',
+          creatorEmail: 'folashade.adeyemi@unilag.edu.ng',
           amount: 6.99,
           platformFee: 0.35,
           timestamp: new Date().toISOString(),

@@ -3,10 +3,10 @@ import { supabase, supabaseAdmin } from './supabase';
 import { getFakeAvatar } from './avatars';
 
 export const SEEDED_JUDGE_BUYER: UserProfile = {
-  id: 'usr-judge-buyer-stanford',
+  id: 'usr-judge-buyer-oau',
   email: 'judge.sandbox@araxie.edu',
-  name: 'Alex Chen',
-  university: 'Stanford University \'26',
+  name: 'Babatunde Adeleke',
+  university: 'Obafemi Awolowo University (OAU) \'26',
   role: 'student_buyer',
   avatar: '/avatars/judge.svg',
   verified: true,
@@ -14,10 +14,10 @@ export const SEEDED_JUDGE_BUYER: UserProfile = {
 };
 
 export const SEEDED_CREATOR_BUILDER: UserProfile = {
-  id: 'usr-creator-mit-builder',
+  id: 'usr-creator-oau-builder',
   email: 'creator.sandbox@araxie.edu',
-  name: 'Marcus Chen',
-  university: 'MIT \'25',
+  name: 'Abdullah Qaasim-Falade',
+  university: 'Obafemi Awolowo University (OAU) \'26',
   role: 'student_creator',
   avatar: '/avatars/creator.svg',
   verified: true,

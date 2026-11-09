@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Araxie Campus Commons — Open University Software Directory',
-    description: 'Explore peer-built student software across Stanford, OAU, MIT, and UC Berkeley. Zero sign-in required to try live browser tools.',
+    description: 'Explore peer-built student software across Great Ife (OAU), UNILAG, UI, and FUTA. Zero sign-in required to try live browser tools.',
     siteName: 'Araxie',
   },
 };

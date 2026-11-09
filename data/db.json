@@ -9,12 +9,12 @@
       "price": 6.99,
       "originalPrice": 12,
       "creator": {
-        "name": "Sarah Lin",
-        "handle": "sarah_dev",
+        "name": "Folashade Adeyemi",
+        "handle": "folashade_dev",
         "avatar": "/avatars/sarah.svg",
-        "university": "Stanford University",
+        "university": "University of Lagos (UNILAG)",
         "verified": true,
-        "payoutEmail": "sarah.lin@stanford.edu"
+        "payoutEmail": "folashade.adeyemi@unilag.edu.ng"
       },
       "rating": 5,
       "reviewsCount": 143,
@@ -51,12 +51,12 @@
       "price": 12.5,
       "originalPrice": 20,
       "creator": {
-        "name": "Marcus Chen",
-        "handle": "marcus_code",
+        "name": "Chinedu Okonkwo",
+        "handle": "chinedu_code",
         "avatar": "/avatars/marcus.svg",
-        "university": "MIT",
+        "university": "Federal University of Technology, Akure (FUTA)",
         "verified": true,
-        "payoutEmail": "marcus@mit.edu"
+        "payoutEmail": "chinedu.okonkwo@futa.edu.ng"
       },
       "rating": 5,
       "reviewsCount": 310,
@@ -70,7 +70,7 @@
       ],
       "downloadAsset": {
         "type": "github",
-        "url": "https://github.com/marcus-mit/algovisualizer-pro",
+        "url": "https://github.com/Alqaasimee-jr2/algovisualizer-pro",
         "fileName": "algovisualizer-pro-bundle.zip",
         "licenseKeyPrefix": "ALGO"
       },
@@ -93,12 +93,12 @@
       "price": 14.99,
       "originalPrice": 29.99,
       "creator": {
-        "name": "Priya Patel",
-        "handle": "priya_mcat",
-        "avatar": "/avatars/priya.svg",
-        "university": "Johns Hopkins",
+        "name": "Amina Bello",
+        "handle": "amina_mcat",
+        "avatar": "/avatars/amina.svg",
+        "university": "University of Ibadan (UI)",
         "verified": true,
-        "payoutEmail": "priya.patel@jhu.edu"
+        "payoutEmail": "amina.bello@ui.edu.ng"
       },
       "rating": 4.8,
       "reviewsCount": 98,
@@ -135,12 +135,12 @@
       "price": 18,
       "originalPrice": 35,
       "creator": {
-        "name": "David Kim",
-        "handle": "dkim_labs",
+        "name": "Damilola Alabi",
+        "handle": "dami_dev",
         "avatar": "/avatars/david.svg",
-        "university": "UC Berkeley",
+        "university": "Obafemi Awolowo University (OAU)",
         "verified": true,
-        "payoutEmail": "david.kim@berkeley.edu"
+        "payoutEmail": "damilola.alabi@oauife.edu.ng"
       },
       "rating": 4.9,
       "reviewsCount": 88,
@@ -154,7 +154,7 @@
       ],
       "downloadAsset": {
         "type": "github",
-        "url": "https://github.com/dkim-berkeley/student-micro-saas",
+        "url": "https://github.com/Alqaasimee-jr2/student-micro-saas",
         "fileName": "student-micro-saas-template.zip",
         "licenseKeyPrefix": "SAAS"
       },
@@ -177,12 +177,12 @@
       "price": 8.5,
       "originalPrice": 15,
       "creator": {
-        "name": "Elena Rostova",
-        "handle": "elena_research",
+        "name": "Emeka Nwosu",
+        "handle": "emeka_research",
         "avatar": "/avatars/elena.svg",
-        "university": "Oxford University",
+        "university": "University of Nigeria, Nsukka (UNN)",
         "verified": true,
-        "payoutEmail": "elena.rostova@ox.ac.uk"
+        "payoutEmail": "emeka.nwosu@unn.edu.ng"
       },
       "rating": 4.7,
       "reviewsCount": 76,
@@ -218,12 +218,12 @@
       "price": 7.99,
       "originalPrice": 14,
       "creator": {
-        "name": "Julian Vance",
-        "handle": "julian_chem",
+        "name": "Babatunde Adeleke",
+        "handle": "tunde_chem",
         "avatar": "/avatars/alex.svg",
-        "university": "Harvard University",
+        "university": "Covenant University (CU)",
         "verified": true,
-        "payoutEmail": "julian.vance@harvard.edu"
+        "payoutEmail": "babatunde.adeleke@covenantuniversity.edu.ng"
       },
       "rating": 4.9,
       "reviewsCount": 114,
@@ -260,12 +260,12 @@
       "price": 4.99,
       "originalPrice": 9.99,
       "creator": {
-        "name": "Tyler Brooks",
-        "handle": "tyler_tech",
-        "avatar": "/avatars/creator.svg",
-        "university": "Georgia Tech",
+        "name": "Farida Mohammed",
+        "handle": "farida_gpa",
+        "avatar": "/avatars/priya.svg",
+        "university": "Ahmadu Bello University (ABU Zaria)",
         "verified": true,
-        "payoutEmail": "tbrooks@gatech.edu"
+        "payoutEmail": "farida.mohammed@abu.edu.ng"
       },
       "rating": 4.8,
       "reviewsCount": 204,
@@ -301,12 +301,12 @@
       "price": 5.5,
       "originalPrice": 10,
       "creator": {
-        "name": "Amara Okafor",
-        "handle": "amara_phd",
-        "avatar": "/avatars/amina.svg",
-        "university": "University of Toronto",
+        "name": "Olumide Bakare",
+        "handle": "olumide_prompts",
+        "avatar": "/avatars/marcus.svg",
+        "university": "University of Lagos (UNILAG)",
         "verified": true,
-        "payoutEmail": "amara.okafor@utoronto.ca"
+        "payoutEmail": "olumide.bakare@unilag.edu.ng"
       },
       "rating": 4.9,
       "reviewsCount": 165,
@@ -346,7 +346,7 @@
         "name": "Abdullah Qaasim-Falade",
         "handle": "alqaasimee_jr2",
         "avatar": "/avatars/abdullah.svg",
-        "university": "Obafemi Awolowo University '26",
+        "university": "Obafemi Awolowo University (OAU)",
         "verified": true,
         "payoutEmail": "alqaasimee.falade@oauife.edu.ng"
       },
@@ -389,7 +389,7 @@
         "name": "Abdullah Qaasim-Falade",
         "handle": "alqaasimee_jr2",
         "avatar": "/avatars/abdullah.svg",
-        "university": "NIT7ER Studio",
+        "university": "Obafemi Awolowo University (OAU)",
         "verified": true,
         "payoutEmail": "alqaasimee.falade@oauife.edu.ng"
       },
@@ -431,7 +431,7 @@
         "name": "Abdullah Qaasim-Falade",
         "handle": "alqaasimee_jr2",
         "avatar": "/avatars/abdullah.svg",
-        "university": "Obafemi Awolowo University '26",
+        "university": "Obafemi Awolowo University (OAU)",
         "verified": true,
         "payoutEmail": "alqaasimee.falade@oauife.edu.ng"
       },
@@ -474,7 +474,7 @@
         "name": "Abdullah Qaasim-Falade",
         "handle": "alqaasimee_jr2",
         "avatar": "/avatars/abdullah.svg",
-        "university": "NIT7ER Studio",
+        "university": "Obafemi Awolowo University (OAU)",
         "verified": true,
         "payoutEmail": "alqaasimee.falade@oauife.edu.ng"
       },
@@ -516,7 +516,7 @@
         "name": "Abdullah Qaasim-Falade",
         "handle": "alqaasimee_jr2",
         "avatar": "/avatars/abdullah.svg",
-        "university": "NIT7ER Studio",
+        "university": "Obafemi Awolowo University (OAU)",
         "verified": true,
         "payoutEmail": "alqaasimee.falade@oauife.edu.ng"
       },
@@ -558,7 +558,7 @@
         "name": "Abdullah Qaasim-Falade",
         "handle": "alqaasimee_jr2",
         "avatar": "/avatars/abdullah.svg",
-        "university": "NIT7ER Academy",
+        "university": "Obafemi Awolowo University (OAU)",
         "verified": true,
         "payoutEmail": "alqaasimee.falade@oauife.edu.ng"
       },
@@ -603,12 +603,12 @@
         "price": 6.99,
         "originalPrice": 12,
         "creator": {
-          "name": "Sarah Lin",
+          "name": "Folashade Adeyemi",
           "handle": "sarah_dev",
           "avatar": "/avatars/sarah.svg",
-          "university": "Stanford University",
+          "university": "University of Lagos (UNILAG)",
           "verified": true,
-          "payoutEmail": "sarah.lin@stanford.edu"
+          "payoutEmail": "folashade.adeyemi@unilag.edu.ng"
         },
         "rating": 4.9,
         "reviewsCount": 142,
@@ -649,8 +649,8 @@
     {
       "id": "payout-init-1",
       "orderId": "ARX-PP-98214-REC",
-      "creatorName": "Sarah Lin",
-      "creatorEmail": "sarah.lin@stanford.edu",
+      "creatorName": "Folashade Adeyemi",
+      "creatorEmail": "folashade.adeyemi@unilag.edu.ng",
       "amount": 6.99,
       "platformFee": 0.35,
       "timestamp": "2026-11-06T10:56:59.157Z",
@@ -661,8 +661,8 @@
     {
       "id": "rev-1793966438470-e452",
       "productId": "prod-canvas-autopilot",
-      "authorName": "Jordan Lee",
-      "authorUniversity": "Stanford",
+      "authorName": "Babatunde Adeleke",
+      "authorUniversity": "University of Lagos (UNILAG)",
       "rating": 5,
       "comment": "Phenomenal extension, syncs every single course without a hitch!",
       "date": "Nov 6, 2026",
@@ -671,30 +671,30 @@
     {
       "id": "rev-init-1",
       "productId": "prod-canvas-autopilot",
-      "authorName": "Alex Rivera",
-      "authorUniversity": "Stanford University",
+      "authorName": "Damilola Alabi",
+      "authorUniversity": "Obafemi Awolowo University (OAU)",
       "rating": 5,
-      "comment": "Synced my CS 106B and Physics Canvas assignments directly into Notion and Google Calendar. Literally saved my GPA this quarter!",
+      "comment": "Synced my CSC 301 and MTH 302 course schedules directly into Notion and Google Calendar. Saved my semester!",
       "date": "Nov 4, 2026",
       "verifiedBuyer": true
     },
     {
       "id": "rev-init-2",
       "productId": "prod-algo-visualizer",
-      "authorName": "Priya Patel",
-      "authorUniversity": "UC Berkeley",
+      "authorName": "Chinedu Okonkwo",
+      "authorUniversity": "Federal University of Technology, Akure (FUTA)",
       "rating": 5,
-      "comment": "The memory pointer stepper helped me finally pass my SWE internship technical interviews. Worth 10x the price.",
+      "comment": "The memory pointer stepper helped me pass my technical internship interviews. Absolutely worth it.",
       "date": "Nov 5, 2026",
       "verifiedBuyer": true
     },
     {
       "id": "rev-init-3",
       "productId": "prod-academic-suite",
-      "authorName": "David Kim",
-      "authorUniversity": "MIT",
+      "authorName": "Emeka Nwosu",
+      "authorUniversity": "University of Nigeria, Nsukka (UNN)",
       "rating": 5,
-      "comment": "Turned my messy research notes into a formatted IEEE LaTeX draft with citations in under 3 minutes.",
+      "comment": "Turned my messy final-year project research notes into a formatted IEEE LaTeX draft with citations in under 3 minutes.",
       "date": "Nov 6, 2026",
       "verifiedBuyer": true
     }

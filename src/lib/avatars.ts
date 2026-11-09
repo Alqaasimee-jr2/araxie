@@ -25,7 +25,7 @@ export function getFakeAvatar(nameOrKey?: string): string {
   if (lower.includes('david')) return FAKE_AVATARS.david;
   if (lower.includes('amina')) return FAKE_AVATARS.amina;
   if (lower.includes('elena') || lower.includes('rostova')) return FAKE_AVATARS.elena;
-  if (lower.includes('judge') || lower.includes('evaluator') || lower.includes('alex chen')) return FAKE_AVATARS.judge;
+  if (lower.includes('judge') || lower.includes('evaluator') || lower.includes('babatunde adeleke')) return FAKE_AVATARS.judge;
   if (lower.includes('alex')) return FAKE_AVATARS.alex;
   if (lower.includes('creator') || lower.includes('builder')) return FAKE_AVATARS.creator;
 

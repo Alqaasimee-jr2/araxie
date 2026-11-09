@@ -181,8 +181,8 @@ export async function capturePayPalOrder(orderId: string): Promise<CaptureOrderR
     amount: 0,
     currency: 'USD',
     payer: {
-      emailAddress: 'alex.chen@stanford.edu',
-      name: 'Alex Chen',
+      emailAddress: 'babatunde.adeleke@unilag.edu.ng',
+      name: 'Babatunde Adeleke',
     },
     payoutStatus: 'CREATOR_PAYOUT_TRIGGERED',
   };

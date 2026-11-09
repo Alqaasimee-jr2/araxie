@@ -30,7 +30,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [university, setUniversity] = useState('Stanford University \'26');
+  const [university, setUniversity] = useState('Obafemi Awolowo University (OAU) \'26');
   const [role, setRole] = useState<'student_buyer' | 'student_creator'>('student_buyer');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -203,7 +203,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Jordan Lee"
+                    placeholder="e.g. Babatunde Adeleke"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="w-full bg-[#131419] border border-[#1e2027] text-white p-2 rounded-lg focus:outline-none"
@@ -217,23 +217,28 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     onChange={(e) => setUniversity(e.target.value)}
                     className="w-full bg-[#131419] border border-[#1e2027] text-white p-2 rounded-lg focus:outline-none"
                   >
-                    <option value="Obafemi Awolowo University (OAU) '26">Obafemi Awolowo University (OAU)</option>
-                    <option value="Stanford University '26">Stanford University</option>
-                    <option value="MIT '25">MIT</option>
-                    <option value="UC Berkeley '26">UC Berkeley</option>
-                    <option value="Harvard University '26">Harvard University</option>
-                    <option value="Johns Hopkins '27">Johns Hopkins</option>
+                    <option value="Obafemi Awolowo University (OAU) '26">Obafemi Awolowo University (OAU / Great Ife)</option>
+                    <option value="University of Lagos (UNILAG) '26">University of Lagos (UNILAG)</option>
+                    <option value="University of Ibadan (UI) '26">University of Ibadan (UI)</option>
+                    <option value="Covenant University (CU) '26">Covenant University (CU)</option>
+                    <option value="Federal University of Technology, Akure (FUTA) '26">Federal University of Technology, Akure (FUTA)</option>
+                    <option value="University of Nigeria, Nsukka (UNN) '26">University of Nigeria, Nsukka (UNN)</option>
+                    <option value="Ahmadu Bello University (ABU Zaria) '26">Ahmadu Bello University (ABU Zaria)</option>
+                    <option value="University of Ilorin (UNILORIN) '26">University of Ilorin (UNILORIN)</option>
+                    <option value="Lagos State University (LASU) '26">Lagos State University (LASU)</option>
+                    <option value="Federal University of Technology, Minna (FUTMinna) '26">Federal University of Technology, Minna (FUTMinna)</option>
+                    <option value="Babcock University '26">Babcock University</option>
                   </select>
                 </div>
               </>
             )}
 
             <div className="space-y-1">
-              <label className="text-zinc-400">University Email (.edu)</label>
+              <label className="text-zinc-400">University Email (.edu / .edu.ng)</label>
               <input
                 type="email"
                 required
-                placeholder="your.name@university.edu"
+                placeholder="your.name@student.edu.ng"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-[#131419] border border-[#1e2027] text-white p-2 rounded-lg focus:outline-none font-mono"

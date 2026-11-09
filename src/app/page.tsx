@@ -70,41 +70,41 @@ export default function LandingPage() {
     {
       name: 'Abdullah Qaasim-Falade',
       handle: '@Alqaasimee-jr2',
-      university: 'Obafemi Awolowo University \'26',
+      university: 'Obafemi Awolowo University (OAU) \'26',
       avatar: '/avatars/abdullah.svg',
       badge: 'Campus Pioneer',
       tools: 'CI-Guardian & Flow7',
-      bio: 'Building pre-flight developer hygiene and cognitive flow state tools for university engineers.',
+      bio: 'Building pre-flight developer hygiene, campus navigation PWAs, and cognitive flow state tools for university engineers.',
       githubUrl: 'https://github.com/Alqaasimee-jr2',
     },
     {
-      name: 'Sarah Lin',
-      handle: '@sarah_dev',
-      university: 'Stanford University \'26',
+      name: 'Folashade Adeyemi',
+      handle: '@folashade_dev',
+      university: 'University of Lagos (UNILAG) \'26',
       avatar: '/avatars/sarah.svg',
       badge: 'Extension Fellow',
       tools: 'CanvasAutoPilot Pro',
-      bio: 'Automating Canvas LMS assignments, syllabus synchronization, and exam schedules.',
+      bio: 'Automating lecture timetables, assignment deadlines, and exam schedules for campus peers.',
       githubUrl: 'https://github.com/Alqaasimee-jr2/araxie',
     },
     {
-      name: 'Priya Patel',
-      handle: '@priyapatel_cs',
-      university: 'UC Berkeley \'26',
-      avatar: '/avatars/priya.svg',
+      name: 'Chinedu Okonkwo',
+      handle: '@chinedu_cs',
+      university: 'Federal University of Technology, Akure (FUTA) \'26',
+      avatar: '/avatars/marcus.svg',
       badge: 'Algorithms Fellow',
       tools: 'AlgoVisualizer Pro',
       bio: 'Visualizing Dijkstra, BFS, and dynamic programming matrices for undergraduate computer science.',
       githubUrl: 'https://github.com/Alqaasimee-jr2/araxie',
     },
     {
-      name: 'Marcus Chen',
-      handle: '@mchen_mit',
-      university: 'MIT \'25',
-      avatar: '/avatars/marcus.svg',
-      badge: 'Research Builder',
-      tools: 'Academic Prompt Vault',
-      bio: 'Curating arXiv research prompts and synthesis workflows for thesis students.',
+      name: 'Amina Bello',
+      handle: '@amina_ui',
+      university: 'University of Ibadan (UI) \'25',
+      avatar: '/avatars/amina.svg',
+      badge: 'Clinical Researcher',
+      tools: 'MedStudy CramOS',
+      bio: 'Curating open medical flashcard suites and clinical synthesis workflows for undergraduate medicine.',
       githubUrl: 'https://github.com/Alqaasimee-jr2/araxie',
     },
   ];
@@ -370,7 +370,7 @@ export default function LandingPage() {
                     <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
                     <span className="font-semibold text-zinc-200">AlgoVisualizer Pro Dijkstra &amp; BFS Engine</span>
                     <span className="text-zinc-500">•</span>
-                    <span className="text-zinc-400">Created by Priya Patel (UC Berkeley)</span>
+                    <span className="text-zinc-400">Created by Chinedu Okonkwo (FUTA)</span>
                   </div>
                   <button 
                     onClick={() => router.push('/marketplace')}
@@ -410,7 +410,7 @@ export default function LandingPage() {
               </div>
               <h3 className="font-bold text-base text-white">Campus Peer Network</h3>
               <p className="text-xs text-zinc-400 leading-relaxed">
-                Connect directly with student developers from Stanford, Great Ife (OAU), UC Berkeley, and MIT. Verified peer ratings and collegiate trust.
+                Connect directly with student developers from Obafemi Awolowo University (OAU), UNILAG, University of Ibadan (UI), Covenant University, and FUTA. Verified peer ratings and collegiate trust.
               </p>
             </div>
 
