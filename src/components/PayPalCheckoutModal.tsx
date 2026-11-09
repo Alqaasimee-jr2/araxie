@@ -25,6 +25,8 @@ interface PayPalCheckoutModalProps {
   totalAmount: number;
   currentUser?: UserProfile | null;
   onPaymentSuccess: (purchasedItems: PurchasedItem[], orderId: string, captureId: string) => void;
+  onOpenTerms?: (tab?: 'terms' | 'privacy' | 'creator' | 'honor' | 'refunds') => void;
+  onLaunchPreview?: (product: Product) => void;
 }
 
 export const PayPalCheckoutModal: React.FC<PayPalCheckoutModalProps> = ({
@@ -35,12 +37,14 @@ export const PayPalCheckoutModal: React.FC<PayPalCheckoutModalProps> = ({
   totalAmount,
   currentUser,
   onPaymentSuccess,
+  onOpenTerms,
+  onLaunchPreview,
 }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [successData, setSuccessData] = useState<{
     orderId: string;
     captureId: string;
-    items: Array<{ title: string; licenseKey: string; downloadUrl: string }>;
+    items: Array<{ title: string; licenseKey: string; downloadUrl: string; productId?: string }>;
     payoutCount: number;
   } | null>(null);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
@@ -93,27 +97,36 @@ export const PayPalCheckoutModal: React.FC<PayPalCheckoutModalProps> = ({
         origin: { y: 0.6 },
       });
 
-      // Prepare Purchased Items for state update
-      const purchasedItems: PurchasedItem[] = products.map((prod, idx) => {
-        const unlocked = captureData.unlockedItems?.[idx];
-        return {
-          id: `purchased-${Date.now()}-${idx}`,
-          productId: prod.id,
-          product: prod,
-          purchaseDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-          orderId,
-          captureId: captureData.captureId,
-          licenseKey: unlocked?.licenseKey || `ARX-${Math.random().toString(36).substring(2, 8).toUpperCase()}-2026`,
-          amountPaid: prod.price,
-          status: 'active',
-          downloadUrl: unlocked?.downloadUrl || prod.downloadAsset.url,
-        };
-      });
+      // Prepare Purchased Items for state update using server-verified values
+      const purchasedItems: PurchasedItem[] = captureData.purchasedItems && captureData.purchasedItems.length > 0
+        ? captureData.purchasedItems
+        : products.map((prod, idx) => {
+            const unlocked = captureData.unlockedItems?.[idx];
+            const proratedAmount = bundle && bundle.discountPercentage > 0
+              ? Number((prod.price * (1 - bundle.discountPercentage / 100)).toFixed(2))
+              : prod.price;
+
+            return {
+              id: `purchased-${Date.now()}-${idx}`,
+              productId: prod.id,
+              product: prod,
+              purchaseDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+              orderId,
+              captureId: captureData.captureId,
+              licenseKey: unlocked?.licenseKey || `ARX-${Math.random().toString(36).substring(2, 8).toUpperCase()}-2026`,
+              amountPaid: proratedAmount,
+              status: 'active',
+              downloadUrl: unlocked?.downloadUrl || prod.downloadAsset?.url || '#',
+            };
+          });
 
       setSuccessData({
         orderId,
         captureId: captureData.captureId,
-        items: captureData.unlockedItems || [],
+        items: (captureData.unlockedItems || []).map((u: any, idx: number) => ({
+          ...u,
+          productId: products[idx]?.id,
+        })),
         payoutCount: captureData.payoutReceipts?.length || 0,
       });
 
@@ -133,7 +146,7 @@ export const PayPalCheckoutModal: React.FC<PayPalCheckoutModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
       <div className="w-full max-w-lg rounded-2xl bg-[#0f111a] border border-[#23283b] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         
         {/* Top Header */}
@@ -180,39 +193,57 @@ export const PayPalCheckoutModal: React.FC<PayPalCheckoutModalProps> = ({
                 <p className="text-xs uppercase font-bold text-zinc-400 tracking-wider">
                   Unlocked Student Assets
                 </p>
-                {successData.items.map((item, i) => (
-                  <div key={i} className="p-3 rounded-xl bg-[#141825] border border-[#21273c] space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold text-xs text-white truncate max-w-[250px]">
-                        {item.title}
-                      </span>
-                      <a
-                        href={item.downloadUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-[11px] text-blue-400 hover:text-blue-300 flex items-center gap-1 font-medium"
-                      >
-                        <span>Access</span>
-                        <ExternalLink className="w-3 h-3" />
-                      </a>
-                    </div>
+                {successData.items.map((item, i) => {
+                  const targetProd = products.find(p => p.id === item.productId) || products[i];
+                  const hasPreview = targetProd && ['prod-flow7', 'prod-ci-guardian', 'prod-canvas-autopilot', 'prod-algo-visualizer', 'prod-academic-prompt-vault', 'prod-paper-synthesizer'].includes(targetProd.id);
 
-                    <div className="flex items-center justify-between p-2 rounded-lg bg-[#0e1019] border border-[#1b2030] text-xs font-mono">
-                      <span className="text-emerald-400">{item.licenseKey}</span>
-                      <button
-                        onClick={() => copyLicense(item.licenseKey)}
-                        className="text-zinc-400 hover:text-zinc-200 transition"
-                        title="Copy key"
-                      >
-                        {copiedKey === item.licenseKey ? (
-                          <Check className="w-3.5 h-3.5 text-emerald-400" />
-                        ) : (
-                          <Copy className="w-3.5 h-3.5" />
-                        )}
-                      </button>
+                  return (
+                    <div key={i} className="p-3 rounded-xl bg-[#141825] border border-[#21273c] space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold text-xs text-white truncate max-w-[220px]">
+                          {item.title}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          {hasPreview && onLaunchPreview && (
+                            <button
+                              onClick={() => {
+                                onLaunchPreview(targetProd);
+                                onClose();
+                              }}
+                              className="text-[11px] text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-medium bg-[#192230] px-2 py-0.5 rounded border border-emerald-500/30"
+                            >
+                              <span>Try Demo</span>
+                            </button>
+                          )}
+                          <a
+                            href={item.downloadUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-[11px] text-blue-400 hover:text-blue-300 flex items-center gap-1 font-medium"
+                          >
+                            <span>Access</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between p-2 rounded-lg bg-[#0e1019] border border-[#1b2030] text-xs font-mono">
+                        <span className="text-emerald-400">{item.licenseKey}</span>
+                        <button
+                          onClick={() => copyLicense(item.licenseKey)}
+                          className="text-zinc-400 hover:text-zinc-200 transition"
+                          title="Copy key"
+                        >
+                          {copiedKey === item.licenseKey ? (
+                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               <div className="pt-2">
@@ -310,11 +341,38 @@ export const PayPalCheckoutModal: React.FC<PayPalCheckoutModalProps> = ({
                   <span>Debit or Credit Card (Powered by PayPal)</span>
                 </button>
 
-                <div className="flex flex-col items-center justify-center gap-1 text-[10px] text-zinc-500 pt-1 text-center">
+                <div className="flex flex-col items-center justify-center gap-1.5 text-[10px] text-zinc-500 pt-2 text-center">
                   <div className="flex items-center gap-1.5">
-                    <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                     <span>Secured by PayPal Purchase Protection & End-to-End Encryption</span>
                   </div>
+                  <p className="text-[10px] text-zinc-400 leading-tight">
+                    By completing your order, you agree to Araxie&apos;s{' '}
+                    <button
+                      type="button"
+                      onClick={() => onOpenTerms?.('terms')}
+                      className="text-blue-400 hover:underline"
+                    >
+                      Terms of Service
+                    </button>
+                    ,{' '}
+                    <button
+                      type="button"
+                      onClick={() => onOpenTerms?.('privacy')}
+                      className="text-blue-400 hover:underline"
+                    >
+                      Privacy Policy
+                    </button>
+                    , and{' '}
+                    <button
+                      type="button"
+                      onClick={() => onOpenTerms?.('refunds')}
+                      className="text-blue-400 hover:underline"
+                    >
+                      Refund Policy
+                    </button>
+                    .
+                  </p>
                   <span className="text-[9px] text-zinc-600">
                     PayPal AI Hackathon Showcase &bull; Evaluator Sandbox Environment (Simulated / Test Funds)
                   </span>

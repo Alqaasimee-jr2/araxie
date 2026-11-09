@@ -137,7 +137,7 @@ export async function createPayPalOrder(params: CreateOrderParams): Promise<{ id
 /**
  * Capture an existing PayPal Order
  */
-export async function capturePayPalOrder(orderId: string): Promise<CaptureOrderResult> {
+export async function capturePayPalOrder(orderId: string, expectedAmount: number = 0): Promise<CaptureOrderResult> {
   const token = await getPayPalAccessToken();
 
   if (token && !orderId.startsWith('ARX-PP-ORD')) {
@@ -178,7 +178,7 @@ export async function capturePayPalOrder(orderId: string): Promise<CaptureOrderR
     orderId,
     captureId: `PP-CAP-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
     status: 'COMPLETED',
-    amount: 0,
+    amount: expectedAmount > 0 ? expectedAmount : 0,
     currency: 'USD',
     payer: {
       emailAddress: 'babatunde.adeleke@unilag.edu.ng',

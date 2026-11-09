@@ -27,6 +27,7 @@ interface CreatorStudioModalProps {
   onProductCreated: (newProduct: Product) => void;
   currentUser?: UserProfile | null;
   products?: Product[];
+  onOpenTerms?: (tab?: 'terms' | 'privacy' | 'creator' | 'honor' | 'refunds') => void;
 }
 
 export const CreatorStudioModal: React.FC<CreatorStudioModalProps> = ({
@@ -35,6 +36,7 @@ export const CreatorStudioModal: React.FC<CreatorStudioModalProps> = ({
   onProductCreated,
   currentUser,
   products = [],
+  onOpenTerms,
 }) => {
   const [activeTab, setActiveTab] = useState<'analytics' | 'publish'>(
     currentUser?.role === 'student_creator' ? 'analytics' : 'publish'
@@ -534,6 +536,27 @@ export const CreatorStudioModal: React.FC<CreatorStudioModalProps> = ({
                   Instant PayPal Payout
                 </span>
               </div>
+
+              {/* Terms & Honor Code Note */}
+              <p className="text-[10px] text-zinc-500 text-center leading-relaxed">
+                Creators retain 100% intellectual property ownership. By publishing, you agree to Araxie&apos;s{' '}
+                <button
+                  type="button"
+                  onClick={() => onOpenTerms?.('creator')}
+                  className="text-blue-400 hover:underline font-medium"
+                >
+                  95% Creator Royalty Terms
+                </button>
+                {' '}and{' '}
+                <button
+                  type="button"
+                  onClick={() => onOpenTerms?.('honor')}
+                  className="text-blue-400 hover:underline font-medium"
+                >
+                  Campus Honor Code
+                </button>
+                .
+              </p>
 
               {/* Submit Button */}
               <button

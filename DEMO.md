@@ -100,6 +100,16 @@ Araxie provides full in-browser tool previews for verified campus software witho
    - Enter a title and category (e.g., *"Notion Syllabus Importer"*, *"Chrome Extensions"*).
    - Click **"✨ Polish with Gemini"** to generate collegiate descriptions, feature lists, and recommended student pricing.
 
+### Walkthrough 6: Campus Trust Center, Privacy (FERPA) & Honor Code
+1. Navigate to `/terms` or click any policy link in the footer or settings:
+   - **Terms of Service**: Governs peer software transactions and cryptographic license issuance.
+   - **Student Privacy Notice (FERPA)**: Explicit policy confirming zero data sales and client-side LMS security (tokens stay in local storage).
+   - **Creator Distribution Agreement**: Details the 95% net creator royalty model and confirms that students retain 100% intellectual property ownership.
+   - **Campus Honor Code**: Enforces academic integrity by prohibiting exam cheating software, lockdown browser evasion, and credential harvesting.
+   - **Digital Goods Refund Policy**: Details transparent 7-day technical defect refund criteria and automated cryptographic license revocation.
+2. Verify interactive modal access from checkout:
+   - Open any tool checkout modal and click **"Terms of Service"** or **"Privacy Policy"** to inspect full legal disclosures in-context without leaving the checkout funnel.
+
 ---
 
 ## 🛡️ Security, Rate Limiting & Anti-Abuse Defenses
@@ -120,7 +130,7 @@ Araxie provides full in-browser tool previews for verified campus software witho
 
 ## 🧪 Automated Unit Testing & CI Gate
 
-Araxie includes an automated test suite verifying pricing calculations, discount math, and cryptographic license signatures.
+Araxie includes an automated test suite verifying pricing calculations, discount math, cryptographic license signatures, prompt injection defenses, and legal compliance.
 
 Run tests locally:
 ```bash
@@ -129,7 +139,11 @@ npm test
 
 Expected output:
 ```
-✔ Server-Side Price Integrity & Capped Logarithmic Discount Model (8 tests passing)
-✔ Cryptographic HMAC License Key Generation & Verification
+✔ Server-Side Price Integrity & Capped Logarithmic Discount Model (5 tests passing)
+✔ Cryptographic HMAC License Key Generation & Verification (3 tests passing)
+✔ Prompt Injection & Input Sanitization Security (3 tests passing)
+✔ Legal Terms, Privacy & Academic Honor Code Integrity (3 tests passing)
+ℹ tests 14
+ℹ pass 14
 ```
 A GitHub Actions CI workflow (`.github/workflows/ci.yml`) runs on every commit, executing unit tests, CI-Guardian AST security checks, and Next.js production builds.

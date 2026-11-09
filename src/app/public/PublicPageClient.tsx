@@ -123,13 +123,40 @@ export default function PublicPageClient() {
             <span>Campus Commons &bull; Open University Peer Software Square</span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-5 text-[11px]">
+          <div className="flex flex-wrap items-center gap-4 text-[11px]">
+            <a href="/" className="text-zinc-400 hover:text-white transition">
+              Home
+            </a>
             <button 
               onClick={() => router.push('/marketplace')}
               className="text-zinc-400 hover:text-white transition"
             >
               Marketplace Storefront
             </button>
+            <a 
+              href="/terms#terms" 
+              className="text-zinc-400 hover:text-white transition"
+            >
+              Terms of Service
+            </a>
+            <a 
+              href="/terms#privacy" 
+              className="text-zinc-400 hover:text-white transition"
+            >
+              Privacy Policy
+            </a>
+            <a 
+              href="/terms#honor" 
+              className="text-zinc-400 hover:text-white transition"
+            >
+              Campus Honor Code
+            </a>
+            <a 
+              href="/terms#creator" 
+              className="text-zinc-400 hover:text-white transition"
+            >
+              Creator Terms (95%)
+            </a>
             <a 
               href="https://github.com/Alqaasimee-jr2/araxie" 
               target="_blank" 

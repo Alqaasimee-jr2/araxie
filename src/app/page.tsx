@@ -30,6 +30,7 @@ import { AraxiAiFloatingButton } from '@/components/AraxiAiFloatingButton';
 import { AIConciergeModal } from '@/components/AIConciergeModal';
 import { CartDrawer } from '@/components/CartDrawer';
 import { PayPalCheckoutModal } from '@/components/PayPalCheckoutModal';
+import { TermsModal } from '@/components/TermsModal';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -46,6 +47,13 @@ export default function LandingPage() {
   const [checkoutProducts, setCheckoutProducts] = useState<Product[]>([]);
   const [checkoutBundle, setCheckoutBundle] = useState<DynamicBundle | null>(null);
   const [checkoutTotal, setCheckoutTotal] = useState<number>(0);
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+  const [termsModalTab, setTermsModalTab] = useState<'terms' | 'privacy' | 'creator' | 'honor' | 'refunds'>('terms');
+
+  const handleOpenTerms = (tab: 'terms' | 'privacy' | 'creator' | 'honor' | 'refunds' = 'terms') => {
+    setTermsModalTab(tab);
+    setIsTermsModalOpen(true);
+  };
 
   // Hydrate user session from localStorage
   useEffect(() => {
@@ -790,7 +798,7 @@ export default function LandingPage() {
             <span>The Peer-to-Peer Student Software &amp; Digital Tool Marketplace</span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-5 text-[11px]">
+          <div className="flex flex-wrap items-center gap-4 text-[11px]">
             <button 
               onClick={() => router.push('/marketplace')}
               className="text-zinc-400 hover:text-white transition"
@@ -798,10 +806,34 @@ export default function LandingPage() {
               Marketplace Storefront
             </button>
             <button 
-              onClick={() => setIsAuthModalOpen(true)}
+              onClick={() => handleOpenTerms('terms')}
               className="text-zinc-400 hover:text-white transition"
             >
-              Campus Passport
+              Terms of Service
+            </button>
+            <button 
+              onClick={() => handleOpenTerms('privacy')}
+              className="text-zinc-400 hover:text-white transition"
+            >
+              Privacy Policy
+            </button>
+            <button 
+              onClick={() => handleOpenTerms('honor')}
+              className="text-zinc-400 hover:text-white transition"
+            >
+              Campus Honor Code
+            </button>
+            <button 
+              onClick={() => handleOpenTerms('creator')}
+              className="text-zinc-400 hover:text-white transition"
+            >
+              Creator Terms (95%)
+            </button>
+            <button 
+              onClick={() => handleOpenTerms('refunds')}
+              className="text-zinc-400 hover:text-white transition"
+            >
+              Refund Policy
             </button>
             <a 
               href="https://github.com/Alqaasimee-jr2/araxie" 
@@ -868,6 +900,15 @@ export default function LandingPage() {
         totalAmount={checkoutTotal}
         currentUser={currentUser}
         onPaymentSuccess={handlePaymentSuccess}
+        onOpenTerms={handleOpenTerms}
+        onLaunchPreview={(prod) => setActiveInteractiveTool({ id: prod.id, title: prod.title })}
+      />
+
+      {/* Modal: Terms & Campus Trust Center */}
+      <TermsModal
+        isOpen={isTermsModalOpen}
+        onClose={() => setIsTermsModalOpen(false)}
+        initialTab={termsModalTab}
       />
 
     </div>

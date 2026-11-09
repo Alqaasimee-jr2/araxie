@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
       : (products || []);
 
     // 3. Capture payment on PayPal REST API
-    const captureResult = await capturePayPalOrder(orderId);
+    const captureResult = await capturePayPalOrder(orderId, verifiedCart.finalTotal);
 
     // 4. Capture Amount Verification (Anti-Tampering)
     if (captureResult.amount > 0 && verifiedCart.finalTotal > 0) {
@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
         licenseKey: unlockedItems[idx]?.licenseKey || `ARX-LIVE-2026`,
         amountPaid,
         status: 'active',
-        downloadUrl: unlockedItems[idx]?.downloadUrl || prod.downloadAsset.url,
+        downloadUrl: unlockedItems[idx]?.downloadUrl || prod.downloadAsset?.url || 'https://araxie.vercel.app',
       };
     });
 

@@ -22,6 +22,7 @@ interface UserSettingsModalProps {
   onClose: () => void;
   currentUser: UserProfile | null;
   onUpdateUser: (updatedUser: UserProfile) => void;
+  onOpenTerms?: (tab?: 'terms' | 'privacy' | 'creator' | 'honor' | 'refunds') => void;
 }
 
 export const UserSettingsModal: React.FC<UserSettingsModalProps> = ({
@@ -29,6 +30,7 @@ export const UserSettingsModal: React.FC<UserSettingsModalProps> = ({
   onClose,
   currentUser,
   onUpdateUser,
+  onOpenTerms,
 }) => {
   const [activeTab, setActiveTab] = useState<'profile' | 'payouts' | 'verification' | 'notifications'>('profile');
   
@@ -213,7 +215,15 @@ export const UserSettingsModal: React.FC<UserSettingsModalProps> = ({
                   </span>
                 </div>
                 <p className="text-[11px] text-zinc-400">
-                  When other students purchase your tools or bundles, earnings are disbursed directly into your PayPal account minus the standard 5% platform fee.
+                  When other students purchase your tools or bundles, earnings are disbursed directly into your PayPal account minus the standard 5% platform fee. Read our{' '}
+                  <button
+                    type="button"
+                    onClick={() => onOpenTerms?.('creator')}
+                    className="text-blue-400 hover:underline font-medium"
+                  >
+                    95% Creator Royalty Agreement
+                  </button>
+                  .
                 </p>
               </div>
 
@@ -277,7 +287,23 @@ export const UserSettingsModal: React.FC<UserSettingsModalProps> = ({
                 </div>
 
                 <p className="text-[10px] text-zinc-400 leading-relaxed">
-                  Verified students gain full access to course-specific software bundles, student locker key storage, closed-loop peer reviews, and creator distribution.
+                  Verified students gain full access to course-specific software bundles, student locker key storage, closed-loop peer reviews, and creator distribution. All students abide by the{' '}
+                  <button
+                    type="button"
+                    onClick={() => onOpenTerms?.('honor')}
+                    className="text-blue-400 hover:underline font-medium"
+                  >
+                    Campus Honor Code
+                  </button>
+                  {' '}and{' '}
+                  <button
+                    type="button"
+                    onClick={() => onOpenTerms?.('privacy')}
+                    className="text-blue-400 hover:underline font-medium"
+                  >
+                    Student Privacy Notice (FERPA)
+                  </button>
+                  .
                 </p>
               </div>
             </div>

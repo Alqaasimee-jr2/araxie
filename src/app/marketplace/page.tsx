@@ -18,6 +18,7 @@ import { InteractiveToolModal } from '@/components/tools/InteractiveToolModal';
 import { AuthModal } from '@/components/AuthModal';
 import { PublicSpaceView } from '@/components/PublicSpaceView';
 import { AraxiAiFloatingButton } from '@/components/AraxiAiFloatingButton';
+import { TermsModal } from '@/components/TermsModal';
 import { 
   Sparkles, 
   Layers, 
@@ -121,6 +122,13 @@ export default function MarketplacePage() {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [isCreatorModalOpen, setIsCreatorModalOpen] = useState(false);
   const [isOrdersModalOpen, setIsOrdersModalOpen] = useState(false);
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+  const [termsModalTab, setTermsModalTab] = useState<'terms' | 'privacy' | 'creator' | 'honor' | 'refunds'>('terms');
+
+  const handleOpenTerms = (tab: 'terms' | 'privacy' | 'creator' | 'honor' | 'refunds' = 'terms') => {
+    setTermsModalTab(tab);
+    setIsTermsModalOpen(true);
+  };
 
   // Load persistent products & orders from backend DB on mount
   useEffect(() => {
@@ -626,6 +634,69 @@ export default function MarketplacePage() {
         onClick={() => setIsAIModalOpen(!isAIModalOpen)}
       />
 
+      {/* Marketplace Footer */}
+      <footer className="mt-16 border-t border-[#17181f] bg-[#0c0d10] py-8 text-xs text-zinc-500 hidden sm:block">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <img src="/logo.svg" alt="Araxie Logo" className="w-5 h-5 rounded" />
+            <span className="font-bold text-zinc-200">Araxie</span>
+            <span>&bull;</span>
+            <span>Campus Software &amp; Digital Tool Marketplace</span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4 text-[11px]">
+            <a href="/" className="text-zinc-400 hover:text-white transition">
+              Home
+            </a>
+            <button 
+              onClick={() => setCurrentTab('public')}
+              className="text-zinc-400 hover:text-white transition"
+            >
+              Public Space
+            </button>
+            <button 
+              onClick={() => handleOpenTerms('terms')}
+              className="text-zinc-400 hover:text-white transition"
+            >
+              Terms of Service
+            </button>
+            <button 
+              onClick={() => handleOpenTerms('privacy')}
+              className="text-zinc-400 hover:text-white transition"
+            >
+              Privacy Policy
+            </button>
+            <button 
+              onClick={() => handleOpenTerms('honor')}
+              className="text-zinc-400 hover:text-white transition"
+            >
+              Campus Honor Code
+            </button>
+            <button 
+              onClick={() => handleOpenTerms('creator')}
+              className="text-zinc-400 hover:text-white transition"
+            >
+              Creator Terms (95%)
+            </button>
+            <button 
+              onClick={() => handleOpenTerms('refunds')}
+              className="text-zinc-400 hover:text-white transition"
+            >
+              Refund Policy
+            </button>
+            <a 
+              href="https://github.com/Alqaasimee-jr2/araxie" 
+              target="_blank" 
+              rel="noreferrer"
+              className="text-zinc-400 hover:text-white transition"
+            >
+              GitHub
+            </a>
+            <span className="text-zinc-600">&copy; 2026 Araxie Inc.</span>
+          </div>
+        </div>
+      </footer>
+
       {/* Modal: PayPal Checkout */}
       <PayPalCheckoutModal
         isOpen={isCheckoutModalOpen}
@@ -635,6 +706,8 @@ export default function MarketplacePage() {
         totalAmount={checkoutTotal}
         currentUser={currentUser}
         onPaymentSuccess={handlePaymentSuccess}
+        onOpenTerms={handleOpenTerms}
+        onLaunchPreview={(prod) => setActiveInteractiveTool(prod)}
       />
 
       {/* Slide-over: Cart Drawer */}
@@ -653,6 +726,7 @@ export default function MarketplacePage() {
         onProductCreated={handleProductCreated}
         currentUser={currentUser}
         products={products}
+        onOpenTerms={handleOpenTerms}
       />
 
       {/* Modal: Order History & Receipts */}
@@ -668,6 +742,14 @@ export default function MarketplacePage() {
         onClose={() => setIsSettingsModalOpen(false)}
         currentUser={currentUser}
         onUpdateUser={(updated) => setCurrentUser(updated)}
+        onOpenTerms={handleOpenTerms}
+      />
+
+      {/* Modal: Legal Terms & Campus Trust Center */}
+      <TermsModal
+        isOpen={isTermsModalOpen}
+        onClose={() => setIsTermsModalOpen(false)}
+        initialTab={termsModalTab}
       />
 
     </div>

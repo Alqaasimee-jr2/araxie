@@ -2,7 +2,7 @@
 
 [![PayPal AI Hackathon](https://img.shields.io/badge/PayPal_AI_Hackathon-Devpost_Submission-003087?style=for-the-badge&logo=paypal&logoColor=white)](https://paypalaihackathon.devpost.com/)
 [![Vercel Deployment](https://img.shields.io/badge/Vercel-Live_Production-black?style=for-the-badge&logo=vercel)](https://araxie.vercel.app)
-[![Tests Passing](https://img.shields.io/badge/Tests-8%20Passing-emerald?style=for-the-badge&logo=vitest)](https://github.com/Alqaasimee-jr2/araxie)
+[![Tests Passing](https://img.shields.io/badge/Tests-14%20Passing-emerald?style=for-the-badge&logo=vitest)](https://github.com/Alqaasimee-jr2/araxie)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16_App_Router-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
@@ -48,6 +48,12 @@ Yet, student builders have had no dedicated platform to distribute and monetize 
   - **CanvasAutoPilot**: Chrome extension simulator tracking Canvas deadlines and GPA forecasts.
   - **AlgoVisualizer Pro**: Interactive step-by-step pathfinding matrix (Dijkstra and A*).
   - **Academic Writing Studio**: Scholarly prompt transformer with Gemini citation optimization.
+
+### 5. ⚖️ Campus Trust Center, Student Privacy (FERPA) & Honor Code (`/terms`)
+- **Student Creator IP & 95% Royalties**: Student developers retain 100% intellectual property ownership of their work and receive 95% of net captured sales disbursed directly via PayPal Payouts v1.
+- **Campus Honor Code & Academic Integrity**: Prohibits tools designed for academic dishonesty, lockdown browser evasion, or unauthorized LMS credential harvesting, while encouraging legitimate productivity and study aids.
+- **Student Privacy & FERPA Alignment**: Zero credential retention (LMS API keys remain 100% client-side in browser storage), no data selling, and minimal telemetry.
+- **Cryptographic License Revocation**: Transparent refund policy tied to automated HMAC license invalidation and PayPal Purchase Protection.
 
 ---
 
@@ -118,7 +124,7 @@ npm install
 ```bash
 npm test
 ```
-Executes 8 automated tests covering pricing integrity, discount formulas, and HMAC license verification.
+Executes 14 automated unit tests covering pricing integrity, discount formulas, HMAC license verification, prompt injection defense, and legal terms compliance.
 
 ### 3. Run Development Server
 ```bash

@@ -14,7 +14,8 @@ import {
   LogOut,
   ChevronDown,
   Settings,
-  Globe
+  Globe,
+  Scale
 } from 'lucide-react';
 import { UserProfile } from '@/types';
 
@@ -333,6 +334,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <Settings className="w-3 h-3 text-zinc-400" />
                       <span>Account Settings</span>
                     </button>
+
+                    <a
+                      href="/terms"
+                      className="w-full text-left px-3 py-1.5 text-zinc-300 hover:text-white hover:bg-[#181920] flex items-center gap-1.5 transition"
+                    >
+                      <Scale className="w-3 h-3 text-emerald-400" />
+                      <span>Terms &amp; Campus Policies</span>
+                    </a>
 
                     <div className="border-t border-[#1c1d25] my-1"></div>
 
