@@ -210,33 +210,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="space-y-1">
-                    <label className="text-zinc-400">University</label>
-                    <select
-                      value={university}
-                      onChange={(e) => setUniversity(e.target.value)}
-                      className="w-full bg-[#131419] border border-[#1e2027] text-white p-2 rounded-lg focus:outline-none"
-                    >
-                      <option value="Stanford University '26">Stanford University</option>
-                      <option value="MIT '25">MIT</option>
-                      <option value="UC Berkeley '26">UC Berkeley</option>
-                      <option value="Harvard University '26">Harvard University</option>
-                      <option value="Johns Hopkins '27">Johns Hopkins</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-zinc-400">Primary Role</label>
-                    <select
-                      value={role}
-                      onChange={(e) => setRole(e.target.value as 'student_buyer' | 'student_creator')}
-                      className="w-full bg-[#131419] border border-[#1e2027] text-white p-2 rounded-lg focus:outline-none"
-                    >
-                      <option value="student_buyer">Student Learner</option>
-                      <option value="student_creator">Student Creator</option>
-                    </select>
-                  </div>
+                <div className="space-y-1">
+                  <label className="text-zinc-400">University Campus</label>
+                  <select
+                    value={university}
+                    onChange={(e) => setUniversity(e.target.value)}
+                    className="w-full bg-[#131419] border border-[#1e2027] text-white p-2 rounded-lg focus:outline-none"
+                  >
+                    <option value="Obafemi Awolowo University (OAU) '26">Obafemi Awolowo University (OAU)</option>
+                    <option value="Stanford University '26">Stanford University</option>
+                    <option value="MIT '25">MIT</option>
+                    <option value="UC Berkeley '26">UC Berkeley</option>
+                    <option value="Harvard University '26">Harvard University</option>
+                    <option value="Johns Hopkins '27">Johns Hopkins</option>
+                  </select>
                 </div>
               </>
             )}

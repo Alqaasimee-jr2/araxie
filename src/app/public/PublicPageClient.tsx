@@ -47,13 +47,13 @@ export default function PublicPageClient() {
           if (tab === 'public') {
             // Already here
           } else {
-            router.push('/');
+            router.push('/marketplace');
           }
         }}
         unlockedCount={0}
         cartCount={0}
-        onOpenCart={() => router.push('/')}
-        onOpenAI={() => router.push('/')}
+        onOpenCart={() => router.push('/marketplace')}
+        onOpenAI={() => router.push('/marketplace')}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         currentUser={currentUser}
@@ -67,10 +67,10 @@ export default function PublicPageClient() {
           products={products}
           onSelectProduct={(prod) => setSelectedProduct(prod)}
           onLaunchTool={(prod) => setActiveInteractiveTool(prod)}
-          onEnterMarketplace={() => router.push('/')}
+          onEnterMarketplace={() => router.push('/marketplace')}
           onOpenDashboard={() => {
             if (currentUser) {
-              router.push('/');
+              router.push('/marketplace');
             } else {
               setIsAuthModalOpen(true);
             }
@@ -94,8 +94,8 @@ export default function PublicPageClient() {
         product={selectedProduct}
         isUnlocked={false}
         onClose={() => setSelectedProduct(null)}
-        onBuyNow={() => router.push('/')}
-        onAddToCart={() => router.push('/')}
+        onBuyNow={() => router.push('/marketplace')}
+        onAddToCart={() => router.push('/marketplace')}
         isInCart={false}
         onLaunchDemo={(prod) => {
           setSelectedProduct(null);
@@ -125,7 +125,7 @@ export default function PublicPageClient() {
 
           <div className="flex flex-wrap items-center gap-5 text-[11px]">
             <button 
-              onClick={() => router.push('/')}
+              onClick={() => router.push('/marketplace')}
               className="text-zinc-400 hover:text-white transition"
             >
               Marketplace Storefront

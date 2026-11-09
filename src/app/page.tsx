@@ -1,376 +1,665 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { INITIAL_PRODUCTS } from '@/data/mockProducts';
-import { Product, ProductCategory, PurchasedItem, DynamicBundle, UserProfile } from '@/types';
-import { SEEDED_JUDGE_BUYER, SEEDED_CREATOR_BUILDER } from '@/lib/auth';
-import { Navbar } from '@/components/Navbar';
-import { ProductCard } from '@/components/ProductCard';
-import { ProductDetailDrawer } from '@/components/ProductDetailDrawer';
-import { AIConciergeModal } from '@/components/AIConciergeModal';
-import { PayPalCheckoutModal } from '@/components/PayPalCheckoutModal';
-import { StudentLocker } from '@/components/StudentLocker';
-import { CreatorStudioModal } from '@/components/CreatorStudioModal';
-import { OrderHistoryModal } from '@/components/OrderHistoryModal';
-import { UserSettingsModal } from '@/components/UserSettingsModal';
-import { CartDrawer } from '@/components/CartDrawer';
-import { InteractiveToolModal } from '@/components/tools/InteractiveToolModal';
-import { AuthModal } from '@/components/AuthModal';
-import { PublicSpaceView } from '@/components/PublicSpaceView';
+import { useRouter } from 'next/navigation';
 import { 
   Sparkles, 
-  Layers, 
   ArrowRight, 
-  ShieldCheck, 
-  GraduationCap, 
-  Search, 
+  Play, 
   CheckCircle2, 
-  TrendingUp, 
-  Play,
-  UserCheck,
-  ShoppingBag,
-  Package,
-  User,
-  Wallet,
-  Globe
+  ShoppingBag, 
+  Layers, 
+  ShieldCheck, 
+  Globe, 
+  ExternalLink,
+  Users,
+  Code,
+  Zap,
+  TrendingUp,
+  Cpu,
+  GraduationCap
 } from 'lucide-react';
+import { Product, UserProfile } from '@/types';
+import { INITIAL_PRODUCTS } from '@/data/mockProducts';
+import { AuthModal } from '@/components/AuthModal';
+import { InteractiveToolModal } from '@/components/tools/InteractiveToolModal';
+import { Flow7Tool } from '@/components/tools/Flow7Tool';
+import { CIGuardianTool } from '@/components/tools/CIGuardianTool';
+import { AlgoVisualizerTool } from '@/components/tools/AlgoVisualizerTool';
 
-export default function Home() {
-  const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
-  const [purchasedItems, setPurchasedItems] = useState<PurchasedItem[]>([]);
-  const [cart, setCart] = useState<Product[]>([]);
-  const [currentTab, setCurrentTab] = useState<'public' | 'explore' | 'me' | 'creator' | 'orders'>('public');
-  const [selectedCategory, setSelectedCategory] = useState<'all' | ProductCategory>('all');
-  const [searchQuery, setSearchQuery] = useState('');
-
-  // Authentication State (clean production state)
+export default function LandingPage() {
+  const router = useRouter();
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [activeInteractiveTool, setActiveInteractiveTool] = useState<{ id: string; title: string } | null>(null);
+  const [playgroundTab, setPlaygroundTab] = useState<'flow7' | 'ci-guardian' | 'algo'>('flow7');
 
-  // Modals & Interactive Tools state
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [activeInteractiveTool, setActiveInteractiveTool] = useState<Product | null>(null);
-  const [isAIModalOpen, setIsAIModalOpen] = useState(false);
-  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
-  const [checkoutProducts, setCheckoutProducts] = useState<Product[]>([]);
-  const [checkoutBundle, setCheckoutBundle] = useState<DynamicBundle | null>(null);
-  const [checkoutTotal, setCheckoutTotal] = useState<number>(0);
-  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [isCreatorModalOpen, setIsCreatorModalOpen] = useState(false);
-  const [isOrdersModalOpen, setIsOrdersModalOpen] = useState(false);
-
-  // Load persistent products & orders from backend DB on mount
+  // Hydrate user session from localStorage
   useEffect(() => {
-    async function loadData() {
-      try {
-        const prodRes = await fetch('/api/products');
-        if (prodRes.ok) {
-          const data = await prodRes.json();
-          if (data.products && data.products.length > 0) {
-            setProducts(data.products);
-          }
-        }
-
-        const ordRes = await fetch('/api/orders');
-        if (ordRes.ok) {
-          const data = await ordRes.json();
-          if (data.orders) {
-            setPurchasedItems(data.orders);
-          }
-        }
-      } catch (e) {
-        console.warn('Initial data load error:', e);
+    try {
+      const saved = localStorage.getItem('araxie_user');
+      if (saved) {
+        setCurrentUser(JSON.parse(saved));
       }
+    } catch (e) {
+      console.warn('Auth session hydration error:', e);
     }
-    loadData();
   }, []);
 
-  // Filter products by category and search
-  const filteredProducts = products.filter((prod) => {
-    const matchesCategory = selectedCategory === 'all' || prod.category === selectedCategory;
-    const matchesSearch = 
-      prod.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      prod.tagline.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      prod.creator.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      prod.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesCategory && matchesSearch;
-  });
-
-  const isProductUnlocked = (productId: string) => {
-    return purchasedItems.some(item => item.productId === productId);
+  const handleLoginSuccess = (user: UserProfile) => {
+    setCurrentUser(user);
+    setIsAuthModalOpen(false);
+    try {
+      localStorage.setItem('araxie_user', JSON.stringify(user));
+    } catch (e) {}
+    // Seamlessly navigate straight to the student marketplace
+    router.push('/marketplace');
   };
 
-  const handleToggleCart = (product: Product) => {
-    setCart(prev => {
-      const exists = prev.some(item => item.id === product.id);
-      if (exists) {
-        return prev.filter(item => item.id !== product.id);
-      } else {
-        return [...prev, product];
-      }
-    });
+  const handleLogout = () => {
+    setCurrentUser(null);
+    try {
+      localStorage.removeItem('araxie_user');
+    } catch (e) {}
   };
 
-  const handleReviewSubmitted = (updatedProduct: Product) => {
-    setProducts(prev => prev.map(p => p.id === updatedProduct.id ? updatedProduct : p));
-  };
+  // Featured tools for landing page showcase
+  const featuredProducts = INITIAL_PRODUCTS.slice(0, 6);
 
-  const handleQuickBuy = (product: Product) => {
-    setCheckoutProducts([product]);
-    setCheckoutBundle(null);
-    setCheckoutTotal(product.price);
-    setIsCheckoutModalOpen(true);
-  };
-
-  const handleCheckoutBundle = (bundle: DynamicBundle) => {
-    setCheckoutProducts(bundle.items);
-    setCheckoutBundle(bundle);
-    setCheckoutTotal(bundle.bundleTotal);
-    setIsCheckoutModalOpen(true);
-  };
-
-  const handleCheckoutCart = (items: Product[], bundle: DynamicBundle | null, total: number) => {
-    setCheckoutProducts(items);
-    setCheckoutBundle(bundle);
-    setCheckoutTotal(total);
-    setIsCheckoutModalOpen(true);
-  };
-
-  const handlePaymentSuccess = (newPurchasedItems: PurchasedItem[]) => {
-    setPurchasedItems(prev => [...newPurchasedItems, ...prev]);
-    const purchasedIds = new Set(newPurchasedItems.map(p => p.productId));
-    setCart(prev => prev.filter(item => !purchasedIds.has(item.id)));
-  };
-
-  const handleProductCreated = (newProduct: Product) => {
-    setProducts(prev => [newProduct, ...prev]);
-    setSelectedCategory('all');
-    setCurrentTab('explore');
-  };
-
-  const categories: Array<{ id: 'all' | ProductCategory; label: string }> = [
-    { id: 'all', label: 'All Tools' },
-    { id: 'chrome-extension', label: 'Extensions' },
-    { id: 'ai-prompt', label: 'AI Prompts' },
-    { id: 'study-pack', label: 'Study Packs' },
-    { id: 'code-template', label: 'Code & Scripts' },
-    { id: 'saas-micro', label: 'Micro-SaaS' },
+  const creators = [
+    {
+      name: 'Abdullah Qaasim-Falade',
+      handle: '@Alqaasimee-jr2',
+      university: 'Obafemi Awolowo University \'26',
+      avatar: '/avatars/abdullah.svg',
+      badge: 'Campus Pioneer',
+      tools: 'CI-Guardian & Flow7',
+      bio: 'Building pre-flight developer hygiene and cognitive flow state tools for university engineers.',
+      githubUrl: 'https://github.com/Alqaasimee-jr2',
+    },
+    {
+      name: 'Sarah Lin',
+      handle: '@sarah_dev',
+      university: 'Stanford University \'26',
+      avatar: '/avatars/sarah.svg',
+      badge: 'Extension Fellow',
+      tools: 'CanvasAutoPilot Pro',
+      bio: 'Automating Canvas LMS assignments, syllabus synchronization, and exam schedules.',
+      githubUrl: 'https://github.com/Alqaasimee-jr2/araxie',
+    },
+    {
+      name: 'Priya Patel',
+      handle: '@priyapatel_cs',
+      university: 'UC Berkeley \'26',
+      avatar: '/avatars/priya.svg',
+      badge: 'Algorithms Fellow',
+      tools: 'AlgoVisualizer Pro',
+      bio: 'Visualizing Dijkstra, BFS, and dynamic programming matrices for undergraduate computer science.',
+      githubUrl: 'https://github.com/Alqaasimee-jr2/araxie',
+    },
+    {
+      name: 'Marcus Chen',
+      handle: '@mchen_mit',
+      university: 'MIT \'25',
+      avatar: '/avatars/marcus.svg',
+      badge: 'Research Builder',
+      tools: 'Academic Prompt Vault',
+      bio: 'Curating arXiv research prompts and synthesis workflows for thesis students.',
+      githubUrl: 'https://github.com/Alqaasimee-jr2/araxie',
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-[#0b0c0e] text-zinc-100 flex flex-col selection:bg-zinc-800 selection:text-white pb-16 sm:pb-0">
+    <div className="min-h-screen bg-[#0b0c0e] text-zinc-100 flex flex-col selection:bg-blue-600/30 selection:text-white">
       
-      {/* Top Whop-Grade Navigation Bar */}
-      <Navbar
-        currentTab={currentTab}
-        setCurrentTab={(tab) => {
-          if (tab === 'creator') {
-            setIsCreatorModalOpen(true);
-          } else if (tab === 'orders') {
-            setIsOrdersModalOpen(true);
-          } else {
-            setCurrentTab(tab);
-          }
-        }}
-        unlockedCount={purchasedItems.length}
-        cartCount={cart.length}
-        onOpenCart={() => setIsCartDrawerOpen(true)}
-        onOpenAI={() => setIsAIModalOpen(true)}
-        onOpenSettings={() => setIsSettingsModalOpen(true)}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        currentUser={currentUser}
-        onOpenAuth={() => setIsAuthModalOpen(true)}
-        onLogout={() => setCurrentUser(null)}
-      />
-
-      {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        
-        {/* Render Tab: Public Space (Campus Commons - Main Platform View) */}
-        {currentTab === 'public' && (
-          <PublicSpaceView
-            products={products}
-            onSelectProduct={(prod) => setSelectedProduct(prod)}
-            onLaunchTool={(prod) => setActiveInteractiveTool(prod)}
-            onEnterMarketplace={() => setCurrentTab('explore')}
-            onOpenDashboard={() => {
-              if (currentUser) {
-                setCurrentTab('me');
-              } else {
-                setIsAuthModalOpen(true);
-              }
-            }}
-            onOpenAuth={() => setIsAuthModalOpen(true)}
-            isLoggedIn={!!currentUser}
-            onQuickBuy={handleQuickBuy}
-            searchQuery={searchQuery}
-          />
-        )}
-
-        {/* Render Tab: Explore (Storefront) */}
-        {currentTab === 'explore' && (
-          <div className="space-y-7">
+      {/* 1. TOP NAVIGATION */}
+      <header className="sticky top-0 z-40 w-full border-b border-[#1c1d24] bg-[#0c0d10]/95 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-14 gap-3">
             
-            {/* Whop-Style Hero Spotlight Banner */}
-            <div className="rounded-2xl p-6 sm:p-7 bg-[#121317] border border-[#1e2027]">
-              
-              <div className="max-w-2xl space-y-3.5">
-                
-                <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#181a20] border border-[#252834] text-zinc-300 text-xs font-medium">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Student Digital Commerce Platform</span>
-                  {currentUser && (
-                    <span className="text-zinc-400 border-l border-zinc-700 pl-2">
-                      Signed in as <strong className="text-white">{currentUser.name}</strong>
-                    </span>
-                  )}
-                </div>
-
-                <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-tight">
-                  The marketplace where campus builders trade software and study tools.
-                </h1>
-
-                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                  Discover peer-built Chrome extensions, interactive algorithm visualizers, and curated study suites. Bundled autonomously by AI with instant <span className="text-zinc-200 font-semibold">PayPal</span> checkout and 95% creator payouts.
-                </p>
-
-                {/* First-time User Action Banner */}
-                {!currentUser && (
-                  <div className="pt-1 flex flex-wrap items-center gap-2.5">
-                    <button
-                      onClick={() => setIsAuthModalOpen(true)}
-                      className="px-4 py-2 rounded-xl bg-white hover:bg-zinc-200 text-black font-semibold text-xs transition flex items-center gap-1.5 shadow-md shadow-white/5"
-                    >
-                      <GraduationCap className="w-3.5 h-3.5 text-zinc-900" />
-                      <span>Sign In with University ID</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-zinc-700" />
-                    </button>
-                    <button
-                      onClick={() => {
-                        const el = document.getElementById('catalog-grid');
-                        el?.scrollIntoView({ behavior: 'smooth' });
-                      }}
-                      className="px-3.5 py-2 rounded-xl bg-[#181a20] hover:bg-[#20222a] text-zinc-300 hover:text-white font-medium text-xs border border-[#262833] transition"
-                    >
-                      Browse 14 Campus Tools
-                    </button>
-                  </div>
-                )}
-
-                {/* AI Concierge Trigger Input */}
-                <div className="pt-1.5">
-                  <div 
-                    onClick={() => setIsAIModalOpen(true)}
-                    className="p-3 rounded-xl bg-[#0d0e11] border border-[#1d1f27] hover:border-[#2a2c38] cursor-pointer flex items-center justify-between gap-3 text-xs text-zinc-400 transition"
-                  >
-                    <div className="flex items-center gap-2.5 truncate">
-                      <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span className="truncate text-zinc-300">
-                        Ask AI Concierge: &quot;I&apos;m taking CS &amp; Chemistry with a $15 budget...&quot;
-                      </span>
-                    </div>
-                    <span className="px-3 py-1.5 rounded-lg bg-[#1f222b] hover:bg-[#282b36] text-white font-medium text-[11px] border border-[#2b2f3d] shrink-0 transition flex items-center gap-1">
-                      <span>Curate Bundle</span>
-                      <ArrowRight className="w-3 h-3" />
-                    </span>
-                  </div>
-                </div>
-
-                {/* Platform Guarantees */}
-                <div className="pt-2 flex flex-wrap items-center gap-4 text-xs text-zinc-500">
-                  <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-zinc-400" />
-                    <span>Verified PayPal Checkout</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-zinc-400" />
-                    <span>In-Browser Interactive Previews</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-zinc-400" />
-                    <span>100% Student Verified &bull; 95% Creator Payouts</span>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-
-            {/* Category Filter Pills Bar */}
-            <div id="catalog-grid" className="flex items-center justify-between gap-4 overflow-x-auto pb-1 no-scrollbar">
-              <div className="flex items-center gap-1.5">
-                {categories.map((cat) => (
-                  <button
-                    key={cat.id}
-                    onClick={() => setSelectedCategory(cat.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition ${
-                      selectedCategory === cat.id
-                        ? 'bg-[#1e212b] text-white border border-[#2c303f]'
-                        : 'bg-[#121317] hover:bg-[#181a20] text-zinc-400 hover:text-zinc-200 border border-[#1e2027]'
-                    }`}
-                  >
-                    {cat.label}
-                  </button>
-                ))}
-              </div>
-
-              <div className="text-xs text-zinc-500 shrink-0 hidden sm:block">
-                Showing <span className="font-semibold text-zinc-300">{filteredProducts.length}</span> tools
-              </div>
-            </div>
-
-            {/* Product Grid */}
-            {filteredProducts.length === 0 ? (
-              <div className="text-center py-16 text-zinc-500 space-y-3 rounded-xl bg-[#0f1014] border border-[#1b1c23]">
-                <Search className="w-8 h-8 mx-auto text-zinc-600" />
-                <h3 className="text-sm font-semibold text-zinc-300">No tools found</h3>
-                <p className="text-xs text-zinc-500 max-w-sm mx-auto">
-                  Try adjusting your search terms or ask the AI Concierge for recommendations.
-                </p>
-                <button
-                  onClick={() => { setSelectedCategory('all'); setSearchQuery(''); }}
-                  className="px-3.5 py-1.5 rounded-lg bg-[#181a20] text-xs font-medium text-zinc-300 hover:text-white border border-[#22242e]"
-                >
-                  Clear Filters
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {filteredProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onSelect={(prod) => setSelectedProduct(prod)}
-                    onQuickBuy={handleQuickBuy}
-                    onAddToCart={handleToggleCart}
-                    isInCart={cart.some(c => c.id === product.id)}
-                    onLaunchDemo={(prod) => setActiveInteractiveTool(prod)}
-                    isUnlocked={isProductUnlocked(product.id)}
+            {/* Brand Logo & Title */}
+            <div className="flex items-center gap-3">
+              <a href="#" className="flex items-center gap-2.5 group">
+                <div className="relative w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center ring-1 ring-white/10 group-hover:ring-blue-500/40 transition">
+                  <img 
+                    src="/logo.svg" 
+                    alt="Araxie Logo" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform" 
                   />
-                ))}
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-bold text-base tracking-tight text-white group-hover:text-zinc-100 transition">
+                    Araxie
+                  </span>
+                  <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                    Campus
+                  </span>
+                </div>
+              </a>
+            </div>
+
+            {/* Desktop Navigation Links */}
+            <nav className="hidden md:flex items-center gap-6 text-xs text-zinc-400 font-medium">
+              <a href="#why-araxie" className="hover:text-white transition">Why Araxie</a>
+              <a href="#live-playground" className="hover:text-white transition">In-Browser Runner</a>
+              <a href="#featured-tools" className="hover:text-white transition">Campus Software</a>
+              <a href="#campus-network" className="hover:text-white transition">University Network</a>
+            </nav>
+
+            {/* Action Buttons */}
+            <div className="flex items-center gap-2.5">
+              {currentUser ? (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => router.push('/marketplace')}
+                    className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-600/20 transition"
+                  >
+                    <ShoppingBag className="w-3.5 h-3.5" />
+                    <span>Enter Marketplace Dashboard</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="hidden sm:inline-block text-xs text-zinc-400 hover:text-white px-2 py-1 transition"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <button
+                    onClick={() => setIsAuthModalOpen(true)}
+                    className="px-3.5 py-1.5 rounded-lg text-xs font-medium text-zinc-300 hover:text-white hover:bg-[#161820] border border-[#20232e] transition"
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    onClick={() => router.push('/marketplace')}
+                    className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-zinc-200 text-black shadow-md shadow-white/5 transition"
+                  >
+                    <span>Explore Marketplace</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </>
+              )}
+            </div>
+
+          </div>
+        </div>
+      </header>
+
+      {/* 2. HERO SECTION */}
+      <section className="relative pt-12 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full overflow-hidden">
+        
+        {/* Ambient Glow Accents */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[350px] bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/3 left-1/3 w-[350px] h-[350px] bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative text-center max-w-3xl mx-auto space-y-6">
+          
+          {/* Spotlight Tag */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#14161f] border border-[#232737] text-zinc-300 text-xs font-medium shadow-sm">
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <span>The Student Digital Commerce &amp; Peer Software Marketplace</span>
+            <span className="text-zinc-600">•</span>
+            <span className="text-blue-400 font-semibold">12 Campuses</span>
+          </div>
+
+          {/* Master Headline */}
+          <h1 className="text-4xl sm:text-6xl font-black text-white tracking-tight leading-[1.1]">
+            Where university builders trade peer software.
+          </h1>
+
+          {/* Subtitle */}
+          <p className="text-sm sm:text-lg text-zinc-400 leading-relaxed max-w-2xl mx-auto">
+            Discover peer-built Chrome extensions, interactive algorithm visualizers, and curated study suites. Run live in-browser tool previews, checkout securely with <strong className="text-white">PayPal</strong>, and support 95% creator payouts.
+          </p>
+
+          {/* Primary Action Buttons */}
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+            <button
+              onClick={() => router.push('/marketplace')}
+              className="px-6 py-3 rounded-xl bg-white hover:bg-zinc-200 text-black font-bold text-xs sm:text-sm transition flex items-center gap-2 shadow-xl shadow-white/5"
+            >
+              <ShoppingBag className="w-4 h-4 text-black" />
+              <span>Browse 14 Campus Tools</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => setIsAuthModalOpen(true)}
+              className="px-5 py-3 rounded-xl bg-[#151720] hover:bg-[#1d202c] text-zinc-200 font-semibold text-xs sm:text-sm border border-[#272b3a] transition flex items-center gap-2"
+            >
+              <GraduationCap className="w-4 h-4 text-zinc-400" />
+              <span>Sign In with University ID</span>
+            </button>
+
+            <button
+              onClick={() => setActiveInteractiveTool({ id: 'prod-flow7', title: 'Flow7 Focus Layer' })}
+              className="px-4 py-3 rounded-xl bg-[#12141c] hover:bg-[#191c26] text-blue-400 hover:text-blue-300 font-medium text-xs sm:text-sm border border-[#212638] transition flex items-center gap-2"
+            >
+              <Play className="w-3.5 h-3.5 fill-blue-400 text-blue-400" />
+              <span>Test Live Flow7 Demo</span>
+            </button>
+          </div>
+
+          {/* Telemetry Counter Strip */}
+          <div className="pt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
+            <div className="p-3.5 rounded-xl bg-[#111319] border border-[#1e212b]">
+              <span className="text-[11px] text-zinc-400 block">Campuses</span>
+              <span className="text-lg font-bold text-white">12 Universities</span>
+            </div>
+            <div className="p-3.5 rounded-xl bg-[#111319] border border-[#1e212b]">
+              <span className="text-[11px] text-zinc-400 block">Peer Software</span>
+              <span className="text-lg font-bold text-cyan-400">14 Verified Tools</span>
+            </div>
+            <div className="p-3.5 rounded-xl bg-[#111319] border border-[#1e212b]">
+              <span className="text-[11px] text-zinc-400 block">Creator Revenue</span>
+              <span className="text-lg font-bold text-emerald-400">95% Payouts</span>
+            </div>
+            <div className="p-3.5 rounded-xl bg-[#111319] border border-[#1e212b]">
+              <span className="text-[11px] text-zinc-400 block">Checkout Gateway</span>
+              <span className="text-lg font-bold text-white">Verified PayPal</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 3. IN-BROWSER LIVE TOOL PLAYGROUND */}
+      <section id="live-playground" className="py-16 border-t border-[#181a22] bg-[#0d0e12]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-1">
+                <Play className="w-3 h-3 fill-emerald-400 text-emerald-400" />
+                <span>Zero Installation Required</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                Run student-built tools right in your browser.
+              </h2>
+              <p className="text-xs sm:text-sm text-zinc-400 mt-1 max-w-xl">
+                Test interactive web runners live in client-side sandbox before unlocking full source code or cryptographic licenses.
+              </p>
+            </div>
+
+            {/* Runner Selector Tabs */}
+            <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[#14161f] border border-[#212534]">
+              <button
+                onClick={() => setPlaygroundTab('flow7')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
+                  playgroundTab === 'flow7'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                Flow7 Focus Layer
+              </button>
+              <button
+                onClick={() => setPlaygroundTab('ci-guardian')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
+                  playgroundTab === 'ci-guardian'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                CI-Guardian
+              </button>
+              <button
+                onClick={() => setPlaygroundTab('algo')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
+                  playgroundTab === 'algo'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                AlgoVisualizer
+              </button>
+            </div>
+          </div>
+
+          {/* Interactive Playground Embed Container */}
+          <div className="rounded-2xl bg-[#111319] border border-[#222636] p-4 sm:p-6 shadow-2xl">
+            {playgroundTab === 'flow7' && (
+              <div>
+                <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#1c1f2b] text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="font-semibold text-zinc-200">Flow7 Cognitive Domain Runner</span>
+                    <span className="text-zinc-500">•</span>
+                    <span className="text-zinc-400">Created by Abdullah Qaasim-Falade (OAU)</span>
+                  </div>
+                  <button 
+                    onClick={() => router.push('/marketplace')}
+                    className="text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1"
+                  >
+                    <span>View in Marketplace</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+                <Flow7Tool />
               </div>
             )}
 
+            {playgroundTab === 'ci-guardian' && (
+              <div>
+                <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#1c1f2b] text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                    <span className="font-semibold text-zinc-200">CI-Guardian Pre-Flight Security Scanner</span>
+                    <span className="text-zinc-500">•</span>
+                    <span className="text-zinc-400">Branch &amp; Secret Hygiene Validator</span>
+                  </div>
+                  <button 
+                    onClick={() => router.push('/marketplace')}
+                    className="text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1"
+                  >
+                    <span>View in Marketplace</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+                <CIGuardianTool />
+              </div>
+            )}
+
+            {playgroundTab === 'algo' && (
+              <div>
+                <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#1c1f2b] text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
+                    <span className="font-semibold text-zinc-200">AlgoVisualizer Pro Dijkstra &amp; BFS Engine</span>
+                    <span className="text-zinc-500">•</span>
+                    <span className="text-zinc-400">Created by Priya Patel (UC Berkeley)</span>
+                  </div>
+                  <button 
+                    onClick={() => router.push('/marketplace')}
+                    className="text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1"
+                  >
+                    <span>View in Marketplace</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+                <AlgoVisualizerTool />
+              </div>
+            )}
           </div>
-        )}
 
-        {/* Render Tab: My Student Locker (@me) */}
-        {currentTab === 'me' && (
-          <StudentLocker
-            purchasedItems={purchasedItems}
-            onBrowseCatalog={() => setCurrentTab('explore')}
-            onViewReceipt={(item) => setIsOrdersModalOpen(true)}
-            onLaunchTool={(prod) => setActiveInteractiveTool(prod)}
-            onReviewSubmitted={handleReviewSubmitted}
-          />
-        )}
+        </div>
+      </section>
 
-      </main>
+      {/* 4. VALUE PILLARS */}
+      <section id="why-araxie" className="py-20 border-t border-[#181a22] bg-[#0b0c0e]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <h2 className="text-xs font-semibold text-blue-400 uppercase tracking-widest">
+              Why Araxie
+            </h2>
+            <p className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
+              An economy engineered specifically for university builders.
+            </p>
+          </div>
 
-      {/* Footer */}
-      <footer className="mt-16 border-t border-[#17181f] bg-[#0c0d10] py-8 text-xs text-zinc-500">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            {/* Pillar 1 */}
+            <div className="p-6 rounded-2xl bg-[#111319] border border-[#1e212c] space-y-3 hover:border-[#2f3548] transition">
+              <div className="w-10 h-10 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                <Globe className="w-5 h-5" />
+              </div>
+              <h3 className="font-bold text-base text-white">Campus Peer Network</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Connect directly with student developers from Stanford, Great Ife (OAU), UC Berkeley, and MIT. Verified peer ratings and collegiate trust.
+              </p>
+            </div>
+
+            {/* Pillar 2 */}
+            <div className="p-6 rounded-2xl bg-[#111319] border border-[#1e212c] space-y-3 hover:border-[#2f3548] transition">
+              <div className="w-10 h-10 rounded-xl bg-emerald-600/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <Zap className="w-5 h-5" />
+              </div>
+              <h3 className="font-bold text-base text-white">In-Browser Execution</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Experience tools before paying. Live interactive runners test algorithms, focus states, and dev security tools directly in your browser.
+              </p>
+            </div>
+
+            {/* Pillar 3 */}
+            <div className="p-6 rounded-2xl bg-[#111319] border border-[#1e212c] space-y-3 hover:border-[#2f3548] transition">
+              <div className="w-10 h-10 rounded-xl bg-amber-600/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <h3 className="font-bold text-base text-white">95% Creator Payouts</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Instant PayPal checkout with automated student bundle discounts. Student software creators keep 95% of every transaction.
+              </p>
+            </div>
+
+            {/* Pillar 4 */}
+            <div className="p-6 rounded-2xl bg-[#111319] border border-[#1e212c] space-y-3 hover:border-[#2f3548] transition">
+              <div className="w-10 h-10 rounded-xl bg-purple-600/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <h3 className="font-bold text-base text-white">Autonomous AI Concierge</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Tell the AI Concierge your courses, major, and budget to receive tailored software bundles and dynamically calculated student discounts.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* 5. FEATURED SOFTWARE CATALOG TEASER */}
+      <section id="featured-tools" className="py-20 border-t border-[#181a22] bg-[#0d0e12]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+          
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <h2 className="text-xs font-semibold text-blue-400 uppercase tracking-widest">
+                Student Marketplace Showcase
+              </h2>
+              <p className="text-2xl sm:text-3xl font-bold text-white tracking-tight mt-1">
+                Featured software curated from campus builders.
+              </p>
+            </div>
+
+            <button
+              onClick={() => router.push('/marketplace')}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 transition"
+            >
+              <span>Explore all 14 tools in the marketplace</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {/* Product Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {featuredProducts.map((product) => {
+              const hasRunner = ['prod-flow7', 'prod-ci-guardian', 'prod-algo-visualizer', 'prod-canvas-autopilot', 'prod-academic-prompt-vault'].includes(product.id);
+              return (
+                <div 
+                  key={product.id}
+                  className="rounded-2xl bg-[#111319] border border-[#1e212c] p-5 flex flex-col justify-between hover:border-[#2d3345] transition group shadow-lg"
+                >
+                  <div className="space-y-3.5">
+                    
+                    {/* Top Row: Category Pill & Price */}
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#181a24] text-zinc-400 border border-[#252836]">
+                        {product.category}
+                      </span>
+                      <span className="text-sm font-bold text-white">
+                        ${product.price.toFixed(2)}
+                      </span>
+                    </div>
+
+                    {/* Title & Tagline */}
+                    <div>
+                      <h3 className="font-bold text-base text-white group-hover:text-blue-400 transition">
+                        {product.title}
+                      </h3>
+                      <p className="text-xs text-zinc-400 mt-1 line-clamp-2">
+                        {product.tagline}
+                      </p>
+                    </div>
+
+                    {/* Creator Info */}
+                    <div className="flex items-center gap-2 pt-1 border-t border-[#181a24]">
+                      <img 
+                        src={product.creator.avatar} 
+                        alt={product.creator.name}
+                        className="w-5 h-5 rounded-full object-cover ring-1 ring-zinc-700" 
+                      />
+                      <span className="text-[11px] text-zinc-300 truncate">
+                        {product.creator.name} &bull; <span className="text-zinc-500">{product.creator.university.split(' ')[0]}</span>
+                      </span>
+                    </div>
+
+                  </div>
+
+                  {/* Actions */}
+                  <div className="pt-4 flex items-center gap-2">
+                    {hasRunner && (
+                      <button
+                        onClick={() => setActiveInteractiveTool({ id: product.id, title: product.title })}
+                        className="flex-1 py-1.5 rounded-lg text-xs font-semibold bg-[#181b26] hover:bg-[#202534] text-cyan-300 border border-[#272d40] transition flex items-center justify-center gap-1.5"
+                      >
+                        <Play className="w-3 h-3 fill-cyan-300" />
+                        <span>Run Demo</span>
+                      </button>
+                    )}
+                    <button
+                      onClick={() => router.push('/marketplace')}
+                      className="flex-1 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-zinc-200 text-black transition flex items-center justify-center gap-1"
+                    >
+                      <span>View in Market</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </button>
+                  </div>
+
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Big Banner Link */}
+          <div className="rounded-2xl p-6 bg-gradient-to-r from-blue-950/20 via-[#121520] to-[#14161f] border border-[#22283a] flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <h3 className="font-bold text-base text-white">Looking for study suites, prompt vaults, or micro-SaaS?</h3>
+              <p className="text-xs text-zinc-400 mt-0.5">Explore the full catalog with real-time ⌘K search, PayPal checkout, and dynamic AI bundles.</p>
+            </div>
+            <button
+              onClick={() => router.push('/marketplace')}
+              className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs whitespace-nowrap shadow-lg shadow-blue-600/20 transition flex items-center gap-2 shrink-0"
+            >
+              <ShoppingBag className="w-4 h-4" />
+              <span>Open Student Marketplace</span>
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 6. CAMPUS CREATOR SPOTLIGHT */}
+      <section id="campus-network" className="py-20 border-t border-[#181a22] bg-[#0b0c0e]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+          
+          <div className="text-center max-w-2xl mx-auto space-y-2">
+            <h2 className="text-xs font-semibold text-blue-400 uppercase tracking-widest">
+              Collegiate Builders
+            </h2>
+            <p className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+              Created by campus peers across top universities.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+            {creators.map((c) => (
+              <div 
+                key={c.name}
+                className="p-5 rounded-2xl bg-[#111319] border border-[#1e212c] space-y-3 flex flex-col justify-between"
+              >
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-3">
+                    <img 
+                      src={c.avatar} 
+                      alt={c.name} 
+                      className="w-10 h-10 rounded-full object-cover ring-2 ring-[#262a3a]" 
+                    />
+                    <div>
+                      <h4 className="font-bold text-sm text-white leading-tight">{c.name}</h4>
+                      <p className="text-[11px] text-zinc-400">{c.university}</p>
+                    </div>
+                  </div>
+                  <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                    {c.tools}
+                  </span>
+                  <p className="text-xs text-zinc-400 leading-relaxed">
+                    {c.bio}
+                  </p>
+                </div>
+
+                <a 
+                  href={c.githubUrl} 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="text-xs text-zinc-400 hover:text-white transition flex items-center gap-1.5 pt-2 border-t border-[#191b24]"
+                >
+                  <Code className="w-3.5 h-3.5 text-zinc-400" />
+                  <span>GitHub Profile</span>
+                  <ExternalLink className="w-3 h-3 text-zinc-500" />
+                </a>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* 7. HIGH-IMPACT BOTTOM CTA BANNER */}
+      <section className="py-20 border-t border-[#181a22] bg-[#0d0e12] relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[250px] bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#181a24] text-zinc-300 text-xs font-medium border border-[#252836]">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Ready for Campus Builders &amp; Student Learners</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+            Step into the Araxie Student Marketplace.
+          </h2>
+
+          <p className="text-sm sm:text-base text-zinc-400 max-w-xl mx-auto leading-relaxed">
+            Trade collegiate software, run in-browser tool previews, and join 1,400+ student developers across 12 universities.
+          </p>
+
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+            <button
+              onClick={() => router.push('/marketplace')}
+              className="px-6 py-3 rounded-xl bg-white hover:bg-zinc-200 text-black font-bold text-xs sm:text-sm transition flex items-center gap-2 shadow-xl shadow-white/5"
+            >
+              <ShoppingBag className="w-4 h-4 text-black" />
+              <span>Launch Marketplace Storefront</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => setIsAuthModalOpen(true)}
+              className="px-5 py-3 rounded-xl bg-[#151720] hover:bg-[#1d202c] text-zinc-200 font-semibold text-xs sm:text-sm border border-[#272b3a] transition flex items-center gap-2"
+            >
+              <GraduationCap className="w-4 h-4 text-zinc-400" />
+              <span>Sign In / Create Account</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. FOOTER */}
+      <footer className="border-t border-[#17181f] bg-[#0c0d10] py-8 text-xs text-zinc-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <img src="/logo.svg" alt="Araxie Logo" className="w-5 h-5 rounded" />
@@ -381,28 +670,16 @@ export default function Home() {
 
           <div className="flex flex-wrap items-center gap-5 text-[11px]">
             <button 
-              onClick={() => setCurrentTab('public')}
+              onClick={() => router.push('/marketplace')}
               className="text-zinc-400 hover:text-white transition"
             >
-              Public Space
+              Marketplace Storefront
             </button>
             <button 
-              onClick={() => setCurrentTab('explore')}
+              onClick={() => setIsAuthModalOpen(true)}
               className="text-zinc-400 hover:text-white transition"
             >
-              Browse Catalog
-            </button>
-            <button 
-              onClick={() => setCurrentTab('creator')}
-              className="text-zinc-400 hover:text-white transition"
-            >
-              Sell Campus Tools
-            </button>
-            <button 
-              onClick={() => setIsAIModalOpen(true)}
-              className="text-zinc-400 hover:text-white transition"
-            >
-              AI Advisor
+              Campus Passport
             </button>
             <a 
               href="https://github.com/Alqaasimee-jr2/araxie" 
@@ -417,171 +694,18 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* Whop-Grade Sticky Mobile Bottom Navigation Bar */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0d0e12]/95 backdrop-blur-md border-t border-[#1c1d25] px-3 py-2 flex items-center justify-around">
-        <button
-          onClick={() => setCurrentTab('public')}
-          className={`flex flex-col items-center gap-1 text-[10px] font-medium transition ${
-            currentTab === 'public' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
-          }`}
-        >
-          <Globe className="w-5 h-5" />
-          <span>Public</span>
-        </button>
+      {/* 9. MODALS */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onLoginSuccess={handleLoginSuccess}
+      />
 
-        <button
-          onClick={() => setCurrentTab('explore')}
-          className={`flex flex-col items-center gap-1 text-[10px] font-medium transition ${
-            currentTab === 'explore' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
-          }`}
-        >
-          <Layers className="w-5 h-5" />
-          <span>Market</span>
-        </button>
-
-        <button
-          onClick={() => setCurrentTab('me')}
-          className={`relative flex flex-col items-center gap-1 text-[10px] font-medium transition ${
-            currentTab === 'me' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
-          }`}
-        >
-          <Package className="w-5 h-5" />
-          <span>Locker</span>
-          {purchasedItems.length > 0 && (
-            <span className="absolute -top-1 right-1 w-4 h-4 rounded-full bg-emerald-500 text-[9px] font-bold text-white flex items-center justify-center">
-              {purchasedItems.length}
-            </span>
-          )}
-        </button>
-
-        <button
-          onClick={() => setIsAIModalOpen(true)}
-          className="flex flex-col items-center gap-1 text-[10px] font-medium text-amber-400 hover:text-amber-300 transition"
-        >
-          <div className="w-7 h-7 rounded-full bg-amber-400/10 border border-amber-400/20 flex items-center justify-center">
-            <Sparkles className="w-4 h-4 text-amber-400" />
-          </div>
-          <span>AI Concierge</span>
-        </button>
-
-        <button
-          onClick={() => setIsCartDrawerOpen(true)}
-          className="relative flex flex-col items-center gap-1 text-[10px] font-medium text-zinc-500 hover:text-zinc-300 transition"
-        >
-          <ShoppingBag className="w-5 h-5" />
-          <span>Cart</span>
-          {cart.length > 0 && (
-            <span className="absolute -top-1 right-0 w-4 h-4 rounded-full bg-blue-500 text-[9px] font-bold text-white flex items-center justify-center">
-              {cart.length}
-            </span>
-          )}
-        </button>
-
-        <button
-          onClick={() => setIsCreatorModalOpen(true)}
-          className="flex flex-col items-center gap-1 text-[10px] font-medium text-zinc-500 hover:text-zinc-300 transition"
-        >
-          <Wallet className="w-5 h-5" />
-          <span>Creator</span>
-        </button>
-
-        <button
-          onClick={() => {
-            if (currentUser) {
-              setIsSettingsModalOpen(true);
-            } else {
-              setIsAuthModalOpen(true);
-            }
-          }}
-          className="flex flex-col items-center gap-1 text-[10px] font-medium text-zinc-500 hover:text-zinc-300 transition"
-        >
-          <User className="w-5 h-5" />
-          <span>{currentUser ? 'Settings' : 'Sign In'}</span>
-        </button>
-      </div>
-
-      {/* Modal: Interactive In-App Tool Execution Workspace */}
       <InteractiveToolModal
         isOpen={!!activeInteractiveTool}
         onClose={() => setActiveInteractiveTool(null)}
         toolId={activeInteractiveTool?.id}
         toolTitle={activeInteractiveTool?.title}
-      />
-
-      {/* Modal: Student Campus Pass / Supabase Authentication */}
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        onLoginSuccess={(user) => setCurrentUser(user)}
-      />
-
-      {/* Modal: Product Detail Drawer */}
-      <ProductDetailDrawer
-        product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-        onBuyNow={(prod) => {
-          setSelectedProduct(null);
-          handleQuickBuy(prod);
-        }}
-        onAddToCart={handleToggleCart}
-        isInCart={selectedProduct ? cart.some(c => c.id === selectedProduct.id) : false}
-        onLaunchDemo={(prod) => {
-          setSelectedProduct(null);
-          setActiveInteractiveTool(prod);
-        }}
-        isUnlocked={selectedProduct ? isProductUnlocked(selectedProduct.id) : false}
-      />
-
-      {/* Modal: Agentic Commerce AI Concierge */}
-      <AIConciergeModal
-        isOpen={isAIModalOpen}
-        onClose={() => setIsAIModalOpen(false)}
-        onCheckoutBundle={handleCheckoutBundle}
-        catalog={products}
-      />
-
-      {/* Modal: PayPal Checkout */}
-      <PayPalCheckoutModal
-        isOpen={isCheckoutModalOpen}
-        onClose={() => setIsCheckoutModalOpen(false)}
-        products={checkoutProducts}
-        bundle={checkoutBundle}
-        totalAmount={checkoutTotal}
-        currentUser={currentUser}
-        onPaymentSuccess={handlePaymentSuccess}
-      />
-
-      {/* Slide-over: Cart Drawer */}
-      <CartDrawer
-        isOpen={isCartDrawerOpen}
-        onClose={() => setIsCartDrawerOpen(false)}
-        cartItems={cart}
-        onRemoveItem={(id) => setCart(prev => prev.filter(p => p.id !== id))}
-        onCheckout={handleCheckoutCart}
-      />
-
-      {/* Modal: Creator Studio */}
-      <CreatorStudioModal
-        isOpen={isCreatorModalOpen}
-        onClose={() => setIsCreatorModalOpen(false)}
-        onProductCreated={handleProductCreated}
-        currentUser={currentUser}
-        products={products}
-      />
-
-      {/* Modal: Order History & Receipts */}
-      <OrderHistoryModal
-        isOpen={isOrdersModalOpen}
-        onClose={() => setIsOrdersModalOpen(false)}
-        purchasedItems={purchasedItems}
-      />
-
-      {/* Modal: Student Account & Payout Settings */}
-      <UserSettingsModal
-        isOpen={isSettingsModalOpen}
-        onClose={() => setIsSettingsModalOpen(false)}
-        currentUser={currentUser}
-        onUpdateUser={(updated) => setCurrentUser(updated)}
       />
 
     </div>

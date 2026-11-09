@@ -284,16 +284,23 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <p className="font-semibold text-white">{currentUser.name}</p>
                       <p className="text-[10px] text-zinc-400 truncate">{currentUser.email}</p>
                       <span className="inline-block mt-1 text-[9px] font-semibold px-1.5 py-0.2 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                        {currentUser.role === 'student_creator' ? 'Student Creator' : 'Student Learner'}
+                        Verified Campus Student
                       </span>
                     </div>
 
-                    <button
-                      onClick={() => { setCurrentTab('public'); setIsProfileMenuOpen(false); }}
+                    <a
+                      href="/"
                       className="w-full text-left px-3 py-1.5 text-zinc-300 hover:text-white hover:bg-[#181920] flex items-center gap-1.5 transition"
                     >
-                      <Globe className="w-3 h-3 text-blue-400" />
-                      <span>Public Space (Main)</span>
+                      <Globe className="w-3 h-3 text-cyan-400" />
+                      <span>Araxie Landing Page</span>
+                    </a>
+                    <button
+                      onClick={() => { setCurrentTab('explore'); setIsProfileMenuOpen(false); }}
+                      className="w-full text-left px-3 py-1.5 text-zinc-300 hover:text-white hover:bg-[#181920] flex items-center gap-1.5 transition"
+                    >
+                      <ShoppingBag className="w-3 h-3 text-blue-400" />
+                      <span>Marketplace Catalog</span>
                     </button>
 
                     <button
