@@ -12,7 +12,11 @@ import {
   Layers, 
   Tag, 
   CheckCircle2,
-  ExternalLink
+  ExternalLink,
+  Play,
+  Check,
+  Plus,
+  CreditCard
 } from 'lucide-react';
 import { DynamicBundle, Product } from '@/types';
 
@@ -21,6 +25,10 @@ interface AIConciergeModalProps {
   onClose: () => void;
   onCheckoutBundle: (bundle: DynamicBundle) => void;
   catalog: Product[];
+  onLaunchDemo?: (product: Product) => void;
+  onAddToCart?: (product: Product) => void;
+  onQuickBuy?: (product: Product) => void;
+  onFilterCatalog?: (query: string) => void;
 }
 
 interface Message {
@@ -32,10 +40,10 @@ interface Message {
 }
 
 const SAMPLE_PROMPTS = [
-  "Sophomore CS student, taking Algorithms & Web Dev, budget $20",
-  "Pre-med student studying for MCAT and Organic Chem exam",
-  "Chrome extensions to keep track of Canvas deadlines and GPA",
-  "Student tools and templates under $8"
+  "CS student at OAU studying algorithms, devops, and deep work",
+  "Pre-med student at UI preparing for clinical & biochemistry exams",
+  "Campus tools to automate lecture schedules and track GPA",
+  "Essential student utilities and templates under $8"
 ];
 
 export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
@@ -43,16 +51,21 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
   onClose,
   onCheckoutBundle,
   catalog,
+  onLaunchDemo,
+  onAddToCart,
+  onQuickBuy,
+  onFilterCatalog,
 }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome',
       sender: 'assistant',
-      text: "👋 Hey there! I'm your **Araxie AI Concierge**. Tell me your major, current courses, or academic goals—and I'll autonomously assemble the best peer-built tools and calculate a custom student bundle discount for you.",
+      text: "👋 Hello! I'm **araxieAi**, your autonomous campus commerce advisor. Tell me your department, university courses, or academic goals—and I'll curate the best peer-built tools and calculate a custom student bundle discount for you with instant PayPal checkout.",
     }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [addedItemIds, setAddedItemIds] = useState<Record<string, boolean>>({});
 
   if (!isOpen) return null;
 
@@ -95,7 +108,7 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
         {
           id: `err-${Date.now()}`,
           sender: 'assistant',
-          text: "I'm having a brief connection blip, but you can explore the curated student catalog in the Explore feed anytime!",
+          text: "I experienced a brief network timeout, but you can explore the verified Nigerian student catalog directly on the marketplace!",
         }
       ]);
     } finally {
@@ -103,25 +116,33 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
     }
   };
 
+  const handleAddItem = (product: Product) => {
+    onAddToCart?.(product);
+    setAddedItemIds(prev => ({ ...prev, [product.id]: true }));
+    setTimeout(() => {
+      setAddedItemIds(prev => ({ ...prev, [product.id]: false }));
+    }, 2000);
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
       <div className="w-full max-w-2xl h-[90vh] max-h-[750px] flex flex-col rounded-2xl bg-[#0f1118] border border-[#23283a] shadow-2xl overflow-hidden">
         
         {/* Header */}
         <div className="px-5 py-4 border-b border-[#1f2434] flex items-center justify-between bg-[#131622]">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-xl overflow-hidden ring-1 ring-white/10 shrink-0">
-              <img src="/logo.svg" alt="Araxie AI" className="w-full h-full object-cover" />
+              <img src="/logo.svg" alt="araxieAi Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-semibold text-sm text-white">Araxie AI Concierge</h3>
+                <h3 className="font-semibold text-sm text-white">araxieAi Advisor</h3>
                 <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                  Agentic Commerce
+                  Autonomous Commerce
                 </span>
               </div>
               <p className="text-[11px] text-zinc-400">
-                Autonomous Student Tool Matchmaker & Dynamic Bundler
+                AI student software recommendations &amp; dynamic bundle discounts
               </p>
             </div>
           </div>
@@ -143,11 +164,11 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
             >
               {msg.sender === 'assistant' && (
                 <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0 mt-0.5 ring-1 ring-blue-500/30">
-                  <img src="/logo.svg" alt="Araxie AI" className="w-full h-full object-cover" />
+                  <img src="/logo.svg" alt="araxieAi" className="w-full h-full object-cover" />
                 </div>
               )}
 
-              <div className={`max-w-[85%] space-y-3 ${msg.sender === 'user' ? 'items-end' : ''}`}>
+              <div className={`max-w-[88%] space-y-3 ${msg.sender === 'user' ? 'items-end' : ''}`}>
                 <div
                   className={`p-3.5 rounded-2xl text-xs sm:text-sm leading-relaxed ${
                     msg.sender === 'user'
@@ -157,6 +178,98 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
                 >
                   <p className="whitespace-pre-wrap">{msg.text}</p>
                 </div>
+
+                {/* Individual Tool Recommendations in Chat */}
+                {msg.suggestedProducts && msg.suggestedProducts.length > 0 && (
+                  <div className="space-y-2 pt-1">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 block">
+                      Recommended Campus Tools ({msg.suggestedProducts.length})
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      {msg.suggestedProducts.map(prod => (
+                        <div 
+                          key={prod.id}
+                          className="p-3 rounded-xl bg-[#12141f] border border-[#222738] flex flex-col justify-between gap-2"
+                        >
+                          <div>
+                            <div className="flex items-center justify-between gap-1">
+                              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#1c2030] text-zinc-400">
+                                {prod.category}
+                              </span>
+                              <span className="text-xs font-bold text-white">
+                                ${prod.price.toFixed(2)}
+                              </span>
+                            </div>
+                            <h4 className="font-semibold text-xs text-zinc-100 mt-1 truncate">
+                              {prod.title}
+                            </h4>
+                            <p className="text-[10px] text-zinc-400 line-clamp-1">
+                              {prod.tagline}
+                            </p>
+                            <span className="text-[9px] text-zinc-500 block mt-0.5">
+                              By {prod.creator.name} ({prod.creator.university.split(' ')[0]})
+                            </span>
+                          </div>
+
+                          {/* Action Buttons: Demo, Add to Cart, Quick Buy */}
+                          <div className="flex items-center gap-1.5 pt-1 border-t border-[#1a1e2b]">
+                            {onLaunchDemo && (
+                              <button
+                                onClick={() => {
+                                  onLaunchDemo(prod);
+                                  onClose();
+                                }}
+                                className="px-2 py-1 rounded-lg text-[10px] font-medium bg-[#1a1f2e] hover:bg-[#22293e] text-cyan-300 border border-[#273048] transition flex items-center gap-1"
+                                title="Run in-browser demo"
+                              >
+                                <Play className="w-2.5 h-2.5 fill-cyan-300" />
+                                <span>Demo</span>
+                              </button>
+                            )}
+
+                            {onAddToCart && (
+                              <button
+                                onClick={() => handleAddItem(prod)}
+                                className={`px-2 py-1 rounded-lg text-[10px] font-medium transition flex items-center gap-1 border ${
+                                  addedItemIds[prod.id]
+                                    ? 'bg-emerald-950/40 text-emerald-300 border-emerald-500/40'
+                                    : 'bg-[#181a24] hover:bg-[#202434] text-zinc-300 border-[#282d3e]'
+                                }`}
+                                title="Add to cart"
+                              >
+                                {addedItemIds[prod.id] ? (
+                                  <>
+                                    <Check className="w-2.5 h-2.5 text-emerald-400" />
+                                    <span>Added</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Plus className="w-2.5 h-2.5" />
+                                    <span>Cart</span>
+                                  </>
+                                )}
+                              </button>
+                            )}
+
+                            {onQuickBuy && (
+                              <button
+                                onClick={() => {
+                                  onQuickBuy(prod);
+                                  onClose();
+                                }}
+                                className="flex-1 px-2 py-1 rounded-lg text-[10px] font-semibold bg-white hover:bg-zinc-200 text-black transition flex items-center justify-center gap-1 shadow-sm"
+                                title="Instant PayPal checkout"
+                              >
+                                <CreditCard className="w-2.5 h-2.5 text-black" />
+                                <span>Buy Now</span>
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Render Dynamic Bundle Card if generated by the AI */}
                 {msg.bundle && (
@@ -174,7 +287,7 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
                     </div>
 
                     {/* Bundle items list */}
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                       {msg.bundle.items.map((item) => (
                         <div 
                           key={item.id} 
@@ -183,7 +296,7 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
                           <div className="flex items-center gap-2 truncate pr-2">
                             <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
                             <span className="font-medium text-zinc-200 truncate">{item.title}</span>
-                            <span className="text-[10px] text-zinc-500">by {item.creator.name}</span>
+                            <span className="text-[10px] text-zinc-500">by {item.creator.name} ({item.creator.university.split(' ')[0]})</span>
                           </div>
                           <span className="font-semibold text-zinc-300 shrink-0">
                             ${item.price.toFixed(2)}
@@ -193,7 +306,7 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
                     </div>
 
                     {/* Pricing Breakdown & Instant PayPal Checkout CTA */}
-                    <div className="pt-2 border-t border-[#21273c] flex items-center justify-between gap-3">
+                    <div className="pt-2 border-t border-[#21273c] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
                         <div className="flex items-baseline gap-2">
                           <span className="text-base font-bold text-white">
@@ -204,20 +317,34 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
                           </span>
                         </div>
                         <span className="text-[10px] text-emerald-400 font-medium">
-                          You save ${msg.bundle.savings.toFixed(2)}
+                          Autonomous discount: save ${msg.bundle.savings.toFixed(2)}
                         </span>
                       </div>
 
-                      <button
-                        onClick={() => {
-                          onCheckoutBundle(msg.bundle!);
-                          onClose();
-                        }}
-                        className="px-4 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-md shadow-blue-600/30 flex items-center gap-1.5 transition transform active:scale-95"
-                      >
-                        <ShoppingBag className="w-3.5 h-3.5" />
-                        <span>Pay with PayPal</span>
-                      </button>
+                      <div className="flex items-center gap-2">
+                        {onAddToCart && (
+                          <button
+                            onClick={() => {
+                              msg.bundle?.items.forEach(it => onAddToCart(it));
+                              onClose();
+                            }}
+                            className="px-3 py-2 rounded-xl text-xs font-semibold bg-[#1a1f2e] hover:bg-[#22293e] text-zinc-200 border border-[#2b334a] transition"
+                          >
+                            Add Bundle to Cart
+                          </button>
+                        )}
+
+                        <button
+                          onClick={() => {
+                            onCheckoutBundle(msg.bundle!);
+                            onClose();
+                          }}
+                          className="px-4 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-md shadow-blue-600/30 flex items-center gap-1.5 transition transform active:scale-95"
+                        >
+                          <ShoppingBag className="w-3.5 h-3.5" />
+                          <span>Pay with PayPal</span>
+                        </button>
+                      </div>
                     </div>
 
                   </div>
@@ -235,7 +362,7 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
           {isLoading && (
             <div className="flex items-center gap-2 text-xs text-blue-400 p-2">
               <Sparkles className="w-4 h-4 animate-spin text-cyan-400" />
-              <span>Analyzing student tools & optimizing bundle discount...</span>
+              <span>araxieAi analyzing student tools & calculating bundle discount...</span>
             </div>
           )}
         </div>
@@ -249,15 +376,15 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
             <button
               key={i}
               onClick={() => handleSend(promptText)}
-              className="text-[11px] text-zinc-300 hover:text-white bg-[#171b28] hover:bg-[#202538] border border-[#23293c] px-2.5 py-1 rounded-lg shrink-0 transition"
+              className="text-[11px] whitespace-nowrap bg-[#171b29] hover:bg-[#20263a] text-zinc-300 hover:text-white px-2.5 py-1 rounded-lg border border-[#232a3e] transition shrink-0"
             >
               {promptText}
             </button>
           ))}
         </div>
 
-        {/* Input Bar */}
-        <div className="p-3 border-t border-[#1f2434] bg-[#0d0f17]">
+        {/* Chat Input Bar */}
+        <div className="p-3 sm:p-4 border-t border-[#1f2434] bg-[#121420]">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -267,16 +394,15 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
           >
             <input
               type="text"
-              placeholder="e.g. Taking CS & Organic Chem, what tools do I need for $15?"
+              placeholder="Tell araxieAi your department, courses, or budget..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              disabled={isLoading}
-              className="flex-1 bg-[#151824] text-xs sm:text-sm text-zinc-200 placeholder-zinc-500 px-3.5 py-2.5 rounded-xl border border-[#212638] focus:outline-none focus:border-blue-500/60 transition"
+              className="flex-1 bg-[#171b29] text-xs sm:text-sm text-white placeholder-zinc-500 px-4 py-2.5 rounded-xl border border-[#232a3e] focus:outline-none focus:border-blue-500 transition"
             />
             <button
               type="submit"
-              disabled={!input.trim() || isLoading}
-              className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-xs font-semibold flex items-center gap-1 transition"
+              disabled={isLoading || !input.trim()}
+              className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-medium text-xs sm:text-sm transition flex items-center gap-1.5 shrink-0 shadow-md shadow-blue-600/20"
             >
               <Send className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Send</span>

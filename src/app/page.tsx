@@ -19,13 +19,17 @@ import {
   Cpu,
   GraduationCap
 } from 'lucide-react';
-import { Product, UserProfile } from '@/types';
+import { Product, UserProfile, DynamicBundle, PurchasedItem } from '@/types';
 import { INITIAL_PRODUCTS } from '@/data/mockProducts';
 import { AuthModal } from '@/components/AuthModal';
 import { InteractiveToolModal } from '@/components/tools/InteractiveToolModal';
 import { Flow7Tool } from '@/components/tools/Flow7Tool';
 import { CIGuardianTool } from '@/components/tools/CIGuardianTool';
 import { AlgoVisualizerTool } from '@/components/tools/AlgoVisualizerTool';
+import { AraxiAiFloatingButton } from '@/components/AraxiAiFloatingButton';
+import { AIConciergeModal } from '@/components/AIConciergeModal';
+import { CartDrawer } from '@/components/CartDrawer';
+import { PayPalCheckoutModal } from '@/components/PayPalCheckoutModal';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -33,6 +37,15 @@ export default function LandingPage() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [activeInteractiveTool, setActiveInteractiveTool] = useState<{ id: string; title: string } | null>(null);
   const [playgroundTab, setPlaygroundTab] = useState<'flow7' | 'ci-guardian' | 'algo'>('flow7');
+
+  // AI & Commerce State
+  const [isAIModalOpen, setIsAIModalOpen] = useState(false);
+  const [cart, setCart] = useState<Product[]>([]);
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
+  const [checkoutProducts, setCheckoutProducts] = useState<Product[]>([]);
+  const [checkoutBundle, setCheckoutBundle] = useState<DynamicBundle | null>(null);
+  const [checkoutTotal, setCheckoutTotal] = useState<number>(0);
 
   // Hydrate user session from localStorage
   useEffect(() => {
@@ -46,13 +59,46 @@ export default function LandingPage() {
     }
   }, []);
 
+  // Hydrate & persist cart
+  const [isCartHydrated, setIsCartHydrated] = useState(false);
+  useEffect(() => {
+    try {
+      const savedCart = localStorage.getItem('araxie_cart');
+      if (savedCart) {
+        setCart(JSON.parse(savedCart));
+      }
+    } catch (e) {
+      console.warn('Cart hydration error:', e);
+    } finally {
+      setIsCartHydrated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isCartHydrated) return;
+    try {
+      localStorage.setItem('araxie_cart', JSON.stringify(cart));
+    } catch (e) {}
+  }, [cart, isCartHydrated]);
+
+  // Global keyboard shortcut: ⌘J / Ctrl+J to toggle araxieAi
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'j') {
+        e.preventDefault();
+        setIsAIModalOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const handleLoginSuccess = (user: UserProfile) => {
     setCurrentUser(user);
     setIsAuthModalOpen(false);
     try {
       localStorage.setItem('araxie_user', JSON.stringify(user));
     } catch (e) {}
-    // Seamlessly navigate straight to the student marketplace
     router.push('/marketplace');
   };
 
@@ -61,6 +107,56 @@ export default function LandingPage() {
     try {
       localStorage.removeItem('araxie_user');
     } catch (e) {}
+  };
+
+  const handleAddToCart = (product: Product) => {
+    setCart(prev => {
+      const exists = prev.some(item => item.id === product.id);
+      if (exists) {
+        return prev.filter(item => item.id !== product.id);
+      } else {
+        return [...prev, product];
+      }
+    });
+  };
+
+  const handleQuickBuy = (product: Product) => {
+    if (!currentUser) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+    setCheckoutProducts([product]);
+    setCheckoutBundle(null);
+    setCheckoutTotal(product.price);
+    setIsCheckoutModalOpen(true);
+  };
+
+  const handleCheckoutBundle = (bundle: DynamicBundle) => {
+    if (!currentUser) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+    setCheckoutProducts(bundle.items);
+    setCheckoutBundle(bundle);
+    setCheckoutTotal(bundle.bundleTotal);
+    setIsCheckoutModalOpen(true);
+  };
+
+  const handleCheckoutCart = (items: Product[], bundle: DynamicBundle | null, total: number) => {
+    if (!currentUser) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+    setCheckoutProducts(items);
+    setCheckoutBundle(bundle);
+    setCheckoutTotal(total);
+    setIsCheckoutModalOpen(true);
+  };
+
+  const handlePaymentSuccess = (purchasedItems: PurchasedItem[]) => {
+    const purchasedIds = new Set(purchasedItems.map(p => p.productId));
+    setCart(prev => prev.filter(item => !purchasedIds.has(item.id)));
+    router.push('/marketplace');
   };
 
   // Featured tools for landing page showcase
@@ -147,7 +243,33 @@ export default function LandingPage() {
             </nav>
 
             {/* Action Buttons */}
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2">
+              
+              {/* araxieAi trigger */}
+              <button
+                onClick={() => setIsAIModalOpen(true)}
+                className="flex items-center gap-1.5 text-xs font-medium bg-[#161924] hover:bg-[#1d2232] text-zinc-200 px-3 py-1.5 rounded-lg border border-[#272f44] hover:border-blue-500/50 transition shadow-sm"
+                title="Open araxieAi Assistant (⌘J)"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                <span className="font-semibold text-white">araxieAi</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 hidden sm:inline-block" />
+              </button>
+
+              {/* Cart Button (visible if cart has items) */}
+              {cart.length > 0 && (
+                <button
+                  onClick={() => setIsCartDrawerOpen(true)}
+                  className="relative p-2 rounded-lg bg-[#121317] hover:bg-[#1a1c22] text-zinc-300 border border-[#1e2027] transition"
+                  aria-label="View Cart"
+                >
+                  <ShoppingBag className="w-4 h-4 text-zinc-400" />
+                  <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-blue-500 text-white text-[10px] font-bold flex items-center justify-center">
+                    {cart.length}
+                  </span>
+                </button>
+              )}
+
               {currentUser ? (
                 <div className="flex items-center gap-2">
                   <button
@@ -694,7 +816,7 @@ export default function LandingPage() {
         </div>
       </footer>
 
-      {/* 9. MODALS */}
+      {/* 9. MODALS & SLIDE-OVERS */}
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
@@ -706,6 +828,46 @@ export default function LandingPage() {
         onClose={() => setActiveInteractiveTool(null)}
         toolId={activeInteractiveTool?.id}
         toolTitle={activeInteractiveTool?.title}
+        onBuyNow={handleQuickBuy}
+        onAddToCart={handleAddToCart}
+        products={INITIAL_PRODUCTS}
+      />
+
+      <AIConciergeModal
+        isOpen={isAIModalOpen}
+        onClose={() => setIsAIModalOpen(false)}
+        onCheckoutBundle={handleCheckoutBundle}
+        catalog={INITIAL_PRODUCTS}
+        onLaunchDemo={(prod) => setActiveInteractiveTool({ id: prod.id, title: prod.title })}
+        onAddToCart={handleAddToCart}
+        onQuickBuy={handleQuickBuy}
+        onFilterCatalog={() => router.push('/marketplace')}
+      />
+
+      {/* Floating Action Button: araxieAi */}
+      <AraxiAiFloatingButton
+        isOpen={isAIModalOpen}
+        onClick={() => setIsAIModalOpen(!isAIModalOpen)}
+      />
+
+      {/* Slide-over: Cart Drawer */}
+      <CartDrawer
+        isOpen={isCartDrawerOpen}
+        onClose={() => setIsCartDrawerOpen(false)}
+        cartItems={cart}
+        onRemoveItem={(id) => setCart(prev => prev.filter(p => p.id !== id))}
+        onCheckout={handleCheckoutCart}
+      />
+
+      {/* Modal: PayPal Checkout */}
+      <PayPalCheckoutModal
+        isOpen={isCheckoutModalOpen}
+        onClose={() => setIsCheckoutModalOpen(false)}
+        products={checkoutProducts}
+        bundle={checkoutBundle}
+        totalAmount={checkoutTotal}
+        currentUser={currentUser}
+        onPaymentSuccess={handlePaymentSuccess}
       />
 
     </div>

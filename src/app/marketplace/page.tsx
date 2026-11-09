@@ -17,6 +17,7 @@ import { CartDrawer } from '@/components/CartDrawer';
 import { InteractiveToolModal } from '@/components/tools/InteractiveToolModal';
 import { AuthModal } from '@/components/AuthModal';
 import { PublicSpaceView } from '@/components/PublicSpaceView';
+import { AraxiAiFloatingButton } from '@/components/AraxiAiFloatingButton';
 import { 
   Sparkles, 
   Layers, 
@@ -56,6 +57,40 @@ export default function MarketplacePage() {
     } catch (e) {
       console.warn("Auth hydration error:", e);
     }
+  }, []);
+
+  // Restore and persist cart from localStorage
+  const [isCartHydrated, setIsCartHydrated] = useState(false);
+  useEffect(() => {
+    try {
+      const savedCart = localStorage.getItem("araxie_cart");
+      if (savedCart) {
+        setCart(JSON.parse(savedCart));
+      }
+    } catch (e) {
+      console.warn("Cart hydration error:", e);
+    } finally {
+      setIsCartHydrated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isCartHydrated) return;
+    try {
+      localStorage.setItem("araxie_cart", JSON.stringify(cart));
+    } catch (e) {}
+  }, [cart, isCartHydrated]);
+
+  // Global keyboard shortcut: ⌘J / Ctrl+J to toggle araxieAi
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'j') {
+        e.preventDefault();
+        setIsAIModalOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   const handleLoginSuccess = (user: UserProfile) => {
@@ -541,6 +576,9 @@ export default function MarketplacePage() {
         onClose={() => setActiveInteractiveTool(null)}
         toolId={activeInteractiveTool?.id}
         toolTitle={activeInteractiveTool?.title}
+        onBuyNow={handleQuickBuy}
+        onAddToCart={handleToggleCart}
+        products={products}
       />
 
       {/* Modal: Student Campus Pass / Supabase Authentication */}
@@ -567,12 +605,25 @@ export default function MarketplacePage() {
         isUnlocked={selectedProduct ? isProductUnlocked(selectedProduct.id) : false}
       />
 
-      {/* Modal: Agentic Commerce AI Concierge */}
+      {/* Modal: Agentic Commerce AI Concierge (araxieAi) */}
       <AIConciergeModal
         isOpen={isAIModalOpen}
         onClose={() => setIsAIModalOpen(false)}
         onCheckoutBundle={handleCheckoutBundle}
         catalog={products}
+        onLaunchDemo={(prod) => setActiveInteractiveTool(prod)}
+        onAddToCart={handleToggleCart}
+        onQuickBuy={handleQuickBuy}
+        onFilterCatalog={(query) => {
+          setSearchQuery(query);
+          setCurrentTab('explore');
+        }}
+      />
+
+      {/* Floating Action Button: araxieAi */}
+      <AraxiAiFloatingButton
+        isOpen={isAIModalOpen}
+        onClick={() => setIsAIModalOpen(!isAIModalOpen)}
       />
 
       {/* Modal: PayPal Checkout */}

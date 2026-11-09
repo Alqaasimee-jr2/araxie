@@ -217,13 +217,15 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Right Action Icons: AI, Cart, User Profile */}
           <div className="flex items-center gap-2">
             
-            {/* AI Concierge Trigger */}
+            {/* AI Concierge Trigger (araxieAi) */}
             <button
               onClick={onOpenAI}
-              className="flex items-center gap-1.5 text-xs font-medium bg-[#1a1c24] hover:bg-[#222530] text-zinc-200 px-3 py-1.5 rounded-lg border border-[#272935] transition"
+              className="flex items-center gap-1.5 text-xs font-medium bg-[#161924] hover:bg-[#1d2232] text-zinc-200 px-3 py-1.5 rounded-lg border border-[#272f44] hover:border-blue-500/50 transition shadow-sm"
+              title="Open araxieAi Assistant (⌘J)"
             >
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span className="hidden sm:inline">AI Concierge</span>
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="font-semibold text-white">araxieAi</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 hidden sm:inline-block" />
             </button>
 
             {/* Mobile Search Toggle */}

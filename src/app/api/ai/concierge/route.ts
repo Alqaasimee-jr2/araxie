@@ -49,28 +49,38 @@ export async function POST(req: NextRequest) {
     let matchedItems: Product[] = [];
     let defaultReasoning = '';
 
-    // Semantic catalog matching
-    if (lowerPrompt.includes('cs') || lowerPrompt.includes('code') || lowerPrompt.includes('algorithm') || lowerPrompt.includes('leet') || lowerPrompt.includes('swe')) {
-      matchedItems = catalog.filter(p => p.id === 'prod-algo-visualizer' || p.id === 'prod-fastapi-micro-saas' || p.id === 'prod-canvas-autopilot');
-      defaultReasoning = 'Curated the top-rated algorithm visualizer and Canvas assignment organizer to keep your coding study sessions on track.';
-    } else if (lowerPrompt.includes('premed') || lowerPrompt.includes('med') || lowerPrompt.includes('mcat') || lowerPrompt.includes('bio') || lowerPrompt.includes('chem')) {
-      matchedItems = catalog.filter(p => p.id === 'prod-medstudy-cramos' || p.id === 'prod-chem-reaction-3d');
-      defaultReasoning = 'Assembled the MedStudy CramOS 3,500+ Anki deck with the 3D Organic Chemistry reaction simulator for high-yield retention.';
-    } else if (lowerPrompt.includes('chrome') || lowerPrompt.includes('extension') || lowerPrompt.includes('gpa') || lowerPrompt.includes('grade') || lowerPrompt.includes('calendar')) {
-      matchedItems = catalog.filter(p => p.category === 'chrome-extension');
-      defaultReasoning = 'Selected our two most essential student browser extensions: automated Canvas calendar sync and GPA curve forecasting.';
-    } else if (lowerPrompt.includes('paper') || lowerPrompt.includes('thesis') || lowerPrompt.includes('write') || lowerPrompt.includes('research') || lowerPrompt.includes('prompt')) {
+    // Semantic catalog matching with Nigerian campus support
+    if (lowerPrompt.includes('oau') || lowerPrompt.includes('ife') || lowerPrompt.includes('clearance') || lowerPrompt.includes('hostel') || lowerPrompt.includes('survival')) {
+      matchedItems = catalog.filter(p => p.id === 'prod-oaumods' || p.id === 'prod-flow7' || p.id === 'prod-ci-guardian');
+      defaultReasoning = 'Curated the ultimate Great Ife survival bundle: OAUMods campus guide with Flow7 performance awareness and CI-Guardian pre-flight developer tools.';
+    } else if (lowerPrompt.includes('flow7') || lowerPrompt.includes('focus') || lowerPrompt.includes('timer') || lowerPrompt.includes('session') || lowerPrompt.includes('stopwatch')) {
+      matchedItems = catalog.filter(p => p.id === 'prod-flow7' || p.id === 'prod-ci-guardian' || p.id === 'prod-canvas-autopilot');
+      defaultReasoning = 'Paired the Flow7 cognitive performance layer with CI-Guardian AST validation for deep, uninterrupted student development flow.';
+    } else if (lowerPrompt.includes('ci') || lowerPrompt.includes('guardian') || lowerPrompt.includes('devops') || lowerPrompt.includes('security') || lowerPrompt.includes('git')) {
+      matchedItems = catalog.filter(p => p.id === 'prod-ci-guardian' || p.id === 'prod-flow7' || p.id === 'prod-algo-visualizer');
+      defaultReasoning = 'Combined CI-Guardian pre-flight AST scanner with AlgoVisualizer Pro for clean, secure, battle-tested student software.';
+    } else if (lowerPrompt.includes('cs') || lowerPrompt.includes('code') || lowerPrompt.includes('algorithm') || lowerPrompt.includes('leet') || lowerPrompt.includes('futa') || lowerPrompt.includes('unilag')) {
+      matchedItems = catalog.filter(p => p.id === 'prod-algo-visualizer' || p.id === 'prod-ci-guardian' || p.id === 'prod-canvas-autopilot');
+      defaultReasoning = 'Selected the AlgoVisualizer 3D algorithm runner alongside CI-Guardian and Canvas timetable automation for engineering students.';
+    } else if (lowerPrompt.includes('med') || lowerPrompt.includes('ui') || lowerPrompt.includes('mcat') || lowerPrompt.includes('bio') || lowerPrompt.includes('chem')) {
+      matchedItems = catalog.filter(p => p.id === 'prod-medstudy-cramos' || p.id === 'prod-chem-reaction-3d' || p.id === 'prod-paper-synthesizer');
+      defaultReasoning = 'Assembled the MedStudy CramOS Anki suite with 3D Organic Chemistry visualization and literature review summarizers for medical and science students.';
+    } else if (lowerPrompt.includes('extension') || lowerPrompt.includes('gpa') || lowerPrompt.includes('timetable') || lowerPrompt.includes('calendar')) {
+      matchedItems = catalog.filter(p => p.category === 'chrome-extension' || p.id === 'prod-canvas-autopilot' || p.id === 'prod-gpa-guardian');
+      defaultReasoning = 'Selected our two most essential student utilities: Canvas/LMS calendar synchronization and GPA curve forecasting.';
+    } else if (lowerPrompt.includes('paper') || lowerPrompt.includes('thesis') || lowerPrompt.includes('project') || lowerPrompt.includes('prompt') || lowerPrompt.includes('final year')) {
       matchedItems = catalog.filter(p => p.id === 'prod-paper-synthesizer' || p.id === 'prod-academic-prompt-vault');
-      defaultReasoning = 'Combined the arXiv/PubMed Research Paper Synthesizer CLI with 250+ battle-tested academic writing prompts.';
-    } else if (lowerPrompt.includes('cheap') || lowerPrompt.includes('under 10') || lowerPrompt.includes('under $10') || lowerPrompt.includes('budget') || lowerPrompt.includes('5')) {
+      defaultReasoning = 'Combined the Research Paper Synthesizer CLI with 250+ battle-tested academic prompts for final-year projects and defense preparations.';
+    } else if (lowerPrompt.includes('cheap') || lowerPrompt.includes('budget') || lowerPrompt.includes('under 10') || lowerPrompt.includes('under $10') || lowerPrompt.includes('5')) {
       matchedItems = catalog.filter(p => p.price <= 8).slice(0, 3);
-      defaultReasoning = 'Filtered student-built tools designed for strict student budgets under $10 with maximal daily utility.';
+      defaultReasoning = 'Curated high-utility student tools specifically calibrated for affordable campus budgets under $8.';
     } else {
       matchedItems = [
-        catalog.find(p => p.id === 'prod-canvas-autopilot') || catalog[0],
-        catalog.find(p => p.id === 'prod-academic-prompt-vault') || catalog[1],
-      ];
-      defaultReasoning = 'Recommended a high-impact productivity starter bundle combining assignment deadline automation with academic writing prompts.';
+        catalog.find(p => p.id === 'prod-flow7') || catalog[0],
+        catalog.find(p => p.id === 'prod-ci-guardian') || catalog[1],
+        catalog.find(p => p.id === 'prod-oaumods') || catalog[2],
+      ].filter(Boolean);
+      defaultReasoning = 'Recommended a high-impact campus starter bundle featuring Flow7 focus layer, CI-Guardian AST scanner, and student navigation utilities.';
     }
 
     const bundleItems = matchedItems.slice(0, 3);
