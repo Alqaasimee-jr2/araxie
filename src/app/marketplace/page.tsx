@@ -750,6 +750,7 @@ export default function MarketplacePage() {
         isOpen={isOrdersModalOpen}
         onClose={() => setIsOrdersModalOpen(false)}
         purchasedItems={purchasedItems}
+        onLaunchPreview={(prod) => setActiveInteractiveTool(prod)}
       />
 
       {/* Modal: Student Account & Payout Settings */}

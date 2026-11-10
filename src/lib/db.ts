@@ -65,7 +65,7 @@ function ensureDbFile(): DatabaseSchema {
           licenseKey: 'CAP-STAN-9942-2026',
           amountPaid: 6.99,
           status: 'active',
-          downloadUrl: 'interactive:canvas-autopilot',
+          downloadUrl: 'https://chrome.google.com/webstore/detail/canvas-autopilot',
         }
       ],
       payouts: [

@@ -582,15 +582,25 @@ export const PayPalCheckoutModal: React.FC<PayPalCheckoutModalProps> = ({
                               <span>Try Demo</span>
                             </button>
                           )}
-                          <a
-                            href={item.downloadUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-[11px] text-blue-400 hover:text-blue-300 flex items-center gap-1 font-medium"
-                          >
-                            <span>Access</span>
-                            <ExternalLink className="w-3 h-3" />
-                          </a>
+                          {(() => {
+                            const safeUrl = item.downloadUrl && !item.downloadUrl.startsWith('interactive:') && item.downloadUrl !== '#'
+                              ? item.downloadUrl
+                              : targetProd?.downloadAsset?.url && !targetProd.downloadAsset.url.startsWith('interactive:')
+                                ? targetProd.downloadAsset.url
+                                : `/api/assets/download?productId=${targetProd?.id || item.productId}`;
+
+                            return safeUrl ? (
+                              <a
+                                href={safeUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-[11px] text-blue-400 hover:text-blue-300 flex items-center gap-1 font-medium bg-[#161a29] px-2 py-0.5 rounded border border-blue-500/25"
+                              >
+                                <span>Access</span>
+                                <ExternalLink className="w-3 h-3" />
+                              </a>
+                            ) : null;
+                          })()}
                         </div>
                       </div>
 

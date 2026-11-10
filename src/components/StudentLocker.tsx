@@ -276,21 +276,31 @@ export const StudentLocker: React.FC<StudentLockerProps> = ({
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => onLaunchTool(item.product)}
-                      className="px-3.5 py-1.5 rounded-lg bg-[#1f222b] hover:bg-[#282b37] text-white font-medium text-xs border border-[#2d313e] transition flex items-center gap-1.5"
+                      className="px-3.5 py-1.5 rounded-lg bg-[#1f222b] hover:bg-[#282b37] text-white font-medium text-xs border border-[#2d313e] transition flex items-center gap-1.5 cursor-pointer"
                     >
                       <Play className="w-3.5 h-3.5 text-emerald-400" />
                       <span>Launch Tool</span>
                     </button>
 
-                    <a
-                      href={item.downloadUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="p-1.5 rounded-lg bg-[#16181e] hover:bg-[#20222a] text-zinc-400 hover:text-zinc-200 border border-[#22242d] transition"
-                      title="Download files or repo link"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                    </a>
+                    {(() => {
+                      const safeUrl = item.downloadUrl && !item.downloadUrl.startsWith('interactive:') && item.downloadUrl !== '#'
+                        ? item.downloadUrl
+                        : item.product?.downloadAsset?.url && !item.product.downloadAsset.url.startsWith('interactive:')
+                          ? item.product.downloadAsset.url
+                          : `/api/assets/download?productId=${item.productId}`;
+
+                      return safeUrl ? (
+                        <a
+                          href={safeUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="p-1.5 rounded-lg bg-[#16181e] hover:bg-[#20222a] text-zinc-400 hover:text-zinc-200 border border-[#22242d] transition"
+                          title="Download files or open verified repository"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                        </a>
+                      ) : null;
+                    })()}
                   </div>
                 </div>
 
