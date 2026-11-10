@@ -40,11 +40,13 @@ function calculateBundleDiscount(items: Product[]): { discountPercentage: number
 function hasToolRecommendationIntent(text: string): boolean {
   const lower = text.toLowerCase().trim();
 
+  // Pure conversational inquiries that should NOT trigger a tool bundle
   const conversationalOnlyPatterns = [
-    /^(hi|hello|hey|yo|good morning|good afternoon|good evening)\b[!.]?$/i,
+    /^(hi|hello|hey|yo|sup|good morning|good afternoon|good evening)\b[!.]?$/i,
     /^(who are you|what are you|what is araxie|how does araxie work|how does this work)\??$/i,
     /^(how do payouts work|what is the fee|how much do creators make)\??$/i,
     /^(thank you|thanks|cool|awesome|got it|nice|ok|okay)\b[!.]?$/i,
+    /^(how are you|what's up|tell me about yourself)\??$/i,
   ];
 
   for (const pattern of conversationalOnlyPatterns) {
@@ -53,13 +55,21 @@ function hasToolRecommendationIntent(text: string): boolean {
     }
   }
 
+  // Follow-up question about usage is informational, not a new bundle search
+  if (lower.includes('how do i use') || lower.includes('how to use') || lower.includes('how do these tools work')) {
+    return false;
+  }
+
   const toolKeywords = [
     'tool', 'tools', 'bundle', 'recommend', 'suggest', 'buy', 'purchase',
     'budget', 'dollar', '$', 'discount', 'extension', 'extensions', 'software',
     'app', 'apps', 'pack', 'template', 'starter', 'need', 'looking for',
     'find me', 'sophomore', 'freshman', 'junior', 'senior', 'taking',
     'algorithms', 'devops', 'pre-med', 'mcat', 'biochem', 'cs', 'engineering',
-    'canvas', 'gpa', 'cheat sheet', 'notes', 'study', 'math', 'calculus', 'physics'
+    'canvas', 'gpa', 'cheat sheet', 'notes', 'study', 'math', 'calculus', 'physics',
+    'code', 'coding', 'programmer', 'programming', 'developer', 'software dev',
+    'python', 'react', 'nextjs', 'fastapi', 'javascript', 'typescript', 'web dev',
+    'show me other bundles', 'recommend other tools', 'other tools', 'other bundles'
   ];
 
   return toolKeywords.some(kw => lower.includes(kw));
@@ -108,6 +118,11 @@ function checkUnservedCategory(text: string): { isUnserved: boolean; reply: stri
 // Conversational responses for general chatbot inquiries
 function generateConversationalReply(prompt: string): string {
   const lower = prompt.toLowerCase();
+
+  // Informational: How to use tools
+  if (lower.includes('how do i use') || lower.includes('how to use') || lower.includes('how do these tools work')) {
+    return "Using tools on Araxie is simple and instant:\n\n1. **Live In-Browser Demo**: Click **'Preview'** on any tool to launch a sandboxed interactive runner directly in your browser before buying.\n2. **1-Click Checkout**: Pay securely with PayPal or Card. No credit card details are ever retained.\n3. **Instant Locker Access**: Your tool is minted to your **Student Locker (@me)** with an HMAC cryptographic license key, and direct asset download links (Chrome extension zip, GitHub repo, or Anki deck).";
+  }
 
   if (/^(hi|hello|hey|yo|sup)\b/i.test(lower)) {
     return "Hey there! 👋 I'm **araxieAi**, your campus assistant. How's the semester treating you? Whether you want study advice, tips for your classes, or need me to curate tools for your courses within a budget, just say the word!";
@@ -210,9 +225,35 @@ Do NOT force or pitch any product bundle unless the student explicitly asks for 
     let matchedItems: Product[] = [];
     let defaultReasoning = '';
 
-    if (lowerPrompt.includes('cs') || lowerPrompt.includes('code') || lowerPrompt.includes('algorithm') || lowerPrompt.includes('leet') || lowerPrompt.includes('futa') || lowerPrompt.includes('mit')) {
+    // Handle suggestion pill: "Show me other bundles" / "other bundles"
+    if (lowerPrompt.includes('other bundle') || lowerPrompt.includes('different bundle') || lowerPrompt.includes('show me other bundles')) {
+      // Rotate to an alternative top bundle (e.g., Micro-SaaS + Fullstack dev bundle, or Pre-med study bundle)
+      matchedItems = catalog.filter(p => p.id === 'prod-fastapi-micro-saas' || p.id === 'prod-nit7er-boilerplate');
+      if (matchedItems.length < 2) {
+        matchedItems = catalog.filter(p => p.id === 'prod-flow7' || p.id === 'prod-ci-guardian');
+      }
+      defaultReasoning = 'Here is an alternative developer productivity bundle: FastAPI Micro-SaaS Boilerplate paired with Nit7er Next.js 15 Starter for shipping campus apps fast.';
+    }
+    // Handle suggestion pill: "Can you recommend other tools?" / "other tools"
+    else if (lowerPrompt.includes('recommend other tools') || lowerPrompt.includes('can you recommend other tools') || lowerPrompt.includes('other tools')) {
+      matchedItems = catalog.filter(p => p.id === 'prod-flow7' || p.id === 'prod-paper-synthesizer');
+      defaultReasoning = 'Here are two top campus productivity tools: Flow7 for deep cognitive focus sessions and Paper Synthesizer for automated IEEE/APA literature citations.';
+    }
+    // Coding / CS / Algorithms / LeetCode / Software Engineering
+    else if (
+      lowerPrompt.includes('code') || 
+      lowerPrompt.includes('coding') || 
+      lowerPrompt.includes('cs') || 
+      lowerPrompt.includes('algorithm') || 
+      lowerPrompt.includes('leet') || 
+      lowerPrompt.includes('program') ||
+      lowerPrompt.includes('developer') ||
+      lowerPrompt.includes('python') ||
+      lowerPrompt.includes('futa') || 
+      lowerPrompt.includes('mit')
+    ) {
       matchedItems = catalog.filter(p => p.id === 'prod-algo-visualizer' || p.id === 'prod-ci-guardian');
-      defaultReasoning = 'Curated a custom bundle for your CS coursework: AlgoVisualizer Pro for interview algorithms paired with CI-Guardian AST validation for secure coding.';
+      defaultReasoning = 'Curated a custom bundle for your CS & coding coursework: AlgoVisualizer Pro for interview algorithms paired with CI-Guardian AST validation for secure code.';
     } else if (lowerPrompt.includes('med') || lowerPrompt.includes('mcat') || lowerPrompt.includes('bio') || lowerPrompt.includes('chem')) {
       matchedItems = catalog.filter(p => p.id === 'prod-medstudy-cramos' || p.id === 'prod-chem-reaction-3d');
       defaultReasoning = 'Assembled the MedStudy CramOS Anki flashcards with 3D Organic Chemistry reaction visualizer for your medical and biochemistry studies.';
@@ -236,7 +277,7 @@ Do NOT force or pitch any product bundle unless the student explicitly asks for 
     // If NO genuine correlation was found, inform the student honestly instead of forcing unrelated tools!
     if (matchedItems.length === 0) {
       return NextResponse.json({
-        reply: `We don't currently have a dedicated tool matching "${prompt}" on the Araxie marketplace yet.\n\nWe recommend searching the **[Chrome Web Store](https://chrome.google.com/webstore)** or **[GitHub](https://github.com)** for open-source university extensions.\n\nAre you or a fellow student building a tool for this? You can publish it on Araxie in under 60 seconds via **Creator Studio** and keep **95% of every sale**!`,
+        reply: `We don't currently have a dedicated tool matching that specific request on the Araxie marketplace yet.\n\nWe recommend searching the **[Chrome Web Store](https://chrome.google.com/webstore)** or **[GitHub](https://github.com)** for open-source university extensions.\n\nAre you or a fellow student building a tool for this? You can publish it on Araxie in under 60 seconds via **Creator Studio** and keep **95% of every sale**!`,
         bundle: null,
         isRecommendation: false,
       });

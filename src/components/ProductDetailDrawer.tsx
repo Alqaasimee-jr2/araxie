@@ -130,7 +130,7 @@ export const ProductDetailDrawer: React.FC<ProductDetailDrawerProps> = ({
           </div>
 
           {/* Interactive Tool Preview Callout Banner */}
-          {onLaunchDemo && ['prod-flow7', 'prod-ci-guardian', 'prod-canvas-autopilot', 'prod-algo-visualizer', 'prod-academic-prompt-vault', 'prod-paper-synthesizer'].includes(product.id) && (
+          {onLaunchDemo && (
             <div className="p-4 rounded-xl bg-[#14151b] border border-[#21232d] flex items-center justify-between gap-3">
               <div>
                 <h4 className="font-semibold text-xs text-white">Live In-Browser Tool Preview Available</h4>
@@ -139,8 +139,9 @@ export const ProductDetailDrawer: React.FC<ProductDetailDrawerProps> = ({
                 </p>
               </div>
               <button
+                type="button"
                 onClick={() => onLaunchDemo(product)}
-                className="px-3.5 py-1.5 rounded-lg bg-[#1f222b] hover:bg-[#282c38] text-white font-medium text-xs border border-[#2c303e] transition flex items-center gap-1.5 shrink-0"
+                className="px-3.5 py-1.5 rounded-lg bg-[#1f222b] hover:bg-[#282c38] text-white font-medium text-xs border border-[#2c303e] transition flex items-center gap-1.5 shrink-0 cursor-pointer"
               >
                 <Play className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Launch Preview</span>

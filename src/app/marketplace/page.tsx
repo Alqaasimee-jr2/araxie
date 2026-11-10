@@ -232,7 +232,7 @@ export default function MarketplacePage() {
         message: `Payment confirmed via PayPal Orders v2. Cryptographic HMAC license key has been minted and added to your Student Locker (@me). 95% net creator royalties were disbursed.`,
         productName: targetProd?.title,
         productId: targetProd?.id,
-        hasPreview: Boolean(targetProd && ['prod-flow7', 'prod-ci-guardian', 'prod-canvas-autopilot', 'prod-algo-visualizer', 'prod-academic-prompt-vault', 'prod-paper-synthesizer'].includes(targetProd.id)),
+        hasPreview: Boolean(targetProd),
       });
     }
   };

@@ -7,6 +7,7 @@ import { AlgoVisualizerTool } from './AlgoVisualizerTool';
 import { AcademicWritingTool } from './AcademicWritingTool';
 import { CIGuardianTool } from './CIGuardianTool';
 import { Flow7Tool } from './Flow7Tool';
+import { GeneralToolSandbox } from './GeneralToolSandbox';
 import { Product } from '@/types';
 import { INITIAL_PRODUCTS } from '@/data/mockProducts';
 
@@ -42,8 +43,10 @@ export const InteractiveToolModal: React.FC<InteractiveToolModalProps> = ({
       return <AlgoVisualizerTool />;
     } else if (toolId === 'prod-academic-prompt-vault' || toolId === 'prod-paper-synthesizer') {
       return <AcademicWritingTool />;
-    } else {
+    } else if (toolId === 'prod-canvas-autopilot') {
       return <CanvasAutoPilotTool />;
+    } else {
+      return <GeneralToolSandbox toolId={toolId || 'prod-custom'} toolTitle={toolTitle || currentProduct?.title} />;
     }
   };
 

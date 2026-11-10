@@ -592,6 +592,273 @@
   ],
   "orders": [
     {
+      "id": "order-item-1794310447833-0",
+      "productId": "prod-algo-visualizer",
+      "product": {
+        "id": "prod-algo-visualizer",
+        "title": "AlgoVisualizer Pro",
+        "tagline": "Interactive 3D algorithm visualizer with 150+ LeetCode patterns for technical interview prep.",
+        "description": "Designed specifically for students taking Data Structures & Algorithms or preparing for FAANG SWE internships. Step forward and backward through memory graphs, recursion trees, dynamic programming tables, and Dijkstra shortest paths in real-time.",
+        "category": "code-template",
+        "price": 12.5,
+        "originalPrice": 20,
+        "creator": {
+          "name": "Chinedu Okonkwo",
+          "handle": "chinedu_code",
+          "avatar": "/avatars/marcus.svg",
+          "university": "Federal University of Technology, Akure (FUTA)",
+          "verified": true,
+          "payoutEmail": "chinedu.okonkwo@futa.edu.ng"
+        },
+        "rating": 5,
+        "reviewsCount": 310,
+        "salesCount": 1420,
+        "features": [
+          "Visual breakdown for 150+ Blind75 & NeetCode patterns",
+          "Step-by-step call stack and memory pointer inspector",
+          "Custom input runner in Python, C++, and TypeScript",
+          "Complexity analysis calculator with asymptotic curves",
+          "Offline desktop app and local web server included"
+        ],
+        "downloadAsset": {
+          "type": "github",
+          "url": "https://github.com/Alqaasimee-jr2/algovisualizer-pro",
+          "fileName": "algovisualizer-pro-bundle.zip",
+          "licenseKeyPrefix": "ALGO"
+        },
+        "tags": [
+          "Algorithms",
+          "LeetCode",
+          "CS Prep",
+          "Python"
+        ],
+        "badge": "Bestseller",
+        "accentColor": "#10b981",
+        "iconName": "Binary"
+      },
+      "purchaseDate": "Nov 10, 2026",
+      "orderId": "ARX-PP-ORD-EAZ49I6-7796",
+      "captureId": "PP-CAP-N7EQ09",
+      "licenseKey": "ARX-ALGO-MWAM42BU-29C82D8C",
+      "amountPaid": 10.85,
+      "status": "active",
+      "downloadUrl": "https://github.com/Alqaasimee-jr2/algovisualizer-pro"
+    },
+    {
+      "id": "order-item-1794310447833-1",
+      "productId": "prod-ci-guardian",
+      "product": {
+        "id": "prod-ci-guardian",
+        "title": "CI-Guardian 🛡️",
+        "tagline": "Autonomous pre-flight quality gate chaining syntax-aware AST security scanning & test orchestration.",
+        "description": "Stop pushing security flaws and broken tests to GitHub. CI-Guardian runs in under 10 seconds locally or in CI, scanning AST syntax trees for exposed keys and vulnerabilities while auto-generating SARIF 2.1.0 security compliance reports.",
+        "category": "code-template",
+        "price": 14.99,
+        "originalPrice": 25,
+        "creator": {
+          "name": "Abdullah Qaasim-Falade",
+          "handle": "alqaasimee_jr2",
+          "avatar": "/avatars/abdullah.svg",
+          "university": "Obafemi Awolowo University (OAU)",
+          "verified": true,
+          "payoutEmail": "alqaasimee.falade@oauife.edu.ng"
+        },
+        "rating": 5,
+        "reviewsCount": 198,
+        "salesCount": 1120,
+        "features": [
+          "Sub-10s syntax-aware AST security scanning gate",
+          "Automated test runner discovery with zero configuration",
+          "SARIF 2.1.0 security compliance report export",
+          "Automated PR documentation and change-impact analyzer",
+          "Zero external dependencies runner via npx ci-guardian"
+        ],
+        "downloadAsset": {
+          "type": "github",
+          "url": "https://github.com/Alqaasimee-jr2/CI-Guardian",
+          "fileName": "ci-guardian-v1.4.zip",
+          "licenseKeyPrefix": "CIG"
+        },
+        "tags": [
+          "DevOps",
+          "AST Security",
+          "CLI",
+          "GitHub Actions",
+          "Testing"
+        ],
+        "badge": "Bestseller",
+        "accentColor": "#10b981",
+        "iconName": "ShieldCheck"
+      },
+      "purchaseDate": "Nov 10, 2026",
+      "orderId": "ARX-PP-ORD-EAZ49I6-7796",
+      "captureId": "PP-CAP-N7EQ09",
+      "licenseKey": "ARX-CI-G-MWAM42BU-5A053CE6",
+      "amountPaid": 13.02,
+      "status": "active",
+      "downloadUrl": "https://github.com/Alqaasimee-jr2/CI-Guardian"
+    },
+    {
+      "id": "order-item-1794309726455-0",
+      "productId": "prod-algo-visualizer",
+      "product": {
+        "id": "prod-algo-visualizer",
+        "title": "AlgoVisualizer Pro",
+        "tagline": "Interactive 3D algorithm visualizer with 150+ LeetCode patterns for technical interview prep.",
+        "description": "Designed specifically for students taking Data Structures & Algorithms or preparing for FAANG SWE internships. Step forward and backward through memory graphs, recursion trees, dynamic programming tables, and Dijkstra shortest paths in real-time.",
+        "category": "code-template",
+        "price": 12.5,
+        "originalPrice": 20,
+        "creator": {
+          "name": "Chinedu Okonkwo",
+          "handle": "chinedu_code",
+          "avatar": "/avatars/marcus.svg",
+          "university": "Federal University of Technology, Akure (FUTA)",
+          "verified": true,
+          "payoutEmail": "chinedu.okonkwo@futa.edu.ng"
+        },
+        "rating": 5,
+        "reviewsCount": 310,
+        "salesCount": 1420,
+        "features": [
+          "Visual breakdown for 150+ Blind75 & NeetCode patterns",
+          "Step-by-step call stack and memory pointer inspector",
+          "Custom input runner in Python, C++, and TypeScript",
+          "Complexity analysis calculator with asymptotic curves",
+          "Offline desktop app and local web server included"
+        ],
+        "downloadAsset": {
+          "type": "github",
+          "url": "https://github.com/Alqaasimee-jr2/algovisualizer-pro",
+          "fileName": "algovisualizer-pro-bundle.zip",
+          "licenseKeyPrefix": "ALGO"
+        },
+        "tags": [
+          "Algorithms",
+          "LeetCode",
+          "CS Prep",
+          "Python"
+        ],
+        "badge": "Bestseller",
+        "accentColor": "#10b981",
+        "iconName": "Binary"
+      },
+      "purchaseDate": "Nov 10, 2026",
+      "orderId": "ARX-PP-ORD-KC2KNII-6403",
+      "captureId": "PP-CAP-AILB81",
+      "licenseKey": "ARX-ALGO-MWALOLPZ-E762E417",
+      "amountPaid": 10.85,
+      "status": "active",
+      "downloadUrl": "https://github.com/Alqaasimee-jr2/algovisualizer-pro"
+    },
+    {
+      "id": "order-item-1794309726455-1",
+      "productId": "prod-ci-guardian",
+      "product": {
+        "id": "prod-ci-guardian",
+        "title": "CI-Guardian 🛡️",
+        "tagline": "Autonomous pre-flight quality gate chaining syntax-aware AST security scanning & test orchestration.",
+        "description": "Stop pushing security flaws and broken tests to GitHub. CI-Guardian runs in under 10 seconds locally or in CI, scanning AST syntax trees for exposed keys and vulnerabilities while auto-generating SARIF 2.1.0 security compliance reports.",
+        "category": "code-template",
+        "price": 14.99,
+        "originalPrice": 25,
+        "creator": {
+          "name": "Abdullah Qaasim-Falade",
+          "handle": "alqaasimee_jr2",
+          "avatar": "/avatars/abdullah.svg",
+          "university": "Obafemi Awolowo University (OAU)",
+          "verified": true,
+          "payoutEmail": "alqaasimee.falade@oauife.edu.ng"
+        },
+        "rating": 5,
+        "reviewsCount": 198,
+        "salesCount": 1120,
+        "features": [
+          "Sub-10s syntax-aware AST security scanning gate",
+          "Automated test runner discovery with zero configuration",
+          "SARIF 2.1.0 security compliance report export",
+          "Automated PR documentation and change-impact analyzer",
+          "Zero external dependencies runner via npx ci-guardian"
+        ],
+        "downloadAsset": {
+          "type": "github",
+          "url": "https://github.com/Alqaasimee-jr2/CI-Guardian",
+          "fileName": "ci-guardian-v1.4.zip",
+          "licenseKeyPrefix": "CIG"
+        },
+        "tags": [
+          "DevOps",
+          "AST Security",
+          "CLI",
+          "GitHub Actions",
+          "Testing"
+        ],
+        "badge": "Bestseller",
+        "accentColor": "#10b981",
+        "iconName": "ShieldCheck"
+      },
+      "purchaseDate": "Nov 10, 2026",
+      "orderId": "ARX-PP-ORD-KC2KNII-6403",
+      "captureId": "PP-CAP-AILB81",
+      "licenseKey": "ARX-CI-G-MWALOLPZ-AE0B53D1",
+      "amountPaid": 13.02,
+      "status": "active",
+      "downloadUrl": "https://github.com/Alqaasimee-jr2/CI-Guardian"
+    },
+    {
+      "id": "order-item-1794309340135-0",
+      "productId": "prod-medstudy-cramos",
+      "product": {
+        "id": "prod-medstudy-cramos",
+        "title": "MedStudy CramOS",
+        "tagline": "Notion workspace & spaced repetition Anki deck with 3,500+ cards for Pre-Med & MCAT review.",
+        "description": "Built by pre-med students with 520+ MCAT scores. Includes comprehensive high-yield biology, biochemistry, organic chemistry, and psychology synthesis dashboards, clinical case trackers, and pre-configured Anki tag systems.",
+        "category": "study-pack",
+        "price": 14.99,
+        "originalPrice": 29.99,
+        "creator": {
+          "name": "Amina Bello",
+          "handle": "amina_mcat",
+          "avatar": "/avatars/amina.svg",
+          "university": "University of Ibadan (UI)",
+          "verified": true,
+          "payoutEmail": "amina.bello@ui.edu.ng"
+        },
+        "rating": 4.8,
+        "reviewsCount": 98,
+        "salesCount": 640,
+        "features": [
+          "3,500+ verified high-yield MCAT Anki flashcards",
+          "Organized high-yield formula reference sheets",
+          "Biochemistry pathway interactive flowchart in SVG & PDF",
+          "Personalized spaced-repetition study schedule generator",
+          "Full Notion template duplicate link + CSV export"
+        ],
+        "downloadAsset": {
+          "type": "notion_template",
+          "url": "https://notion.so/templates/medstudy-cramos-pack",
+          "fileName": "MedStudy-Anki-Decks-2026.apkg",
+          "licenseKeyPrefix": "MED"
+        },
+        "tags": [
+          "Pre-Med",
+          "MCAT",
+          "Notion",
+          "Anki"
+        ],
+        "badge": "Staff Pick",
+        "accentColor": "#ec4899",
+        "iconName": "GraduationCap"
+      },
+      "purchaseDate": "Nov 10, 2026",
+      "orderId": "ARX-PP-ORD-INY1SKY-2151",
+      "captureId": "PP-CAP-RR7VTE",
+      "licenseKey": "ARX-MEDS-MWALGBMH-43D5B7CC",
+      "amountPaid": 14.99,
+      "status": "active",
+      "downloadUrl": "https://notion.so/templates/medstudy-cramos-pack"
+    },
+    {
       "id": "order-item-1794306869446-0",
       "productId": "prod-canvas-autopilot",
       "product": {
@@ -806,6 +1073,56 @@
     }
   ],
   "payouts": [
+    {
+      "id": "payout-ARX-PP-ORD-EAZ49I6-7796-prod-ci-guardian",
+      "orderId": "ARX-PP-ORD-EAZ49I6-7796",
+      "creatorName": "Abdullah Qaasim-Falade",
+      "creatorEmail": "alqaasimee.falade@oauife.edu.ng",
+      "amount": 13.02,
+      "platformFee": 0.65,
+      "timestamp": "2026-11-10T11:34:07.835Z",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "payout-ARX-PP-ORD-EAZ49I6-7796-prod-algo-visualizer",
+      "orderId": "ARX-PP-ORD-EAZ49I6-7796",
+      "creatorName": "Chinedu Okonkwo",
+      "creatorEmail": "chinedu.okonkwo@futa.edu.ng",
+      "amount": 10.85,
+      "platformFee": 0.54,
+      "timestamp": "2026-11-10T11:34:07.834Z",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "payout-ARX-PP-ORD-KC2KNII-6403-prod-ci-guardian",
+      "orderId": "ARX-PP-ORD-KC2KNII-6403",
+      "creatorName": "Abdullah Qaasim-Falade",
+      "creatorEmail": "alqaasimee.falade@oauife.edu.ng",
+      "amount": 13.02,
+      "platformFee": 0.65,
+      "timestamp": "2026-11-10T11:22:06.457Z",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "payout-ARX-PP-ORD-KC2KNII-6403-prod-algo-visualizer",
+      "orderId": "ARX-PP-ORD-KC2KNII-6403",
+      "creatorName": "Chinedu Okonkwo",
+      "creatorEmail": "chinedu.okonkwo@futa.edu.ng",
+      "amount": 10.85,
+      "platformFee": 0.54,
+      "timestamp": "2026-11-10T11:22:06.456Z",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "payout-ARX-PP-ORD-INY1SKY-2151-prod-medstudy-cramos",
+      "orderId": "ARX-PP-ORD-INY1SKY-2151",
+      "creatorName": "Amina Bello",
+      "creatorEmail": "amina.bello@ui.edu.ng",
+      "amount": 14.99,
+      "platformFee": 0.75,
+      "timestamp": "2026-11-10T11:15:40.136Z",
+      "status": "SUCCESS"
+    },
     {
       "id": "payout-ARX-PP-ORD-OU9V7WX-9362-prod-ci-guardian",
       "orderId": "ARX-PP-ORD-OU9V7WX-9362",

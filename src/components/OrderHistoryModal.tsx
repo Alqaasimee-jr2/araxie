@@ -86,7 +86,7 @@ export const OrderHistoryModal: React.FC<OrderHistoryModalProps> = ({
             <div className="space-y-3">
               {purchasedItems.map((item) => {
                 const safeUrl = getSafeAssetUrl(item);
-                const hasInteractivePreview = onLaunchPreview && PREVIEWABLE_IDS.includes(item.productId);
+                const hasInteractivePreview = Boolean(onLaunchPreview && (item.product || item.productId));
 
                 return (
                   <div
@@ -137,7 +137,9 @@ export const OrderHistoryModal: React.FC<OrderHistoryModalProps> = ({
                           <button
                             type="button"
                             onClick={() => {
-                              onLaunchPreview(item.product);
+                              if (onLaunchPreview) {
+                                onLaunchPreview(item.product);
+                              }
                               onClose();
                             }}
                             className="px-2.5 py-1 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 font-medium flex items-center gap-1 text-[11px] transition cursor-pointer"

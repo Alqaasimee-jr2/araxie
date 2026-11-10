@@ -31,6 +31,7 @@ import { AIConciergeModal } from '@/components/AIConciergeModal';
 import { CartDrawer } from '@/components/CartDrawer';
 import { PayPalCheckoutModal } from '@/components/PayPalCheckoutModal';
 import { TermsModal } from '@/components/TermsModal';
+import { AINotificationToast, AINotificationData } from '@/components/AINotificationToast';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -49,6 +50,7 @@ export default function LandingPage() {
   const [checkoutTotal, setCheckoutTotal] = useState<number>(0);
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
   const [termsModalTab, setTermsModalTab] = useState<'terms' | 'privacy' | 'creator' | 'honor' | 'refunds'>('terms');
+  const [aiNotification, setAiNotification] = useState<AINotificationData | null>(null);
 
   const handleOpenTerms = (tab: 'terms' | 'privacy' | 'creator' | 'honor' | 'refunds' = 'terms') => {
     setTermsModalTab(tab);
@@ -164,7 +166,20 @@ export default function LandingPage() {
   const handlePaymentSuccess = (purchasedItems: PurchasedItem[]) => {
     const purchasedIds = new Set(purchasedItems.map(p => p.productId));
     setCart(prev => prev.filter(item => !purchasedIds.has(item.id)));
-    router.push('/marketplace');
+
+    if (purchasedItems.length > 0) {
+      const firstItem = purchasedItems[0];
+      const targetProd = INITIAL_PRODUCTS.find(p => p.id === firstItem?.productId) || firstItem?.product;
+      const isMulti = purchasedItems.length > 1;
+
+      setAiNotification({
+        title: isMulti ? `Bundle Unlocked (${purchasedItems.length} Tools)!` : `${targetProd?.title || 'Student Tool'} Unlocked!`,
+        message: `Payment confirmed via PayPal Orders v2. Cryptographic HMAC license key has been minted and added to your Student Locker (@me). 95% net creator royalties were disbursed.`,
+        productName: targetProd?.title,
+        productId: targetProd?.id,
+        hasPreview: Boolean(targetProd),
+      });
+    }
   };
 
   // Featured tools for landing page showcase
@@ -909,6 +924,19 @@ export default function LandingPage() {
         isOpen={isTermsModalOpen}
         onClose={() => setIsTermsModalOpen(false)}
         initialTab={termsModalTab}
+      />
+
+      {/* Floating AI Notification Toast */}
+      <AINotificationToast
+        notification={aiNotification}
+        onClose={() => setAiNotification(null)}
+        onLaunchPreview={(prodId) => {
+          const found = INITIAL_PRODUCTS.find(p => p.id === prodId);
+          if (found) {
+            setActiveInteractiveTool({ id: found.id, title: found.title });
+          }
+        }}
+        onViewLocker={() => router.push('/marketplace')}
       />
 
     </div>
