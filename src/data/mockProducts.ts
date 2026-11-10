@@ -177,7 +177,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     ],
     downloadAsset: {
       type: 'download',
-      url: 'https://araxie.dev/downloads/research-synthesizer.zip',
+      url: '/api/assets/download?productId=prod-paper-synthesizer',
       fileName: 'research-synthesizer-cli-v1.8.zip',
       licenseKeyPrefix: 'RES'
     },
@@ -213,7 +213,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     ],
     downloadAsset: {
       type: 'download',
-      url: 'https://araxie.dev/downloads/chem-reaction-3d.zip',
+      url: '/api/assets/download?productId=prod-chem-reaction-3d',
       fileName: 'chem-reaction-3d-suite.zip',
       licenseKeyPrefix: 'CHEM'
     },
@@ -286,7 +286,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     ],
     downloadAsset: {
       type: 'download',
-      url: 'https://araxie.dev/downloads/academic-prompt-vault.pdf',
+      url: '/api/assets/download?productId=prod-academic-prompt-vault',
       fileName: 'academic-prompt-vault-2026.pdf',
       licenseKeyPrefix: 'PRMT'
     },

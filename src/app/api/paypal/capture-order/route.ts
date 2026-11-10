@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
         productId: prod.id,
         title: prod.title,
         licenseKey,
-        downloadUrl: prod.downloadAsset?.url || 'https://araxie.dev/assets/download',
+        downloadUrl: prod.downloadAsset?.url || `/api/assets/download?productId=${prod.id}`,
         status: 'active',
       };
     });
@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
         licenseKey: unlockedItems[idx]?.licenseKey || `ARX-LIVE-2026`,
         amountPaid,
         status: 'active',
-        downloadUrl: unlockedItems[idx]?.downloadUrl || prod.downloadAsset?.url || 'https://araxie.vercel.app',
+        downloadUrl: unlockedItems[idx]?.downloadUrl || prod.downloadAsset?.url || `/api/assets/download?productId=${prod.id}`,
       };
     });
 
