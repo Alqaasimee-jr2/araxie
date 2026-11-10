@@ -48,8 +48,9 @@ const SAMPLE_PROMPTS = [
 ];
 
 const FOLLOW_UP_SUGGESTIONS = [
-  "Can you recommend other tools?",
+  "What are they used for?",
   "How do I use these tools?",
+  "Can you recommend other tools?",
   "Show me other bundles"
 ];
 
@@ -101,11 +102,26 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
     setInput('');
     setIsLoading(true);
 
+    // Find the latest bundle from messages
+    const lastBundle = [...messages].reverse().find(m => m.bundle)?.bundle;
+    const activeProductIds = lastBundle ? lastBundle.items.map(i => i.id) : [];
+
+    const historyPayload = messages.slice(-6).map(m => ({
+      role: m.sender,
+      text: m.text,
+      bundleProductIds: m.bundle ? m.bundle.items.map(i => i.id) : undefined,
+    }));
+
     try {
       const res = await fetch('/api/ai/concierge', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: textToSend, customCatalog: catalog }),
+        body: JSON.stringify({ 
+          prompt: textToSend, 
+          customCatalog: catalog,
+          history: historyPayload,
+          activeProductIds: activeProductIds,
+        }),
       });
 
       if (!res.ok) throw new Error('AI failed to respond');

@@ -116,9 +116,84 @@ function checkUnservedCategory(text: string): { isUnserved: boolean; reply: stri
   return null;
 }
 
+interface HistoryItem {
+  role: string;
+  text: string;
+  bundleProductIds?: string[];
+}
+
+function detectFollowUpIntent(
+  prompt: string,
+  history: HistoryItem[],
+  activeProductIds: string[],
+  catalog: Product[]
+): { isFollowUp: boolean; targetProducts: Product[] } {
+  const lower = prompt.toLowerCase().trim();
+
+  // 1. Gather candidate products from activeProductIds or from history
+  let candidateIds: string[] = Array.isArray(activeProductIds) ? [...activeProductIds] : [];
+  if (candidateIds.length === 0 && Array.isArray(history)) {
+    for (let i = history.length - 1; i >= 0; i--) {
+      if (history[i]?.bundleProductIds && history[i].bundleProductIds!.length > 0) {
+        candidateIds = history[i].bundleProductIds!;
+        break;
+      }
+    }
+  }
+
+  const targetProducts = catalog.filter(p => candidateIds.includes(p.id));
+  if (targetProducts.length === 0) {
+    return { isFollowUp: false, targetProducts: [] };
+  }
+
+  // 2. Patterns that reference previously discussed tools / "they" / "them" / "listed" / "these"
+  const followUpRegexes = [
+    /\bwhat are they\b/i,
+    /\bwhat do they\b/i,
+    /\bwhat does it\b/i,
+    /\bwhat is it\b/i,
+    /\bwhat are these\b/i,
+    /\bwhat is each\b/i,
+    /\bwhat (are|do) (they|these) (used|for)\b/i,
+    /\bused for\b/i,
+    /\bhow do (they|these|it) work\b/i,
+    /\bhow to use (them|these|it)\b/i,
+    /\bhow do i use (them|these|it)\b/i,
+    /\b(the )?tools? (you )?listed\b/i,
+    /\b(the )?tools? (you )?(recommended|suggested|mentioned|gave|showed)\b/i,
+    /\b(the )?bundle (you )?(recommended|suggested|mentioned|gave|showed)\b/i,
+    /\btell me (more|about (them|these|each))\b/i,
+    /\bexplain (them|these|each)\b/i,
+    /\bwhy (these|them|those)\b/i,
+    /\bwhat does each do\b/i,
+    /\bwhat do they actually do\b/i,
+    /\bmore details?\b/i,
+  ];
+
+  if (followUpRegexes.some(rx => rx.test(lower))) {
+    return { isFollowUp: true, targetProducts };
+  }
+
+  // Also check if prompt explicitly mentions one of the active product titles/keywords
+  const mentionsActive = targetProducts.some(p => {
+    const titleParts = p.title.toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length > 3);
+    return titleParts.some(w => lower.includes(w));
+  });
+
+  if (mentionsActive && (lower.includes('what') || lower.includes('how') || lower.includes('tell') || lower.includes('explain') || lower.includes('why') || lower.includes('feature'))) {
+    return { isFollowUp: true, targetProducts };
+  }
+
+  return { isFollowUp: false, targetProducts: [] };
+}
+
 // Conversational responses for general chatbot inquiries
 function generateConversationalReply(prompt: string): string {
   const lower = prompt.toLowerCase();
+
+  if (lower.includes('hardcode') || lower.includes('flow') || lower.includes('natural')) {
+    return "I operate dynamically! When connected to Google Gemini 2.5 Flash, I generate collegiate, real-time responses and reasoning. When running locally, I use a semantic token relevance engine across all 14 peer-built tools and calculate live logarithmic bundle pricing (\\delta(k) = \\min(0.25, 0.12 \\cdot \\ln(1 + k))) on the fly.";
+  }
 
   // Informational: How to use tools
   if (lower.includes('how do i use') || lower.includes('how to use') || lower.includes('how do these tools work')) {
@@ -413,15 +488,99 @@ function matchCatalogByRelevance(
 
 export async function POST(req: NextRequest) {
   try {
-    const { prompt: rawPrompt, customCatalog } = await req.json();
+    const { 
+      prompt: rawPrompt, 
+      customCatalog, 
+      history = [], 
+      activeProductIds = [] 
+    } = await req.json();
     const catalog: Product[] = customCatalog && customCatalog.length > 0 ? customCatalog : getAllProducts();
 
     // 1. Prompt Injection & Anti-Abuse Inspection
     const promptSecurity = inspectPromptSecurity(rawPrompt || '');
     const prompt = promptSecurity.sanitized;
+
+    // 2. Multi-turn Follow-up intent check: Is student asking about the tools already recommended?
+    const followUp = detectFollowUpIntent(prompt, history, activeProductIds, catalog);
+    if (followUp.isFollowUp) {
+      const targetProducts = followUp.targetProducts;
+      let followUpReply = '';
+
+      if (GEMINI_API_KEY && promptSecurity.isSafe) {
+        const clientIp = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anon';
+        const budgetCheck = checkAndConsumeGeminiBudget(clientIp);
+
+        if (budgetCheck.allowed) {
+          try {
+            const geminiPrompt = `You are araxieAi, an expert collegiate peer and AI Concierge on the Araxie student software marketplace.
+The student was previously recommended these student-built tools:
+${targetProducts.map(p => `- ${p.title} ($${p.price}): ${p.tagline}. Description: ${p.description}. Features: ${p.features.join(', ')}`).join('\n')}
+
+Recent conversation:
+${history.slice(-3).map((h: HistoryItem) => `${h.role === 'user' ? 'Student' : 'AI'}: ${h.text}`).join('\n')}
+Student: "${prompt}"
+
+Explain clearly, conversationally, and authentically what these specific tools are used for, what problems they solve for student developers/students, and how they work together.
+Keep the response natural, structured, collegiate, and concise (3-5 sentences). Do not cut off mid-sentence.`;
+
+            const geminiRes = await fetch(
+              `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+              {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  contents: [{ parts: [{ text: geminiPrompt }] }],
+                  generationConfig: { temperature: 0.7, maxOutputTokens: 600 },
+                }),
+              }
+            );
+
+            if (geminiRes.status === 429) {
+              recordGeminiQuotaExceeded();
+            } else if (geminiRes.ok) {
+              const geminiData = await geminiRes.json();
+              const genText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text;
+              if (genText && genText.trim().length > 0) {
+                followUpReply = genText.trim();
+              }
+            }
+          } catch (err) {
+            console.warn('Gemini follow-up error, falling back:', err);
+          }
+        }
+      }
+
+      if (!followUpReply) {
+        const productBreakdowns = targetProducts.map((p, idx) => 
+          `**${idx + 1}. ${p.title}** ($${p.price})\n- **What it's for**: ${p.tagline}\n- **How you use it**: ${p.description}\n- **Key Features**: ${p.features.slice(0, 3).join(' • ')}`
+        ).join('\n\n');
+
+        followUpReply = `Here is what each of the tools I recommended is used for:\n\n${productBreakdowns}\n\nTogether, they give you a complete workflow without needing to code common boilerplate from scratch. You can grab both with the dynamic bundle discount below!`;
+      }
+
+      const pricing = calculateBundleDiscount(targetProducts);
+      const bundle: DynamicBundle = {
+        id: `bundle-${Date.now()}`,
+        title: `${targetProducts.length}-Item Campus Bundle`,
+        items: targetProducts,
+        originalTotal: pricing.originalTotal,
+        discountPercentage: pricing.discountPercentage,
+        bundleTotal: pricing.bundleTotal,
+        savings: pricing.savings,
+        reason: followUpReply,
+      };
+
+      return NextResponse.json({
+        reply: followUpReply,
+        bundle,
+        suggestedProducts: targetProducts,
+        isRecommendation: true,
+      });
+    }
+
+    // 3. Check general conversational intent vs tool search intent
     const isToolIntent = hasToolRecommendationIntent(prompt);
 
-    // 2. If student is just having a conversation, act as a helpful conversational chatbot without forcing a bundle
     if (!isToolIntent) {
       let chatReply = generateConversationalReply(prompt);
 
@@ -432,6 +591,8 @@ export async function POST(req: NextRequest) {
         if (budgetCheck.allowed) {
           try {
             const conversationPrompt = `You are araxieAi, a sharp, friendly, collegiate AI assistant for university students on Araxie (a student digital tools marketplace).
+Recent conversation:
+${history.slice(-3).map((h: HistoryItem) => `${h.role === 'user' ? 'Student' : 'Assistant'}: ${h.text}`).join('\n')}
 A student said: "${prompt}".
 Respond conversationally, helpfully, and authentically as a college peer.
 Do NOT force or pitch any product bundle unless the student explicitly asks for tools. Keep your answer concise (2-3 sentences), warm, and engaging.`;
@@ -443,7 +604,7 @@ Do NOT force or pitch any product bundle unless the student explicitly asks for 
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                   contents: [{ parts: [{ text: conversationPrompt }] }],
-                  generationConfig: { temperature: 0.8, maxOutputTokens: 200 },
+                  generationConfig: { temperature: 0.8, maxOutputTokens: 600 },
                 }),
               }
             );
@@ -470,7 +631,7 @@ Do NOT force or pitch any product bundle unless the student explicitly asks for 
       });
     }
 
-    // 3. Check for unserved categories (e.g. math solver, video editor, etc.)
+    // 4. Check for unserved categories (e.g. math solver, video editor, etc.)
     const unservedCheck = checkUnservedCategory(prompt);
     if (unservedCheck) {
       return NextResponse.json({
@@ -480,7 +641,7 @@ Do NOT force or pitch any product bundle unless the student explicitly asks for 
       });
     }
 
-    // 4. Intelligent catalog matching across the entire catalog (concept mapping + token relevance scoring)
+    // 5. Intelligent catalog matching across the entire catalog (concept mapping + token relevance scoring)
     const matchResult = matchCatalogByRelevance(prompt, catalog);
     let matchedItems: Product[] = matchResult.matchedItems;
     let defaultReasoning = matchResult.reasoning;
@@ -511,6 +672,8 @@ Do NOT force or pitch any product bundle unless the student explicitly asks for 
       if (budgetCheck.allowed) {
         try {
           const geminiPrompt = `You are the AI Concierge for Araxie, a peer-to-peer student digital tools marketplace.
+Recent conversation:
+${history.slice(-2).map((h: HistoryItem) => `${h.role === 'user' ? 'Student' : 'AI'}: ${h.text}`).join('\n')}
 A student said: "${prompt}".
 We genuinely matched these tools from the catalog: ${bundleItems.map(b => `${b.title} ($${b.price})`).join(', ')}.
 Bundle savings: ${pricing.discountPercentage}%.
@@ -524,7 +687,7 @@ Write a concise, friendly 2-sentence response explaining why these student-built
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 contents: [{ parts: [{ text: geminiPrompt }] }],
-                generationConfig: { temperature: 0.7, maxOutputTokens: 200 },
+                generationConfig: { temperature: 0.7, maxOutputTokens: 600 },
               }),
             }
           );
