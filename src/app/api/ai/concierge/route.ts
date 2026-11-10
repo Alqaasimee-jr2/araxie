@@ -40,7 +40,6 @@ function calculateBundleDiscount(items: Product[]): { discountPercentage: number
 function hasToolRecommendationIntent(text: string): boolean {
   const lower = text.toLowerCase().trim();
 
-  // Explicit greeting or meta questions without shopping intent
   const conversationalOnlyPatterns = [
     /^(hi|hello|hey|yo|good morning|good afternoon|good evening)\b[!.]?$/i,
     /^(who are you|what are you|what is araxie|how does araxie work|how does this work)\??$/i,
@@ -54,17 +53,56 @@ function hasToolRecommendationIntent(text: string): boolean {
     }
   }
 
-  // Explicit tool/bundle/shopping intent cues
   const toolKeywords = [
     'tool', 'tools', 'bundle', 'recommend', 'suggest', 'buy', 'purchase',
     'budget', 'dollar', '$', 'discount', 'extension', 'extensions', 'software',
     'app', 'apps', 'pack', 'template', 'starter', 'need', 'looking for',
     'find me', 'sophomore', 'freshman', 'junior', 'senior', 'taking',
     'algorithms', 'devops', 'pre-med', 'mcat', 'biochem', 'cs', 'engineering',
-    'canvas', 'gpa', 'cheat sheet', 'notes', 'study'
+    'canvas', 'gpa', 'cheat sheet', 'notes', 'study', 'math', 'calculus', 'physics'
   ];
 
   return toolKeywords.some(kw => lower.includes(kw));
+}
+
+// Check for unserved categories (e.g. math solvers, music DAW, video editors)
+function checkUnservedCategory(text: string): { isUnserved: boolean; reply: string } | null {
+  const lower = text.toLowerCase();
+
+  // Mathematics / Calculus / Algebra
+  if (
+    lower.includes('math') || 
+    lower.includes('calculus') || 
+    lower.includes('linear algebra') || 
+    lower.includes('differential equation') || 
+    lower.includes('geometry') ||
+    lower.includes('trigonometry') ||
+    lower.includes('desmos') ||
+    lower.includes('wolfram')
+  ) {
+    return {
+      isUnserved: true,
+      reply: "We don't currently have a dedicated **Math or Calculus solving tool** on the Araxie marketplace yet.\n\nFor step-by-step calculus, symbolic algebra, and graphing, we recommend:\n- **[WolframAlpha](https://www.wolframalpha.com)** (symbolic math and step-by-step calculus solutions)\n- **[Desmos Graphing Calculator](https://www.desmos.com/calculator)** (interactive real-time curve and function plotting)\n- **[GeoGebra](https://www.geogebra.org)** (geometry, 3D graphing, and algebra visualizer)\n\n*(Note: If you're studying discrete mathematics or graph theory algorithms for CS, our **AlgoVisualizer Pro** covers Dijkstra and recursion trees).* \n\nAre you or a classmate building a campus math tool? Students can publish tools to Araxie in 60 seconds through our **Creator Studio** and keep **95% of every sale**!"
+    };
+  }
+
+  // Music / Audio DAW
+  if (lower.includes('music') || lower.includes('audio') || lower.includes('daw') || lower.includes('beat') || lower.includes('fl studio')) {
+    return {
+      isUnserved: true,
+      reply: "We don't have music production or DAW software on Araxie right now. For student music makers, we recommend checking out **[Reaper](https://www.reaper.fm)** (generous student evaluation) or **[Audacity](https://www.audacityteam.org)** (open-source audio editing)."
+    };
+  }
+
+  // Video Editing / 3D Animation
+  if (lower.includes('video edit') || lower.includes('blender') || lower.includes('animation') || lower.includes('premiere')) {
+    return {
+      isUnserved: true,
+      reply: "Araxie focuses primarily on student productivity, Chrome extensions, code templates, and study packs. For video and 3D work, we recommend **[DaVinci Resolve](https://www.blackmagicdesign.com/products/davinciresolve)** (free professional editor) and **[Blender](https://www.blender.org)**."
+    };
+  }
+
+  return null;
 }
 
 // Conversational responses for general chatbot inquiries
@@ -108,11 +146,10 @@ export async function POST(req: NextRequest) {
     const prompt = promptSecurity.sanitized;
     const isToolIntent = hasToolRecommendationIntent(prompt);
 
-    // If student is just having a conversation, act as a helpful conversational chatbot without forcing a bundle!
+    // 2. If student is just having a conversation, act as a helpful conversational chatbot without forcing a bundle
     if (!isToolIntent) {
       let chatReply = generateConversationalReply(prompt);
 
-      // Attempt live Gemini response if available for natural human conversation
       if (GEMINI_API_KEY && promptSecurity.isSafe) {
         const clientIp = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anon';
         const budgetCheck = checkAndConsumeGeminiBudget(clientIp);
@@ -153,17 +190,26 @@ Do NOT force or pitch any product bundle unless the student explicitly asks for 
 
       return NextResponse.json({
         reply: chatReply,
-        bundle: null, // No forced bundle card!
+        bundle: null,
         isRecommendation: false,
       });
     }
 
-    // --- TOOL RECOMMENDATION / BUNDLE FLOW ---
+    // 3. Check for unserved categories (e.g. math solver, video editor, etc.)
+    const unservedCheck = checkUnservedCategory(prompt);
+    if (unservedCheck) {
+      return NextResponse.json({
+        reply: unservedCheck.reply,
+        bundle: null, // DO NOT force unrelated tools!
+        isRecommendation: false,
+      });
+    }
+
+    // 4. Genuine tool matching across catalog
     const lowerPrompt = prompt.toLowerCase();
     let matchedItems: Product[] = [];
     let defaultReasoning = '';
 
-    // Semantic catalog matching
     if (lowerPrompt.includes('cs') || lowerPrompt.includes('code') || lowerPrompt.includes('algorithm') || lowerPrompt.includes('leet') || lowerPrompt.includes('futa') || lowerPrompt.includes('mit')) {
       matchedItems = catalog.filter(p => p.id === 'prod-algo-visualizer' || p.id === 'prod-ci-guardian');
       defaultReasoning = 'Curated a custom bundle for your CS coursework: AlgoVisualizer Pro for interview algorithms paired with CI-Guardian AST validation for secure coding.';
@@ -182,12 +228,18 @@ Do NOT force or pitch any product bundle unless the student explicitly asks for 
     } else if (lowerPrompt.includes('budget') || lowerPrompt.includes('under') || lowerPrompt.includes('cheap')) {
       matchedItems = catalog.filter(p => p.price <= 8).slice(0, 2);
       defaultReasoning = 'Curated high-utility student tools calibrated specifically for affordable campus budgets under $8.';
-    } else {
-      matchedItems = [
-        catalog.find(p => p.id === 'prod-algo-visualizer') || catalog[0],
-        catalog.find(p => p.id === 'prod-ci-guardian') || catalog[1],
-      ].filter(Boolean);
-      defaultReasoning = "I've curated a custom bundle that fits your budget and covers your course needs. Here are two highly-rated student-built tools:";
+    } else if (lowerPrompt.includes('oau') || lowerPrompt.includes('ife') || lowerPrompt.includes('clearance') || lowerPrompt.includes('hostel')) {
+      matchedItems = catalog.filter(p => p.id === 'prod-oaumods' || p.id === 'prod-flow7');
+      defaultReasoning = 'Curated student navigation and productivity essentials for campus life.';
+    }
+
+    // If NO genuine correlation was found, inform the student honestly instead of forcing unrelated tools!
+    if (matchedItems.length === 0) {
+      return NextResponse.json({
+        reply: `We don't currently have a dedicated tool matching "${prompt}" on the Araxie marketplace yet.\n\nWe recommend searching the **[Chrome Web Store](https://chrome.google.com/webstore)** or **[GitHub](https://github.com)** for open-source university extensions.\n\nAre you or a fellow student building a tool for this? You can publish it on Araxie in under 60 seconds via **Creator Studio** and keep **95% of every sale**!`,
+        bundle: null,
+        isRecommendation: false,
+      });
     }
 
     const bundleItems = matchedItems.slice(0, 2);
@@ -208,7 +260,7 @@ Do NOT force or pitch any product bundle unless the student explicitly asks for 
         try {
           const geminiPrompt = `You are the AI Concierge for Araxie, a peer-to-peer student digital tools marketplace.
 A student said: "${prompt}".
-We matched these tools from the catalog: ${bundleItems.map(b => `${b.title} ($${b.price})`).join(', ')}.
+We genuinely matched these tools from the catalog: ${bundleItems.map(b => `${b.title} ($${b.price})`).join(', ')}.
 Bundle savings: ${pricing.discountPercentage}%.
 
 Write a concise, friendly 2-sentence response explaining why these student-built tools fit their course requirements and why this bundle discount is worth grabbing. Keep it collegiate and sharp.`;
