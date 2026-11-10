@@ -592,6 +592,166 @@
   ],
   "orders": [
     {
+      "id": "order-item-1794306869446-0",
+      "productId": "prod-canvas-autopilot",
+      "product": {
+        "id": "prod-canvas-autopilot",
+        "title": "CanvasAutoPilot",
+        "tagline": "Chrome Extension syncs Canvas LMS assignments & deadlines to Google Calendar with smart reminders.",
+        "description": "Never miss another quiz or submission. CanvasAutoPilot runs quietly in your browser, extracting assignment due dates, quiz time limits, and syllabus updates directly from Canvas LMS into Google Calendar and Notion with one-click webhook sync.",
+        "category": "chrome-extension",
+        "price": 6.99,
+        "originalPrice": 12,
+        "creator": {
+          "name": "Folashade Adeyemi",
+          "handle": "folashade_dev",
+          "avatar": "/avatars/sarah.svg",
+          "university": "University of Lagos (UNILAG)",
+          "verified": true,
+          "payoutEmail": "folashade.adeyemi@unilag.edu.ng"
+        },
+        "rating": 5,
+        "reviewsCount": 143,
+        "salesCount": 890,
+        "features": [
+          "Automatic 2-way sync with Canvas LMS",
+          "Google Calendar, Apple Calendar & Notion integration",
+          "Intelligent push notifications 24h & 2h before deadlines",
+          "Grade weighting predictor and assignment score goal tracker",
+          "100% client-side privacy: no credentials leave your browser"
+        ],
+        "downloadAsset": {
+          "type": "chrome_web_store",
+          "url": "https://chrome.google.com/webstore/detail/canvas-autopilot",
+          "fileName": "canvas-autopilot-v2.4.zip",
+          "licenseKeyPrefix": "CAP"
+        },
+        "tags": [
+          "Productivity",
+          "Canvas LMS",
+          "Calendar",
+          "Chrome Extension"
+        ],
+        "badge": "Trending",
+        "accentColor": "#3b82f6",
+        "iconName": "CalendarCheck"
+      },
+      "purchaseDate": "Nov 10, 2026",
+      "orderId": "ARX-PP-ORD-OU9V7WX-9362",
+      "captureId": "PP-CAP-1KDBFP",
+      "licenseKey": "ARX-CANV-MWAJZD70-56B015B4",
+      "amountPaid": 5.83,
+      "status": "active",
+      "downloadUrl": "https://chrome.google.com/webstore/detail/canvas-autopilot"
+    },
+    {
+      "id": "order-item-1794306869446-1",
+      "productId": "prod-algo-visualizer",
+      "product": {
+        "id": "prod-algo-visualizer",
+        "title": "AlgoVisualizer Pro",
+        "tagline": "Interactive 3D algorithm visualizer with 150+ LeetCode patterns for technical interview prep.",
+        "description": "Designed specifically for students taking Data Structures & Algorithms or preparing for FAANG SWE internships. Step forward and backward through memory graphs, recursion trees, dynamic programming tables, and Dijkstra shortest paths in real-time.",
+        "category": "code-template",
+        "price": 12.5,
+        "originalPrice": 20,
+        "creator": {
+          "name": "Chinedu Okonkwo",
+          "handle": "chinedu_code",
+          "avatar": "/avatars/marcus.svg",
+          "university": "Federal University of Technology, Akure (FUTA)",
+          "verified": true,
+          "payoutEmail": "chinedu.okonkwo@futa.edu.ng"
+        },
+        "rating": 5,
+        "reviewsCount": 310,
+        "salesCount": 1420,
+        "features": [
+          "Visual breakdown for 150+ Blind75 & NeetCode patterns",
+          "Step-by-step call stack and memory pointer inspector",
+          "Custom input runner in Python, C++, and TypeScript",
+          "Complexity analysis calculator with asymptotic curves",
+          "Offline desktop app and local web server included"
+        ],
+        "downloadAsset": {
+          "type": "github",
+          "url": "https://github.com/Alqaasimee-jr2/algovisualizer-pro",
+          "fileName": "algovisualizer-pro-bundle.zip",
+          "licenseKeyPrefix": "ALGO"
+        },
+        "tags": [
+          "Algorithms",
+          "LeetCode",
+          "CS Prep",
+          "Python"
+        ],
+        "badge": "Bestseller",
+        "accentColor": "#10b981",
+        "iconName": "Binary"
+      },
+      "purchaseDate": "Nov 10, 2026",
+      "orderId": "ARX-PP-ORD-OU9V7WX-9362",
+      "captureId": "PP-CAP-1KDBFP",
+      "licenseKey": "ARX-ALGO-MWAJZD70-3F3EA1AF",
+      "amountPaid": 10.42,
+      "status": "active",
+      "downloadUrl": "https://github.com/Alqaasimee-jr2/algovisualizer-pro"
+    },
+    {
+      "id": "order-item-1794306869446-2",
+      "productId": "prod-ci-guardian",
+      "product": {
+        "id": "prod-ci-guardian",
+        "title": "CI-Guardian 🛡️",
+        "tagline": "Autonomous pre-flight quality gate chaining syntax-aware AST security scanning & test orchestration.",
+        "description": "Stop pushing security flaws and broken tests to GitHub. CI-Guardian runs in under 10 seconds locally or in CI, scanning AST syntax trees for exposed keys and vulnerabilities while auto-generating SARIF 2.1.0 security compliance reports.",
+        "category": "code-template",
+        "price": 14.99,
+        "originalPrice": 25,
+        "creator": {
+          "name": "Abdullah Qaasim-Falade",
+          "handle": "alqaasimee_jr2",
+          "avatar": "/avatars/abdullah.svg",
+          "university": "Obafemi Awolowo University (OAU)",
+          "verified": true,
+          "payoutEmail": "alqaasimee.falade@oauife.edu.ng"
+        },
+        "rating": 5,
+        "reviewsCount": 198,
+        "salesCount": 1120,
+        "features": [
+          "Sub-10s syntax-aware AST security scanning gate",
+          "Automated test runner discovery with zero configuration",
+          "SARIF 2.1.0 security compliance report export",
+          "Automated PR documentation and change-impact analyzer",
+          "Zero external dependencies runner via npx ci-guardian"
+        ],
+        "downloadAsset": {
+          "type": "github",
+          "url": "https://github.com/Alqaasimee-jr2/CI-Guardian",
+          "fileName": "ci-guardian-v1.4.zip",
+          "licenseKeyPrefix": "CIG"
+        },
+        "tags": [
+          "DevOps",
+          "AST Security",
+          "CLI",
+          "GitHub Actions",
+          "Testing"
+        ],
+        "badge": "Bestseller",
+        "accentColor": "#10b981",
+        "iconName": "ShieldCheck"
+      },
+      "purchaseDate": "Nov 10, 2026",
+      "orderId": "ARX-PP-ORD-OU9V7WX-9362",
+      "captureId": "PP-CAP-1KDBFP",
+      "licenseKey": "ARX-CI-G-MWAJZD70-6E0340D2",
+      "amountPaid": 12.49,
+      "status": "active",
+      "downloadUrl": "https://github.com/Alqaasimee-jr2/CI-Guardian"
+    },
+    {
       "id": "demo-order-1",
       "productId": "prod-canvas-autopilot",
       "product": {
@@ -646,6 +806,36 @@
     }
   ],
   "payouts": [
+    {
+      "id": "payout-ARX-PP-ORD-OU9V7WX-9362-prod-ci-guardian",
+      "orderId": "ARX-PP-ORD-OU9V7WX-9362",
+      "creatorName": "Abdullah Qaasim-Falade",
+      "creatorEmail": "alqaasimee.falade@oauife.edu.ng",
+      "amount": 12.49,
+      "platformFee": 0.62,
+      "timestamp": "2026-11-10T10:34:29.449Z",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "payout-ARX-PP-ORD-OU9V7WX-9362-prod-algo-visualizer",
+      "orderId": "ARX-PP-ORD-OU9V7WX-9362",
+      "creatorName": "Chinedu Okonkwo",
+      "creatorEmail": "chinedu.okonkwo@futa.edu.ng",
+      "amount": 10.42,
+      "platformFee": 0.52,
+      "timestamp": "2026-11-10T10:34:29.449Z",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "payout-ARX-PP-ORD-OU9V7WX-9362-prod-canvas-autopilot",
+      "orderId": "ARX-PP-ORD-OU9V7WX-9362",
+      "creatorName": "Folashade Adeyemi",
+      "creatorEmail": "folashade.adeyemi@unilag.edu.ng",
+      "amount": 5.83,
+      "platformFee": 0.29,
+      "timestamp": "2026-11-10T10:34:29.448Z",
+      "status": "SUCCESS"
+    },
     {
       "id": "payout-init-1",
       "orderId": "ARX-PP-98214-REC",

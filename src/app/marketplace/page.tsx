@@ -19,6 +19,7 @@ import { AuthModal } from '@/components/AuthModal';
 import { PublicSpaceView } from '@/components/PublicSpaceView';
 import { AraxiAiFloatingButton } from '@/components/AraxiAiFloatingButton';
 import { TermsModal } from '@/components/TermsModal';
+import { AINotificationToast, AINotificationData } from '@/components/AINotificationToast';
 import { 
   Sparkles, 
   Layers, 
@@ -124,6 +125,7 @@ export default function MarketplacePage() {
   const [isOrdersModalOpen, setIsOrdersModalOpen] = useState(false);
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
   const [termsModalTab, setTermsModalTab] = useState<'terms' | 'privacy' | 'creator' | 'honor' | 'refunds'>('terms');
+  const [aiNotification, setAiNotification] = useState<AINotificationData | null>(null);
 
   const handleOpenTerms = (tab: 'terms' | 'privacy' | 'creator' | 'honor' | 'refunds' = 'terms') => {
     setTermsModalTab(tab);
@@ -219,6 +221,20 @@ export default function MarketplacePage() {
     setPurchasedItems(prev => [...newPurchasedItems, ...prev]);
     const purchasedIds = new Set(newPurchasedItems.map(p => p.productId));
     setCart(prev => prev.filter(item => !purchasedIds.has(item.id)));
+
+    if (newPurchasedItems.length > 0) {
+      const firstItem = newPurchasedItems[0];
+      const targetProd = products.find(p => p.id === firstItem?.productId) || firstItem?.product;
+      const isMulti = newPurchasedItems.length > 1;
+
+      setAiNotification({
+        title: isMulti ? `Bundle Unlocked (${newPurchasedItems.length} Tools)!` : `${targetProd?.title || 'Student Tool'} Unlocked!`,
+        message: `Payment confirmed via PayPal Orders v2. Cryptographic HMAC license key has been minted and added to your Student Locker (@me). 95% net creator royalties were disbursed.`,
+        productName: targetProd?.title,
+        productId: targetProd?.id,
+        hasPreview: Boolean(targetProd && ['prod-flow7', 'prod-ci-guardian', 'prod-canvas-autopilot', 'prod-algo-visualizer', 'prod-academic-prompt-vault', 'prod-paper-synthesizer'].includes(targetProd.id)),
+      });
+    }
   };
 
   const handleProductCreated = (newProduct: Product) => {
@@ -750,6 +766,17 @@ export default function MarketplacePage() {
         isOpen={isTermsModalOpen}
         onClose={() => setIsTermsModalOpen(false)}
         initialTab={termsModalTab}
+      />
+
+      {/* Floating AI Notification Toast */}
+      <AINotificationToast
+        notification={aiNotification}
+        onClose={() => setAiNotification(null)}
+        onViewLocker={() => setCurrentTab('me')}
+        onLaunchPreview={(prodId) => {
+          const target = products.find(p => p.id === prodId);
+          if (target) setActiveInteractiveTool(target);
+        }}
       />
 
     </div>
