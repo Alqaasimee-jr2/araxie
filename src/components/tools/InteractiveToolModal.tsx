@@ -58,7 +58,7 @@ export const InteractiveToolModal: React.FC<InteractiveToolModalProps> = ({
         <div className="px-5 py-3.5 border-b border-[#1c1e28] flex items-center justify-between bg-[#121319]">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-300">
-              <Terminal className="w-3.5 h-3.5 text-cyan-400" />
+              <Terminal className="w-3.5 h-3.5 text-blue-400" />
             </div>
             <div>
               <div className="flex items-center gap-2">

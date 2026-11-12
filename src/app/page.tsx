@@ -274,7 +274,7 @@ export default function LandingPage() {
                 className="flex items-center gap-1.5 text-xs font-medium bg-[#161924] hover:bg-[#1d2232] text-zinc-200 px-3 py-1.5 rounded-lg border border-[#272f44] hover:border-blue-500/50 transition shadow-sm"
                 title="Open araxieAi Assistant (⌘J)"
               >
-                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                <Sparkles className="w-3.5 h-3.5 text-blue-400" />
                 <span className="font-semibold text-white">araxieAi</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 hidden sm:inline-block" />
               </button>
@@ -396,7 +396,7 @@ export default function LandingPage() {
             </div>
             <div className="p-3.5 rounded-xl bg-[#111319] border border-[#1e212b]">
               <span className="text-[11px] text-zinc-400 block">Peer Software</span>
-              <span className="text-lg font-bold text-cyan-400">14 Verified Tools</span>
+              <span className="text-lg font-bold text-blue-400">14 Verified Tools</span>
             </div>
             <div className="p-3.5 rounded-xl bg-[#111319] border border-[#1e212b]">
               <span className="text-[11px] text-zinc-400 block">Creator Revenue</span>
@@ -491,7 +491,7 @@ export default function LandingPage() {
               <div>
                 <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#1c1f2b] text-xs">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
                     <span className="font-semibold text-zinc-200">CI-Guardian Pre-Flight Security Scanner</span>
                     <span className="text-zinc-500">•</span>
                     <span className="text-zinc-400">Branch &amp; Secret Hygiene Validator</span>
@@ -670,9 +670,9 @@ export default function LandingPage() {
                     {hasRunner && (
                       <button
                         onClick={() => setActiveInteractiveTool({ id: product.id, title: product.title })}
-                        className="flex-1 py-1.5 rounded-lg text-xs font-semibold bg-[#181b26] hover:bg-[#202534] text-cyan-300 border border-[#272d40] transition flex items-center justify-center gap-1.5"
+                        className="flex-1 py-1.5 rounded-lg text-xs font-semibold bg-[#181b26] hover:bg-[#202534] text-zinc-200 hover:text-white border border-[#272d40] transition flex items-center justify-center gap-1.5"
                       >
-                        <Play className="w-3 h-3 fill-cyan-300" />
+                        <Play className="w-3 h-3 fill-zinc-300 text-zinc-300" />
                         <span>Run Demo</span>
                       </button>
                     )}

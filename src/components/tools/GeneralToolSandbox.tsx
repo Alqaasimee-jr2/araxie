@@ -343,13 +343,13 @@ export const GeneralToolSandbox: React.FC<GeneralToolSandboxProps> = ({ toolId, 
         <div className="h-44 rounded-2xl bg-gradient-to-b from-[#141224] to-[#0c0b16] border border-[#2c234a] flex flex-col items-center justify-center p-4 relative overflow-hidden">
           <div className="flex items-center gap-6 z-10">
             <div className="text-center">
-              <div className="w-10 h-10 rounded-full bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center font-bold text-cyan-300 text-xs">
+              <div className="w-10 h-10 rounded-full bg-blue-500/20 border border-blue-400/40 flex items-center justify-center font-bold text-blue-300 text-xs">
                 OH⁻
               </div>
               <span className="text-[10px] text-zinc-400 mt-1 block">Nucleophile</span>
             </div>
 
-            <div className="w-12 h-0.5 bg-gradient-to-r from-cyan-400 to-amber-400 animate-pulse" />
+            <div className="w-12 h-0.5 bg-gradient-to-r from-blue-400 to-amber-400" />
 
             <div className="text-center">
               <div className="w-12 h-12 rounded-full bg-amber-500/20 border border-amber-400/40 flex items-center justify-center font-bold text-amber-300 text-xs">
@@ -358,7 +358,7 @@ export const GeneralToolSandbox: React.FC<GeneralToolSandboxProps> = ({ toolId, 
               <span className="text-[10px] text-zinc-400 mt-1 block">Chiral Carbon</span>
             </div>
 
-            <div className="w-12 h-0.5 bg-gradient-to-r from-amber-400 to-red-400 animate-pulse" />
+            <div className="w-12 h-0.5 bg-gradient-to-r from-amber-400 to-red-400" />
 
             <div className="text-center">
               <div className="w-10 h-10 rounded-full bg-red-500/20 border border-red-400/40 flex items-center justify-center font-bold text-red-300 text-xs">

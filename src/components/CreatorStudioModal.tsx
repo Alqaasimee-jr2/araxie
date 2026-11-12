@@ -434,7 +434,7 @@ export const CreatorStudioModal: React.FC<CreatorStudioModalProps> = ({
                     className="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1 font-medium transition"
                   >
                     <Sparkles className="w-3 h-3 text-amber-400" />
-                    <span>{isPolishing ? 'Gemini 2.5 polishing...' : 'AI Polish with Gemini'}</span>
+                    <span>{isPolishing ? 'Polishing...' : 'Polish with AI'}</span>
                   </button>
                 </div>
                 <input

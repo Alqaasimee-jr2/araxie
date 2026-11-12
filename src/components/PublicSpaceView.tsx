@@ -200,7 +200,7 @@ export const PublicSpaceView: React.FC<PublicSpaceViewProps> = ({
         <div className="relative max-w-3xl space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1c202d] border border-[#2b3145] text-zinc-300 text-xs font-medium">
             <img src="/logo.svg" alt="Araxie Logo" className="w-4 h-4 rounded" />
-            <Globe className="w-3.5 h-3.5 text-cyan-400" />
+            <Globe className="w-3.5 h-3.5 text-blue-400" />
             <span>Campus Commons &bull; Open Public Space</span>
             <span className="text-zinc-500">•</span>
             <span className="text-emerald-400 font-semibold">100% Free Public Exploration</span>
@@ -252,7 +252,7 @@ export const PublicSpaceView: React.FC<PublicSpaceViewProps> = ({
             </div>
             <div className="p-3 rounded-xl bg-[#13151d] border border-[#202434] space-y-0.5">
               <span className="text-[11px] text-zinc-400 block">Verified Tools</span>
-              <span className="text-lg font-bold text-cyan-400">14 Live Software</span>
+              <span className="text-lg font-bold text-blue-400">14 Live Software</span>
             </div>
             <div className="p-3 rounded-xl bg-[#13151d] border border-[#202434] space-y-0.5">
               <span className="text-[11px] text-zinc-400 block">Creator Royalties</span>

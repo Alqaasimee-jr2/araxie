@@ -224,7 +224,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="flex items-center gap-1.5 text-xs font-medium bg-[#161924] hover:bg-[#1d2232] text-zinc-200 px-3 py-1.5 rounded-lg border border-[#272f44] hover:border-blue-500/50 transition shadow-sm"
               title="Open araxieAi Assistant (⌘J)"
             >
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <Sparkles className="w-3.5 h-3.5 text-blue-400" />
               <span className="font-semibold text-white">araxieAi</span>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 hidden sm:inline-block" />
             </button>
@@ -295,7 +295,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       href="/"
                       className="w-full text-left px-3 py-1.5 text-zinc-300 hover:text-white hover:bg-[#181920] flex items-center gap-1.5 transition"
                     >
-                      <Globe className="w-3 h-3 text-cyan-400" />
+                      <Globe className="w-3 h-3 text-blue-400" />
                       <span>Araxie Landing Page</span>
                     </a>
                     <button

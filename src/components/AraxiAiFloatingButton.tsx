@@ -22,7 +22,7 @@ export const AraxiAiFloatingButton: React.FC<AraxiAiFloatingButtonProps> = ({
       {/* Dismissible Floating Teaser Bubble (visible when chat closed) */}
       {!isOpen && showTooltip && (
         <div className="relative animate-in fade-in slide-in-from-bottom-2 duration-300 hidden sm:flex items-center gap-2 p-2 px-3 rounded-xl bg-[#141724] border border-[#23293e] shadow-xl text-xs text-zinc-300">
-          <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
+          <div className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
           <span>Ask <strong>araxieAi</strong> for student software bundles &amp; discounts</span>
           <button
             onClick={(e) => {
@@ -41,21 +41,18 @@ export const AraxiAiFloatingButton: React.FC<AraxiAiFloatingButtonProps> = ({
       <button
         onClick={onClick}
         aria-label="Open araxieAi Assistant"
-        className={`group relative flex items-center gap-2.5 px-4 py-2.5 rounded-full shadow-2xl transition-all duration-300 transform active:scale-95 ${
+        className={`group relative flex items-center gap-2.5 px-4 py-2.5 rounded-full shadow-xl transition-all duration-300 transform active:scale-95 ${
           isOpen
             ? 'bg-[#181b28] text-zinc-300 border border-[#2b324b] hover:bg-[#202538]'
-            : 'bg-gradient-to-r from-[#11131c] via-[#161a29] to-[#121624] text-white border border-[#2d3550] hover:border-blue-500/60 hover:shadow-blue-500/20'
+            : 'bg-[#141724] text-white border border-[#2d3550] hover:border-blue-500/50 hover:bg-[#181c2c]'
         }`}
       >
-        {/* Animated Radial Glow on hover */}
-        <div className="absolute inset-0 rounded-full bg-blue-500/10 blur-md group-hover:bg-blue-500/20 transition pointer-events-none" />
-
         {/* Araxie Spark Icon */}
-        <div className="relative w-6 h-6 rounded-full bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white shadow-sm shrink-0">
+        <div className="relative w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-sm shrink-0">
           {isOpen ? (
             <X className="w-3.5 h-3.5" />
           ) : (
-            <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+            <Sparkles className="w-3.5 h-3.5" />
           )}
         </div>
 
@@ -68,7 +65,7 @@ export const AraxiAiFloatingButton: React.FC<AraxiAiFloatingButtonProps> = ({
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
           </div>
           <span className="text-[10px] text-zinc-400 font-medium leading-tight">
-            {isOpen ? 'Close assistant' : 'Campus AI Advisor'}
+            {isOpen ? 'Close assistant' : 'Campus Advisor'}
           </span>
         </div>
 

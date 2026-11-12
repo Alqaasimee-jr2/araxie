@@ -403,7 +403,7 @@ export const PayPalCheckoutModal: React.FC<PayPalCheckoutModalProps> = ({
                 <div className="flex items-center justify-center gap-1.5 pt-1">
                   <span className="px-2 py-0.5 rounded bg-[#161822] border border-[#222736] text-[10px] font-bold tracking-wider text-blue-400">VISA</span>
                   <span className="px-2 py-0.5 rounded bg-[#161822] border border-[#222736] text-[10px] font-bold tracking-wider text-red-400">MC</span>
-                  <span className="px-2 py-0.5 rounded bg-[#161822] border border-[#222736] text-[10px] font-bold tracking-wider text-cyan-400">AMEX</span>
+                  <span className="px-2 py-0.5 rounded bg-[#161822] border border-[#222736] text-[10px] font-bold tracking-wider text-zinc-300">AMEX</span>
                 </div>
 
                 {/* Guarantee Footer */}

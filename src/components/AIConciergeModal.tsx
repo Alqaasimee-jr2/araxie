@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   Sparkles, 
   X, 
@@ -80,11 +80,16 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
     {
       id: 'welcome',
       sender: 'assistant',
-      text: "👋 Hi! I'm your **Araxie AI Concierge**, powered by Google Gemini 2.5 Flash.\n\nTell me your major, semester courses, or budget—and I'll curate the best student-built tools with an automatic logarithmic bundle discount.",
+      text: "👋 Hi! I'm your **Araxie Concierge**.\n\nTell me your major, semester courses, or budget—and I'll curate the best student-built tools with an automatic bundle discount.",
     }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isLoading]);
 
   if (!isOpen) return null;
 
@@ -157,13 +162,13 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
         {/* Header - Matches Mockup */}
         <div className="px-5 py-3.5 border-b border-[#1d2335] flex items-center justify-between bg-[#131724]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-cyan-400 shadow-sm">
+            <div className="w-8 h-8 rounded-xl bg-blue-600/15 border border-blue-500/25 flex items-center justify-center text-blue-400 shadow-sm">
               <Bot className="w-4 h-4" />
             </div>
             <div>
               <h3 className="font-bold text-sm text-white">Araxie AI Concierge</h3>
               <p className="text-[11px] text-zinc-400">
-                Powered by Google Gemini 2.5 Flash
+                Campus Software Advisor
               </p>
             </div>
           </div>
@@ -191,7 +196,7 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
               ) : (
                 /* Assistant Message with Avatar & Card */
                 <div className="flex gap-2.5 max-w-full">
-                  <div className="w-6 h-6 rounded-full bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0 mt-0.5">
+                  <div className="w-6 h-6 rounded-full bg-blue-600/15 border border-blue-500/25 flex items-center justify-center text-blue-400 shrink-0 mt-0.5">
                     <Sparkles className="w-3 h-3" />
                   </div>
 
@@ -279,11 +284,16 @@ export const AIConciergeModal: React.FC<AIConciergeModalProps> = ({
           ))}
 
           {isLoading && (
-            <div className="flex items-center gap-2 text-xs text-cyan-400 p-2">
-              <Sparkles className="w-3.5 h-3.5 animate-spin" />
-              <span>Gemini 2.5 Flash is analyzing requirements and computing bundle discount...</span>
+            <div className="flex items-center gap-2.5 max-w-full animate-in fade-in duration-150">
+              <div className="w-6 h-6 rounded-full bg-blue-600/15 border border-blue-500/25 flex items-center justify-center text-blue-400 shrink-0 mt-0.5">
+                <Sparkles className="w-3 h-3" />
+              </div>
+              <div className="px-3.5 py-1.5 rounded-2xl bg-[#141824] border border-[#232a3e] text-zinc-300 text-xs font-mono tracking-widest animate-pulse">
+                ...
+              </div>
             </div>
           )}
+          <div ref={messagesEndRef} />
         </div>
 
         {/* Suggestion Chips (From Mockup) */}

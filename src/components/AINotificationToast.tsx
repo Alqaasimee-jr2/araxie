@@ -36,24 +36,19 @@ export const AINotificationToast: React.FC<AINotificationToastProps> = ({
 
   return (
     <div className="fixed bottom-6 right-6 z-50 max-w-md w-[calc(100vw-3rem)] animate-in slide-in-from-bottom-6 fade-in duration-300">
-      <div className="relative rounded-2xl bg-[#0e121d] border border-cyan-500/40 shadow-[0_20px_50px_rgba(0,112,186,0.25)] p-4 overflow-hidden backdrop-blur-xl">
+      <div className="relative rounded-2xl bg-[#111420] border border-[#23293e] shadow-2xl p-4 overflow-hidden">
         
-        {/* Glow Accent */}
-        <div className="absolute -top-12 -right-12 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none" />
-        <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-blue-600/10 rounded-full blur-2xl pointer-events-none" />
-
         {/* Header */}
-        <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#1b2234]">
+        <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#1d2335]">
           <div className="flex items-center gap-2">
-            <div className="relative flex items-center justify-center w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
+            <div className="relative flex items-center justify-center w-7 h-7 rounded-lg bg-blue-600/15 text-blue-400 border border-blue-500/25">
               <Bot className="w-4 h-4" />
-              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-400" />
+              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 border border-[#111420]" />
             </div>
             <div>
               <span className="text-xs font-bold text-white flex items-center gap-1.5">
                 araxieAi
-                <span className="text-[10px] font-normal text-cyan-400 px-1.5 py-0.2 rounded-full bg-cyan-500/10 border border-cyan-500/20">
+                <span className="text-[10px] font-medium text-zinc-300 px-2 py-0.5 rounded-full bg-[#181d2c] border border-[#262f44]">
                   Concierge
                 </span>
               </span>
@@ -81,14 +76,14 @@ export const AINotificationToast: React.FC<AINotificationToastProps> = ({
         </div>
 
         {/* Actions */}
-        <div className="mt-3 pt-2.5 border-t border-[#1b2234] flex items-center gap-2 pl-5">
+        <div className="mt-3 pt-2.5 border-t border-[#1d2335] flex items-center gap-2 pl-5">
           {notification.hasPreview && notification.productId && onLaunchPreview && (
             <button
               onClick={() => {
                 onLaunchPreview(notification.productId!);
                 onClose();
               }}
-              className="px-2.5 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 text-xs font-semibold flex items-center gap-1 transition"
+              className="px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/25 text-emerald-400 text-xs font-semibold flex items-center gap-1 transition"
             >
               <Play className="w-3 h-3" />
               <span>Launch Sandbox</span>
@@ -100,7 +95,7 @@ export const AINotificationToast: React.FC<AINotificationToastProps> = ({
               onViewLocker();
               onClose();
             }}
-            className="px-2.5 py-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-400 text-xs font-semibold flex items-center gap-1 transition"
+            className="px-3 py-1.5 rounded-lg bg-[#0070ba] hover:bg-[#005ea6] text-white text-xs font-semibold flex items-center gap-1 transition shadow-sm"
           >
             <span>View License in Locker</span>
             <ArrowRight className="w-3 h-3" />

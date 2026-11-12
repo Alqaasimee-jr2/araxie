@@ -85,7 +85,7 @@ export const AcademicWritingTool: React.FC = () => {
             <div className="flex items-center gap-2">
               <h2 className="font-bold text-base text-white">Academic Writing &amp; Prompt Studio</h2>
               <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                Live Gemini Engine
+                Academic Engine
               </span>
             </div>
             <p className="text-xs text-zinc-400">
@@ -167,7 +167,7 @@ export const AcademicWritingTool: React.FC = () => {
             {isLoading ? (
               <>
                 <Sparkles className="w-3.5 h-3.5 animate-spin" />
-                <span>Running Gemini Engine...</span>
+                <span>Processing...</span>
               </>
             ) : (
               <>

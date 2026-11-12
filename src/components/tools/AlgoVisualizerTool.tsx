@@ -329,7 +329,7 @@ export const AlgoVisualizerTool: React.FC = () => {
                 <div className="h-5 flex items-center gap-1 text-[10px] font-bold">
                   {isLeft && <span className="text-blue-400">L</span>}
                   {isMid && <span className="text-amber-400">M</span>}
-                  {isRight && <span className="text-cyan-400">R</span>}
+                  {isRight && <span className="text-indigo-400">R</span>}
                 </div>
               </div>
             );
